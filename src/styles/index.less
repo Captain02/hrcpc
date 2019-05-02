@@ -1,0 +1,39 @@
+@import './reset.css';
+@import './transition.less';
+
+.clearfix{
+  zoom: 1;
+  &::after{
+    content: "";
+    display: block;
+    clear: both;
+    overflow: hidden;
+    visibility: hidden;
+    height: 0;
+  }
+}
+.clear{
+  clear: both;
+}
+
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+}
+
+.el-scrollbar .scrollbar-wrapper{
+  overflow-x: hidden!important;
+}
+.el-scrollbar, .el-scrollbar__view {
+  height: 100%;
+}
+
+.app-container {
+  margin: 15px 15px 0;
+  padding: 15px 30px;
+  background-color: #fff;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.047);
+  border-radius: 3px;
+}
