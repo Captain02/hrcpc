@@ -93,6 +93,15 @@ export const routes = [
         },
       },
       {
+        path: 'add',
+        name: 'addUser',
+        component: () => import('@/views/user/add'),
+        hidden: true,
+        meta: {
+          title: '添加用户'
+        }
+      },
+      {
         path: 'group',
         name: 'userGroupManage',
         component: () => import('@/views/user/group'),

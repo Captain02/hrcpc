@@ -9,10 +9,10 @@
       <span v-if="menuInfo.meta && menuInfo.meta.title">{{menuInfo.meta.title}}</span>
     </template>
     
-    <template v-for="item in menuInfo.children">
+    <template v-for="item in menuInfo.children" v-if="!item.hidden">
       <router-link 
         :to="resolvePath(item.path)" 
-        v-if="!item.children && !item.hidden"
+        v-if="!item.children"
         :key="resolvePath(item.path)"
       >
         <el-menu-item

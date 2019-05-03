@@ -20,7 +20,6 @@ import Breadcrumb from '_c/Breadcrumb'
 import FullScreen from '_c/FullScreen'
 import UserNotice from '_c/UserNotice'
 import UserAvatar from '_c/UserAvatar'
-import { info as infoApi } from '@/api/user'
 export default {
   name:'AppHeader',
   components: {
@@ -54,11 +53,11 @@ export default {
     }
   },
   mounted() {
-    infoApi().then((result) => {
-      console.log(result)
-    }).catch((err) => {
-      console.log(err)
-    })
+    // getMenuApi().then((result) => {
+    //   console.log(result)
+    // }).catch((err) => {
+    //   console.log(err)
+    // })
   }
 }
 </script>
@@ -70,6 +69,7 @@ export default {
     0 0 3px 0 rgba(0, 0, 0, 0.04);
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
   border-bottom: 1px solid #f0f0f0;
+  background-color: #fff;
 }
 .user-menu {
   padding-right: 35px;

@@ -31,6 +31,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .wrapper {
+  background-color: #f1f1f1;
   position: relative;
   height: 100%;
   width: 100%;

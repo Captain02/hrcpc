@@ -2,7 +2,7 @@
   <el-dropdown class="avatar-container user-menu-item" trigger="click">
     <div class="avatar-wrapper">
       <img
-        src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80"
+        :src="avatar"
         class="user-avatar"
       >
       <icon-svg icon-class="arrow-down"></icon-svg>
@@ -20,6 +20,7 @@
   </el-dropdown>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'UserAvatar',
   data() {
@@ -27,11 +28,19 @@ export default {
       
     }
   },
+  computed: {
+    ...mapState({
+      avatar: state => state.user.avatar
+    })
+  },
   methods: {
     // 用户名下拉菜单选择事件
     logout(command) {
-      this.$store.commit('SET_TAGS',[])
-      this.$router.push("/login")
+      this.$store.dispatch('LogOut').then(() => {
+        location.reload()
+      })
+      // this.$store.commit('SET_TAGS',[])
+      // this.$router.push("/login")
     }
   }
 }

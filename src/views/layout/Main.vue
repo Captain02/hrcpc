@@ -27,9 +27,8 @@ export default {
 </script>
 <style lang="less" scoped>
 .app-main {
-  min-height: calc(100vh - 55px);
+  min-height: calc(100vh - 90px);
   position: relative;
   overflow: hidden;
-  background-color: #f1f1f1;
 }
 </style>

@@ -1,24 +1,17 @@
 <template>
   <div class="app-container">
-    app
+    addUser
     <el-input v-model="msg"></el-input>
     {{msg}}
-    {{menuRouters}}
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
 export default {
-  name: 'dashboard',
+  name: 'addUser',
   data() {
     return {
       msg: ''
     }
   },
-  computed: {
-    ...mapState({
-      menuRouters: state => state.menuRouter.menuRouters
-    })
-  }
 }
 </script>

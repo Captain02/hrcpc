@@ -8,7 +8,7 @@
         :key="index"
         :class="{'active': isActive(item.path)}"
       >
-        <router-link :to="item.path" class="tags-li-title">{{item.title}}</router-link>
+        <router-link :to="{ path: item.path, query: item.query, fullPath: item.fullPath }" class="tags-li-title">{{item.title}}</router-link>
         <span class="tags-li-icon" @click="closeTags(index,item.path)">
           <icon-svg icon-class="close"></icon-svg>
         </span>
@@ -143,7 +143,8 @@ export default {
   overflow: hidden;
   background: #fff;
   padding: 2px 120px 2px 0;
-  box-shadow: 0 5px 10px #ddd;
+  // box-shadow: 0 5px 10px #ddd;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
 }
 
 .tags ul {
