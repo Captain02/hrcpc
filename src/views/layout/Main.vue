@@ -17,7 +17,7 @@ export default {
       tagsList: state => state.app.tagsList
     }),
     cacheList() {
-      return this.tagsList.map((item) => !item.noCache && item.name)
+      return this.tagsList.map((item) => item.useCache && item.name)
     },
     key() {
       return this.$route.fullPath

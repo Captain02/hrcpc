@@ -101,7 +101,7 @@ export default {
           title: route.meta.title,
           path: route.fullPath,
           name: route.name,
-          noCache: route.meta.noCache
+          useCache: route.meta.useCache
         })
         //存到vuex
         this.$store.commit("SET_TAGS", this.tagsList)

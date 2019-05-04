@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import layout from '@/views/layout'
-import { constantRouterMap } from './defaultRouter'
+import login from '@/views/login'
 
 Vue.use(Router)
 
@@ -22,7 +22,7 @@ Vue.use(Router)
  *  roles: ['admin', 'editor'] //设置该路由进入的权限，支持多个权限叠加
  *  title: 'title' //设置该路由在侧边栏和面包屑中展示的名字
  *  icon: 'svg-name' //设置该路由的图标
- *  noCache: true //如果设置为true，则不会被 <keep-alive> 缓存(默认 false)
+ *  useCache: false //如果设置为true，则会被 <keep-alive> 缓存(默认 false)
  *  breadcrumb: false // 如果设置为false，则不会在breadcrumb面包屑中显示
  * }
  */
@@ -45,159 +45,13 @@ export const routes = [
     ]
   },
   {
-    path: '/test',
-    name: 'test',
-    component: layout,
-    meta: {
-      title: '测试',
-      icon: 'link'
-    },
-    redirect: '/test/test1',
-    children: [
-      {
-        path: 'test1',
-        name: 'test1',
-        component: () => import('@/views/user'),
-        meta: {
-          title: '测试1'
-        },
-        children: [
-          {
-            path: 'test1-1',
-            name: 'test1-1',
-            component: () => import('@/views/user/group'),
-            meta: {
-              title: '测试1-1'
-            },
-          }
-        ]
-      }
-    ]
+    path: '/login',
+    name: 'login',
+    hidden: true,
+    component: login
   },
-  {
-    path: '/user',
-    redirect: '/user/index',
-    name: 'user',
-    component: layout,
-    meta: {
-      title: '用户管理',
-      icon: 'user'
-    },
-    children: [
-      {
-        path: 'index',
-        name: 'userManage',
-        component: () => import('@/views/user'),
-        meta: {
-          title: '用户'
-        },
-      },
-      {
-        path: 'add',
-        name: 'addUser',
-        component: () => import('@/views/user/add'),
-        hidden: true,
-        meta: {
-          title: '添加用户'
-        }
-      },
-      {
-        path: 'group',
-        name: 'userGroupManage',
-        component: () => import('@/views/user/group'),
-        meta: {
-          title: '用户组管理'
-        },
-      }
-    ]
-  },
-  {
-    path: '/nested',
-    component: layout,
-    redirect: '/nested/menu1/menu1-1',
-    name: 'Nested',
-    meta: {
-      title: '菜单管理',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'menu1' },
-        redirect: '/nested/menu1/menu1-1',
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            redirect: '/nested/menu1/menu1-2/menu1-2-1',
-            meta: { title: 'menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'menu1-3' }
-          }
-        ]
-      },
-      {
-        path: 'menu2',
-        name: 'Menu2',
-        component: () => import('@/views/nested/menu2'),
-        meta: { title: 'menu2' }
-      },
-    ]
-  },
-  {
-    component: layout,
-    path: '/list',
-    children: [{
-      path: 'index',
-      name: 'list',
-      component: () => import('@/views/user'),
-      meta: {
-        title: '社团列表',
-        icon: 'list'
-      }
-    }]
-  },
-  {
-    component: layout,
-    name: 'det',
-    path: '/det',
-    children: [{
-      path: 'index',
-      component: () => import('@/views/user/group'),
-      meta: {
-        title: '哈哈',
-        icon: 'list'
-      }
-    }]
-  },
-  ...constantRouterMap
+  { path: '/404', component: () => import('@/views/404'), hidden: true },
+  { path: '/401', component: () => import('@/views/403'), hidden: true }
 ]
 export default new Router({
   routes

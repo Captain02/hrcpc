@@ -1,13 +1,13 @@
 <template>
   <div class="app-container">
-    app
+    test-1
     <el-input v-model="msg"></el-input>
     {{msg}}
   </div>
 </template>
 <script>
 export default {
-  name: 'dashboard',
+  name: 'test-1',
   data() {
     return {
       msg: ''

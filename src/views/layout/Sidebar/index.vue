@@ -18,19 +18,19 @@
   </div>
 </template>
 <script>
-import { routes } from '@/router'
 import { mapState } from "vuex"
 import SubMenu from './SubMenu'
 import MenuItem from './MenuItem' 
 export default {
   data() {
     return {
-      routes
+      
     }
   },
   computed: {
     ...mapState({
-      isCollapse: state => state.app.isCollapse
+      isCollapse: state => state.app.isCollapse,
+      routes: state => state.menuRouter.menuRouters
     })
   },
   methods: {
