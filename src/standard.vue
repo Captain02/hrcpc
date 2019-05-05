@@ -1,12 +1,5 @@
-<doc>
-  @author: yuezhonghao
-  @title: 测试组件
-  @desp:
-         1，保持template、script、style这个顺序
-         2，保持template最外层的div class名称和style包裹的class名称保持一致
-</doc>
 <template>
-  <div class="CompTest">
+  <div class="">
 
   </div>
 </template>
@@ -29,7 +22,7 @@
     // 动态属性
     data() {
       return {
-      };
+      }
     },
     // 计算属性
     computed: {
@@ -60,9 +53,11 @@
   }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
-  .CompTest {
-
-  }
+<style rel="stylesheet/less" lang="less" scoped>
+ // 该组件内的样式
 </style>
+<style rel="stylesheet/less" lang="less">
+// 全局的样式
+</style>
+
 

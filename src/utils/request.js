@@ -2,10 +2,14 @@ import axios from 'axios'
 import { Message } from 'element-ui'
 import router from "@/router"
 import store from '@/store'
+import { removeToken } from '@/utils/cookie'
 /**
  * 跳转至登录
  */
 const toLogin = () => {
+  // store.state.user.userId = null
+  // store.state.menuRouter.isGain = false
+  // removeToken()
   router.replace({
     path: '/login',
     query: { redirect: router.currentRoute.fullPath }

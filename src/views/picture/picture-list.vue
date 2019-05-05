@@ -1,10 +1,10 @@
 <template>
-  <div>
-    404
+  <div class="app-container">
+    
   </div>
 </template>
 <script>
 export default {
-  name: 'NotFound'
+  name: 'picture-list'
 }
 </script>

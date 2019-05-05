@@ -7,7 +7,7 @@ import _import from '@/router/_import'
 export function addRouter(routerlist) {
   const router = []
   routerlist.forEach(e => {
-    if(!e.hidden){              // 后期要修改！！！
+    if(!e.alwaysShow){              // 后期要修改！！！
       let e_new = {
         path: e.url,
         name: e.name,

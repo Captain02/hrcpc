@@ -1,10 +1,10 @@
 <template>
-  <div>
-    404
+  <div class="app-container">
+    permit
   </div>
 </template>
 <script>
 export default {
-  name: 'NotFound'
+  name: 'permit'
 }
 </script>

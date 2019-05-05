@@ -13,7 +13,6 @@ const menuRouter = {
   mutations: {
     SET_MENULIST(state, list) {
       state.menuRouters = routes.concat(list)
-      // state.menuRouters = list
     },
     SET_ISGAIN(state, status) {
       state.isGain = status

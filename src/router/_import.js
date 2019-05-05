@@ -4,12 +4,14 @@ export default (file) => {
 
 let map = {
   // 根路由必须使用layout模板
-  manage: () => import('@/views/layout'),
-  user: () => import('@/views/manage/user'),
-  depart: () => import('@/views/manage/depart'),
-  permit: () => import('@/views/manage/permit'),
-  role: () => import('@/views/manage/role'),
+  organize: () => import('@/views/layout'),
+  user: () => import('@/views/organize/user'),
+  depart: () => import('@/views/organize/depart'),
+  permit: () => import('@/views/organize/permit'),
+  role: () => import('@/views/organize/role'),
+  'edit-role': () => import('@/views/organize/role/edit'),
 
-  test: () => import('@/views/layout'),
-  'test-1': () => import('@/views/test/test-1')
+  picture: () => import('@/views/layout'),
+  'picture-list': () => import('@/views/picture/picture-list'),
+  'add-picture': () => import('@/views/picture/add-picture')
 }
