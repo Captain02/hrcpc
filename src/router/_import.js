@@ -6,6 +6,7 @@ let map = {
   // 根路由必须使用layout模板
   organize: () => import('@/views/layout'),
   user: () => import('@/views/organize/user'),
+  'add-user': () => import('@/views/organize/user/add'),
   depart: () => import('@/views/organize/depart'),
   permit: () => import('@/views/organize/permit'),
   role: () => import('@/views/organize/role'),
