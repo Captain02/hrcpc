@@ -25,7 +25,7 @@
 </template>
 <script>
 export default {
-  name: 'MTable',
+  name: 'STable',
   props: {
     data: {
       type: Array,

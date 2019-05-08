@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 /**
- * 获取用户信息
+ * 获取当前用户信息
  * @description 将token放入请求头的Authorization字段
  */
 export const getUserInfo = () => {
@@ -29,6 +29,68 @@ export const getUsers = ({page, limit, sidx = 'username', order = 'desc', userna
       sidx,
       order,
       username
+    }
+  })
+}
+
+/**
+ * 获取单个用户信息
+ * @param {Number} userId 
+ */
+export const getUser = (userId) => {
+  return request({
+    url: '/user/info',
+    method: 'GET',
+    params: {
+      userId
+    }
+  })
+}
+
+
+/**
+ * 修改密码
+ * @param {String} password 
+ * @param {String} newPassword 
+ */
+export const changePwd = (password, newPassword) => {
+  return request({
+    url: '/user/password',
+    method: 'POST',
+    params: {
+      password,
+      newPassword
+    }
+  })
+}
+
+export const addUser = () => {
+  return request({
+    url: '/user/save',
+    method: 'POST',
+    params: {
+
+    }
+  })
+}
+
+export const updateUser = () => {
+  return request({
+    url: '/user/update',
+    method: 'POST',
+    params: {
+
+    }
+  })
+}
+
+
+export const deleteUsers = () => {
+  return request({
+    url: '/user/delete',
+    method: 'POST',
+    params: {
+
     }
   })
 }

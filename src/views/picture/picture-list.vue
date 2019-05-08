@@ -68,5 +68,4 @@ export default {
   margin: 10px 15px;
   border-radius: 10px;
 }
-
 </style>
