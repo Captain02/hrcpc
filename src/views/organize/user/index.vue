@@ -17,9 +17,11 @@
   </div>
 </template>
 <script>
+import { getUsers as getUsersApi, deleteUsers as deleteUsersApi } from '@/api/user'
+import { parseTime } from '@/utils'
 import STable from '_c/STable'
 import Pagination from '_c/Pagination'
-import { getUsers as getUsersApi, deleteUsers as deleteUsersApi } from '@/api/user'
+
 export default {
   name: 'user',
   components: {
@@ -40,7 +42,7 @@ export default {
         {
           attrs: {
             type: 'selection',
-            // width: '55'
+            width: '30'
           }
         },
         {
@@ -62,14 +64,28 @@ export default {
         {
           attrs: {
             prop: 'mobile',
-            label: '联系方式',
+            label: '手机号',
+            align: "center"
+          }
+        },
+        {
+          attrs: {
+            prop: 'wechart',
+            label: '微信',
             align: "center"
           }
         },
         {
           attrs: {
             prop: 'deptName',
-            label: '社团名称',
+            label: '所在部门',
+            align: "center"
+          }
+        },
+        {
+          attrs: {
+            prop: 'college',
+            label: '所在学院',
             align: "center"
           }
         },
@@ -77,7 +93,8 @@ export default {
           attrs: {
             prop: 'createTime',
             label: '加入时间',
-            align: "center"
+            align: "center",
+            formatter: (row, column, cellValue, index) => parseTime(cellValue, '{y}-{m}-{d}')
           }
         },
         {
@@ -116,7 +133,7 @@ export default {
     },
     deleteSelectedItems() {
 
-    }
+    },
   },
   mounted() {
     this.getUserList()
@@ -128,7 +145,7 @@ export default {
 <style>
 .page-title {
   padding: 15px 0;
-  font-size: 18px;
+  font-size: 17px;
   color: #464c5b;
   font-weight: 400;
   border-bottom: 1px solid #e5e5e5;

@@ -7,12 +7,13 @@ const user = {
     token: getToken(),
     expires: 0,
     userId: null,         // 用户ID
+    corId: null,          // 所在社团ID
     userName: '',         // 用户名
     createTime: null,     // 该用户的创建时间
     email: '',            // 邮箱
     mobile: '',           // 手机号
-    deptId: null,         // 所在社团id
-    deptName: '',         // 所在社团名称
+    deptId: null,         // 所在社团部门id
+    deptName: '',         // 所在社团部门名称
     roles: [],            // 该用户所拥有的角色
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80',
     
@@ -27,19 +28,22 @@ const user = {
     SET_USERID(state, id) {
       state.userId = id
     },
+    SET_CORID(state, id) {
+      state.corId = id
+    },
     SET_USERNAME(state, username) {
       state.userName = username
     },
     SET_ROLES(state, roles) {
       state.roles = roles
     },
-    SET_OTHERS(state, { createTime, email, mobile, deptId, deptName, avatar }) {
+    SET_OTHERS(state, { createTime, email, mobile, deptId, deptName, fileId }) {
       state.createTime = createTime
       state.email = email
       state.mobile = mobile
       state.deptId = deptId
       state.deptName = deptName
-      // state.avatar = avatar
+      // state.avatar = fileId
     },
 
   },
@@ -51,6 +55,8 @@ const user = {
         loginApi(userName, userInfo.password, team).then((result) => {
           // 设置token
           commit('SET_TOKEN', result.token)
+          // 存储用户所在社团的id
+          commit('SET_CORID', result.corId)
           // 设置过期时间：跳转路由时会判断如果当前时间大于SET_EXPIRES(也就是自获取到token后28分钟之后)就会重新请求后端的接口获取一个新的token，
           commit('SET_EXPIRES', new Date().getTime() + 4 * 60 * 1000)
           // 写入cookie
