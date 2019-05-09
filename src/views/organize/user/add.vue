@@ -1,26 +1,26 @@
 <template>
   <div class="app-container">
     <h1 class="page-title"> 添加新成员 </h1>
-    <el-card class="form-wrapper" >
-      
+    <el-card class="form-wrapper" shadow="never">
       <el-form :model="user" label-width="100px" :rules="rules" :hide-required-asterisk="true">
         <el-form-item prop="fileId" label="上传头像：">
+          <div v-if="avatar" class="avatar-view" @click="deleteAvatar">
+            <img :src="avatar" alt="avatar">
+            <div class="avatar-mark">
+              <i class="el-icon-delete"></i>
+            </div>
+          </div>
           <el-upload
+            v-else
             class="avatar-uploader"
             action="http://192.168.137.182:8081/HBO/img/save"
-            :data="{corid: 4}"
-            name="picture"
+            :data="{corid: corId}"
+            name="fileId"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
             >
-            <div v-if="avatar" class="avatar" :class="{'avatar-hover': avatar}">
-              <div class="avatar-mark">
-                <i class="el-icon-delete"></i>
-              </div>
-              <img :src="avatar">
-            </div>
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            <i class="el-icon-plus avatar-uploader-icon"></i>
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2M，不上传则使用默认头像</div>
           </el-upload>
         </el-form-item>
@@ -57,16 +57,30 @@
         <el-form-item prop="QQ" label="QQ：">
           <el-input v-model="user.QQ" type="number" placeholder="请输入QQ"></el-input>
         </el-form-item>
+        <el-form-item prop="descs" label="自我描述：">
+          <mce-editor v-model="user.descs" ></mce-editor>
+        </el-form-item>
+        <el-form-item class="">
+          <el-col :offset="5">
+            <el-button type="primary" @click="addUser">添加</el-button>
+          </el-col>
+        </el-form-item>
       </el-form>
-      {{user}}
+      <!-- {{user}} -->
     </el-card>
   </div>
 </template>
 <script>
-import logo from '@/assets/logo.png'
+import { addUser as addUserApi } from '@/api/user'
 import { mapState } from 'vuex'
+import MceEditor from '@/components/MceEditor'
+window.tinymce.baseURL = '/static/tinymce'
+window.tinymce.suffix = '.min'
 export default {
   name: 'add-user',
+  components: {
+    MceEditor
+  },
   data() {
     const validateCollegeInfo = (rule, value, callback) => {
       if(value.length < 3) {
@@ -101,7 +115,9 @@ export default {
           { validator: validateCollegeInfo, trigger: 'change' }
         ]
       },
-      avatar: logo,
+      avatar: null,
+      avatarId: null,
+      imagename: '',
       options: [{
           value: 'zhinan',
           label: '指南',
@@ -299,36 +315,85 @@ export default {
         }]
     }
   },
-  // computed: {
-  //   ...mapState({
-  //     corId: (state) => state.user.corId
-  //   })
-  // },
+  computed: {
+    ...mapState({
+      corId: (state) => state.user.corId
+    })
+  },
   methods: {
     handleAvatarSuccess(res, file) {
       console.log(res, file)
+      if(res.data.code !== 0){
+        this.$message.error('上传失败，请重新上传!')
+        return
+      }
       this.avatar = URL.createObjectURL(file.raw)
+      this.avatarId = res.data.id
+      this.imagename = res.data.imagename
       this.user.fileId = res.data.url
     },
     beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      let typeWhiteList = ['image/jpeg', 'image/png']
+      const isJPG = typeWhiteList.includes(file.type)
+      const isLt2M = file.size / 1024 / 1024 < 2
 
       if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!')
+        this.$message.error('上传头像图片只能是 JPG 格式或PNG格式!')
       }
       if (!isLt2M) {
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }
       return isJPG && isLt2M
+    },
+    deleteAvatar() {
+      // 删除头像
+    },
+    addUser() {
+      // 添加成员
     }
   }
 }
 </script>
 <style lang="less" scoped>
 .form-wrapper {
-  width: 800px;
-  margin: 30px auto;
+  // width: 800px;
+  margin-top: 30px;
+  padding: 0 40px 0 20px;
+  .avatar-view {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    &:hover .avatar-mark{
+      opacity: 1;
+      color: #409EFF;
+    }
+    img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .avatar-mark {
+      position:absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      opacity: 0;
+      background: rgba(0, 0, 0, 0.25);
+      transition: all .3s;
+      i {
+        font-size: 25px;
+        line-height: 150px;
+        margin-left: 60px;
+      }
+    }
+  }
 }
 .college-cascader {
   width: 100%;
@@ -354,34 +419,6 @@ export default {
     height: 150px;
     line-height: 150px;
     text-align: center;
-  }
-  .avatar {
-    position: relative;
-    width: 150px;
-    height: 150px;
-    .avatar-mark {
-      z-index: 1000;
-      position: absolute;
-      height: 100%;
-      width: 100%;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background-color: rgba(0, 0, 0, 0.25);
-      transition: opacity .3s;
-      opacity: 0;
-      i {
-        font-size: 25px;
-        line-height: 150px;
-      }
-    }
-    &:hover .avatar-mark{
-      opacity: 1;
-    }
-    img {
-      display: block;
-    }
   }
   .el-upload__tip {
     margin-top: 0;

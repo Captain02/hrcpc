@@ -7,6 +7,7 @@ let map = {
   organize: () => import('@/views/layout'),
   user: () => import('@/views/organize/user'),
   'add-user': () => import('@/views/organize/user/add'),
+  'details-user': () => import('@/views/organize/user/details'),
   depart: () => import('@/views/organize/depart'),
   permit: () => import('@/views/organize/permit'),
   role: () => import('@/views/organize/role'),

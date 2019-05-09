@@ -9,7 +9,7 @@
     </div>
     <s-table :data="userList" :columns="columns" @selection-change="handleSelectionChange">
       <template slot="action" slot-scope="{scope}">
-        <router-link class="el-button el-button--text el-button--small" :to="{name: 'user-details', params:{id: scope.$index}}">查看</router-link>
+        <router-link class="el-button el-button--text el-button--small" :to="{name: 'details-user', params:{id: scope.row.userId}}">查看</router-link>
         <el-button type="text" size="small">删除</el-button>
       </template>
     </s-table>
@@ -143,13 +143,7 @@ export default {
 <style scoped>
 </style>
 <style>
-.page-title {
-  padding: 15px 0;
-  font-size: 17px;
-  color: #464c5b;
-  font-weight: 400;
-  border-bottom: 1px solid #e5e5e5;
-}
+
 .fliter-delete-btn {
   float: right;
   margin-right: 25px;

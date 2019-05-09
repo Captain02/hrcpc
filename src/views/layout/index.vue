@@ -33,7 +33,7 @@ export default {
 .wrapper {
   background-color: #f1f1f1;
   position: relative;
-  height: 100%;
+  min-height: 100%;
   width: 100%;
   .main-wrapper {
     min-height: 100%;
