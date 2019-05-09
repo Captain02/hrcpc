@@ -11,7 +11,7 @@
 </template>
 <script>
 export default {
-  name: 'picture-list'
+  name: 'add-picture'
 }
 </script>
 <style>
