@@ -3,16 +3,16 @@ import request from '@/utils/request'
  * 登录
  * @param {String} username 
  * @param {String} password 
- * @param {Number} corId 
+ * @param {Number} corid 
  */
-export const login = (username, password, corId) => {
+export const login = (username, password, corid) => {
   return request({
     method: 'POST',
     url: '/login',
     params: {
       username,
       password,
-      corId,
+      corid,
       captcha: '132'
     }
   })

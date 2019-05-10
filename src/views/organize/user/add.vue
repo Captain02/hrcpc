@@ -2,7 +2,7 @@
   <div class="app-container">
     <h1 class="page-title"> 添加新成员 </h1>
     <el-card class="form-wrapper" shadow="never">
-      <el-form :model="user" label-width="100px" :rules="rules" :hide-required-asterisk="true">
+      <el-form :model="user" label-width="100px" :rules="rules" ref="userForm" :hide-required-asterisk="true">
         <el-form-item prop="fileId" label="上传头像：">
           <div v-if="avatar" class="avatar-view" @click="deleteAvatar">
             <img :src="avatar" alt="avatar">
@@ -14,7 +14,7 @@
             v-else
             class="avatar-uploader"
             action="http://192.168.137.182:8081/HBO/img/save"
-            :data="{corid: corId}"
+            :data="{corid}"
             name="fileId"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
@@ -40,7 +40,8 @@
           <el-cascader
             v-model="user.collegeInfo"
             class="college-cascader"
-            placeholder="请选择院系、系别、专业信息"
+            placeholder="请选择院系、系别信息"
+            @active-item-change="handleItemChange"
             clearable
             :options="options"
           ></el-cascader>
@@ -60,6 +61,9 @@
         <el-form-item prop="descs" label="自我描述：">
           <mce-editor v-model="user.descs" ></mce-editor>
         </el-form-item>
+        <el-form-item prop="password" label="密码：">
+          <el-input v-model="user.password" placeholder="请输入密码" type="password"></el-input>
+        </el-form-item>
         <el-form-item class="">
           <el-col :offset="5">
             <el-button type="primary" @click="addUser">添加</el-button>
@@ -71,7 +75,7 @@
   </div>
 </template>
 <script>
-import { addUser as addUserApi } from '@/api/user'
+import { addUser as addUserApi, getCollegeInfo as getCollegeInfoApi } from '@/api/user'
 import { mapState } from 'vuex'
 import MceEditor from '@/components/MceEditor'
 window.tinymce.baseURL = '/static/tinymce'
@@ -83,7 +87,7 @@ export default {
   },
   data() {
     const validateCollegeInfo = (rule, value, callback) => {
-      if(value.length < 3) {
+      if(value.length < 2) {
         return callback(new Error('请选择完整的院系信息！'))
       }
       callback()
@@ -101,8 +105,9 @@ export default {
         email: '',              // 邮箱
         mobile: '',             // 手机号
         wechart: '',            // 微信
-        qq: '',                 // qq
-        descs: ''               // 简介
+        QQ: '',                 // qq
+        descs: '',               // 简介
+        password: ''
       },
       rules: {
         username: [
@@ -118,207 +123,38 @@ export default {
       avatar: null,
       avatarId: null,
       imagename: '',
-      options: [{
-          value: 'zhinan',
-          label: '指南',
-          children: [{
-            value: 'shejiyuanze',
-            label: '设计原则',
-            children: [{
-              value: 'yizhi',
-              label: '一致'
-            }, {
-              value: 'fankui',
-              label: '反馈'
-            }, {
-              value: 'xiaolv',
-              label: '效率'
-            }, {
-              value: 'kekong',
-              label: '可控'
-            }]
-          }, {
-            value: 'daohang',
-            label: '导航',
-            children: [{
-              value: 'cexiangdaohang',
-              label: '侧向导航'
-            }, {
-              value: 'dingbudaohang',
-              label: '顶部导航'
-            }]
-          }]
-        }, {
-          value: 'zujian',
-          label: '组件',
-          children: [{
-            value: 'basic',
-            label: 'Basic',
-            children: [{
-              value: 'layout',
-              label: 'Layout 布局'
-            }, {
-              value: 'color',
-              label: 'Color 色彩'
-            }, {
-              value: 'typography',
-              label: 'Typography 字体'
-            }, {
-              value: 'icon',
-              label: 'Icon 图标'
-            }, {
-              value: 'button',
-              label: 'Button 按钮'
-            }]
-          }, {
-            value: 'form',
-            label: 'Form',
-            children: [{
-              value: 'radio',
-              label: 'Radio 单选框'
-            }, {
-              value: 'checkbox',
-              label: 'Checkbox 多选框'
-            }, {
-              value: 'input',
-              label: 'Input 输入框'
-            }, {
-              value: 'input-number',
-              label: 'InputNumber 计数器'
-            }, {
-              value: 'select',
-              label: 'Select 选择器'
-            }, {
-              value: 'cascader',
-              label: 'Cascader 级联选择器'
-            }, {
-              value: 'switch',
-              label: 'Switch 开关'
-            }, {
-              value: 'slider',
-              label: 'Slider 滑块'
-            }, {
-              value: 'time-picker',
-              label: 'TimePicker 时间选择器'
-            }, {
-              value: 'date-picker',
-              label: 'DatePicker 日期选择器'
-            }, {
-              value: 'datetime-picker',
-              label: 'DateTimePicker 日期时间选择器'
-            }, {
-              value: 'upload',
-              label: 'Upload 上传'
-            }, {
-              value: 'rate',
-              label: 'Rate 评分'
-            }, {
-              value: 'form',
-              label: 'Form 表单'
-            }]
-          }, {
-            value: 'data',
-            label: 'Data',
-            children: [{
-              value: 'table',
-              label: 'Table 表格'
-            }, {
-              value: 'tag',
-              label: 'Tag 标签'
-            }, {
-              value: 'progress',
-              label: 'Progress 进度条'
-            }, {
-              value: 'tree',
-              label: 'Tree 树形控件'
-            }, {
-              value: 'pagination',
-              label: 'Pagination 分页'
-            }, {
-              value: 'badge',
-              label: 'Badge 标记'
-            }]
-          }, {
-            value: 'notice',
-            label: 'Notice',
-            children: [{
-              value: 'alert',
-              label: 'Alert 警告'
-            }, {
-              value: 'loading',
-              label: 'Loading 加载'
-            }, {
-              value: 'message',
-              label: 'Message 消息提示'
-            }, {
-              value: 'message-box',
-              label: 'MessageBox 弹框'
-            }, {
-              value: 'notification',
-              label: 'Notification 通知'
-            }]
-          }, {
-            value: 'navigation',
-            label: 'Navigation',
-            children: [{
-              value: 'menu',
-              label: 'NavMenu 导航菜单'
-            }, {
-              value: 'tabs',
-              label: 'Tabs 标签页'
-            }, {
-              value: 'breadcrumb',
-              label: 'Breadcrumb 面包屑'
-            }, {
-              value: 'dropdown',
-              label: 'Dropdown 下拉菜单'
-            }, {
-              value: 'steps',
-              label: 'Steps 步骤条'
-            }]
-          }, {
-            value: 'others',
-            label: 'Others',
-            children: [{
-              value: 'dialog',
-              label: 'Dialog 对话框'
-            }, {
-              value: 'tooltip',
-              label: 'Tooltip 文字提示'
-            }, {
-              value: 'popover',
-              label: 'Popover 弹出框'
-            }, {
-              value: 'card',
-              label: 'Card 卡片'
-            }, {
-              value: 'carousel',
-              label: 'Carousel 走马灯'
-            }, {
-              value: 'collapse',
-              label: 'Collapse 折叠面板'
-            }]
-          }]
-        }, {
-          value: 'ziyuan',
-          label: '资源',
-          children: [{
-            value: 'axure',
-            label: 'Axure Components'
-          }, {
-            value: 'sketch',
-            label: 'Sketch Templates'
-          }, {
-            value: 'jiaohu',
-            label: '组件交互文档'
-          }]
-        }]
+      typeId: 1,                // 为1查询所有的院系
+      parentValue: null,        // 查询系别
+      options: []
     }
   },
   computed: {
     ...mapState({
-      corId: (state) => state.user.corId
-    })
+      corid: (state) => state.user.corId
+    }),
+    computedCollege() {
+      let collegeId = this.user.collegeInfo[0]
+      let majorId = this.user.collegeInfo[1]
+      for(let i = 0; i < this.options.length; i++){
+        let item = this.options[i]
+        // console.log(item)
+        if(item.id === collegeId){
+          for(let j = 0; j < item.children.length; j++){
+            let child = item.children[j]
+            if(child.id === majorId){
+              return [item.label, child.label]
+            }
+          }
+        }
+      }
+      // return this.options.filter((item) => {
+      //    if(item.id === this.user.collegeInfo[0]){
+      //     return item.children.some((child) => {
+      //       return child.id === this.user.collegeInfo[1]
+      //     })
+      //   }
+      // })
+    }
   },
   methods: {
     handleAvatarSuccess(res, file) {
@@ -345,12 +181,62 @@ export default {
       }
       return isJPG && isLt2M
     },
+    handleItemChange(val) {
+      this.typeId = null
+      this.parentValue = val[0]
+      if(!this.options.find((item) => item.id === this.parentValue && item.children.length)){
+         getCollegeInfoApi(this.typeId, this.parentValue).then((result) => {
+          // console.log(result)
+          let { data: list } = result
+          this.options.some((item) => {
+            if(item.id === this.parentValue){
+              item.children = list.map((child) => {
+                return { id: child.id, label: child.value, value: child.id }
+              })
+              return true
+            }
+          })
+        })
+      }
+    },
     deleteAvatar() {
       // 删除头像
     },
     addUser() {
       // 添加成员
+      this.$refs['userForm'].validate((valid) => {
+         if (!valid) {
+          this.$message.error('请填写相关项目!')
+          return
+        }
+        let fileId = 12,
+            username = this.user.username,
+            gender = this.user.sex,
+            persionnum = this.user.studentId,
+            email = this.user.email,
+            mobile = this.user.mobile,
+            wechart = this.user.wechart,
+            QQ = this.user.QQ,
+            descs = this.user.descs,
+            password = this.user.password,
+            [college, collegetie] = this.computedCollege
+        addUserApi(fileId, username, gender, persionnum, email, mobile, wechart, QQ, descs, college, collegetie, password, this.corid).then((result) => {
+          console.log(result)
+        }).catch((err) => {
+          console.log(err)
+        })
+      })
+      
     }
+  },
+  mounted() {
+    getCollegeInfoApi(this.typeId, this.parentValue).then((result) => {
+      // console.log(result)
+      let { data: list } = result
+      this.options = list.map((item) => {
+        return {id: item.id, label: item.value, value: item.id, children: []}
+      })
+    })
   }
 }
 </script>

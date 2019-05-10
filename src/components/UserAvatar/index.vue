@@ -13,6 +13,7 @@
       </router-link>
       <el-dropdown-item>密码设置</el-dropdown-item>
       <el-dropdown-item>我的收藏</el-dropdown-item>
+      <el-dropdown-item>申请社团</el-dropdown-item>
       <el-dropdown-item divided>
         <span style="display:block;" @click="logout">退出登陆</span>
       </el-dropdown-item>

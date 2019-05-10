@@ -1,6 +1,23 @@
 import request from '@/utils/request'
 
 /**
+ * 获取院系、系别信息，若想查询所有的院系 类型id为 1，要是想查询某个学院下的系，typeid=null(不填)，parentid等于学院id
+ * @param {*} typeId 类型id   
+ * @param {*} parentValue 父类id    
+ */
+export const getCollegeInfo = (typeId, parentValue) => {
+  return request({
+    baseURL: 'http://140.143.201.244:8081/HBO/',
+    method: 'GET',
+    url: '/getselectes',
+    params: {
+      typeId,
+      parentValue
+    }
+  })
+}
+
+/**
  * 获取当前用户信息
  * @description 将token放入请求头的Authorization字段
  */
@@ -64,12 +81,24 @@ export const changePwd = (password, newPassword) => {
   })
 }
 
-export const addUser = () => {
+export const addUser = (fileId, username, gender, persionnum, email, mobile, wechart, QQ, descs, college, collegetie, password, corid) => {
   return request({
     url: '/user/save',
     method: 'POST',
     params: {
-
+      fileId,
+      username,
+      gender,
+      persionnum,
+      email,
+      mobile,
+      wechart,
+      QQ,
+      descs,
+      college,
+      collegetie,
+      password,
+      corid
     }
   })
 }
