@@ -1,13 +1,13 @@
 import { login as loginApi, getToken as getTokenApi } from '@/api/login'
 import { getUserInfo as getUserInfoApi } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/cookie'
+import { getToken, setToken, removeToken, getCorId, setCorId } from '@/utils/cookie'
 
 const user = {
   state: {
     token: getToken(),
     expires: 0,
     userId: null,         // 用户ID
-    corId: null,          // 所在社团ID
+    corid: getCorId(),    // 所在社团ID
     userName: '',         // 用户名
     createTime: null,     // 该用户的创建时间
     email: '',            // 邮箱
@@ -29,7 +29,7 @@ const user = {
       state.userId = id
     },
     SET_CORID(state, id) {
-      state.corId = id
+      state.corid = id
     },
     SET_USERNAME(state, username) {
       state.userName = username
@@ -61,6 +61,7 @@ const user = {
           commit('SET_EXPIRES', new Date().getTime() + 4 * 60 * 1000)
           // 写入cookie
           setToken(result.token)
+          setCorId(result.corId)
           resolve(result)
         }).catch((err) => {
           // console.log('actions err', err)

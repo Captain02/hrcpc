@@ -1,15 +1,9 @@
 <template>
   <div class="app-container">
-    <h1 class="page-title"> 添加新成员 </h1>
+    <h1 class="page-title"> 修改成员信息 </h1>
     <el-card class="form-wrapper" shadow="never">
       <el-form :model="user" label-width="100px" :rules="rules" ref="userForm" :hide-required-asterisk="true">
-        <el-form-item label="默认头像：">
-          <div class="avatar-area">
-            <img :src="menAvatar" alt="默认头像男" v-if="user.sex === '男'">
-            <img :src="womenAvatar" alt="默认头像女" v-else>
-          </div>
-        </el-form-item>
-        <!-- <el-form-item prop="fileId" label="上传头像：">
+        <el-form-item prop="fileId" label="上传头像：">
           <div v-if="avatar" class="avatar-view" @click="deleteAvatar">
             <img :src="avatar" alt="avatar">
             <div class="avatar-mark">
@@ -29,7 +23,7 @@
             <i class="el-icon-plus avatar-uploader-icon"></i>
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2M，不上传则使用默认头像</div>
           </el-upload>
-        </el-form-item> -->
+        </el-form-item>
         <el-form-item prop="username" label="姓名：">
           <el-input v-model="user.username" placeholder="请输入姓名"></el-input>
         </el-form-item>
@@ -41,9 +35,6 @@
         </el-form-item>
         <el-form-item prop="studentId" label="学号：">
           <el-input v-model="user.studentId" placeholder="请输入学号"></el-input>
-        </el-form-item>
-        <el-form-item prop="password" label="密码：">
-          <el-input v-model="user.password" placeholder="请输入密码" type="password"></el-input>
         </el-form-item>
         <el-form-item prop="collegeInfo" label="院系：">
           <el-cascader
@@ -73,7 +64,7 @@
         
         <el-form-item class="">
           <el-col :offset="5">
-            <el-button type="primary" @click="addUser">添加</el-button>
+            <el-button type="primary" @click="updateUser">保存</el-button>
           </el-col>
         </el-form-item>
       </el-form>
@@ -82,15 +73,13 @@
   </div>
 </template>
 <script>
-import { addUser as addUserApi, getCollegeInfo as getCollegeInfoApi } from '@/api/user'
+import { getUser as getUserApi, updateUser as updateUserApi, getCollegeInfo as getCollegeInfoApi } from '@/api/user'
 import { mapState } from 'vuex'
-import menAvatar from '@/assets/img/men.png'
-import womenAvatar from '@/assets/img/women.png'
 import MceEditor from '@/components/MceEditor'
 window.tinymce.baseURL = '/static/tinymce'
 window.tinymce.suffix = '.min'
 export default {
-  name: 'add-user',
+  name: 'edit-user',
   components: {
     MceEditor
   },
@@ -102,14 +91,12 @@ export default {
       callback()
     }
     return {
-      menAvatar,
-      womenAvatar,
       user: {
-        // fileId: '',
+        userId: null,
+        fileId: '',
         username: '',           // 成员名
         sex: '男',              // 性别
         studentId: '',          // 学号
-        password: '',
         // college: '',            // 所在学院
         // collegetie: '',         // 所在系别
         // major: '',              // 所在专业
@@ -119,7 +106,6 @@ export default {
         wechart: '',            // 微信
         QQ: '',                 // qq
         descs: ''               // 简介
-        
       },
       rules: {
         username: [
@@ -132,9 +118,8 @@ export default {
           { validator: validateCollegeInfo, trigger: 'change' }
         ]
       },
-      // avatar: null,
-      // avatarId: null,
-      // imagename: '',
+      avatar: null,
+      imagename: '',
       typeId: 1,                // 为1查询所有的院系
       parentValue: null,        // 查询系别
       options: []
@@ -163,36 +148,36 @@ export default {
     }
   },
   methods: {
-    // handleAvatarSuccess(res, file) {
-    //   console.log(res, file)
-    //   if(res.data.code !== 0){
-    //     this.$message.error('上传失败，请重新上传!')
-    //     return
-    //   }
-    //   this.avatar = URL.createObjectURL(file.raw)
-    //   this.avatarId = res.data.id
-    //   this.imagename = res.data.imagename
-    //   this.user.fileId = res.data.url
-    // },
-    // beforeAvatarUpload(file) {
-    //   let typeWhiteList = ['image/jpeg', 'image/png']
-    //   const isJPG = typeWhiteList.includes(file.type)
-    //   const isLt2M = file.size / 1024 / 1024 < 2
+    handleAvatarSuccess(res, file) {
+      console.log(res, file)
+      if(res.data.code !== 0){
+        this.$message.error('上传失败，请重新上传!')
+        return
+      }
+      this.avatar = URL.createObjectURL(file.raw)
+      this.imagename = res.data.imagename
+      this.user.fileId = res.data.id
+    },
+    beforeAvatarUpload(file) {
+      let typeWhiteList = ['image/jpeg', 'image/png']
+      const isJPG = typeWhiteList.includes(file.type)
+      const isLt2M = file.size / 1024 / 1024 < 2
 
-    //   if (!isJPG) {
-    //     this.$message.error('上传头像图片只能是 JPG 格式或PNG格式!')
-    //   }
-    //   if (!isLt2M) {
-    //     this.$message.error('上传头像图片大小不能超过 2MB!')
-    //   }
-    //   return isJPG && isLt2M
-    // },
-    // deleteAvatar() {
-    //   // 删除头像
-    // },
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式或PNG格式!')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      return isJPG && isLt2M
+    },
+    deleteAvatar() {
+      // 删除头像
+    },
     handleItemChange(val) {
       this.typeId = null
       this.parentValue = val[0]
+      // 判断如果有children说明已经获取了，就不用再次获取
       if(!this.options.find((item) => item.id === this.parentValue && item.children.length)){
          getCollegeInfoApi(this.typeId, this.parentValue).then((result) => {
           // console.log(result)
@@ -208,14 +193,15 @@ export default {
         })
       }
     },
-    addUser() {
+    updateUser() {
       // 添加成员
       this.$refs['userForm'].validate((valid) => {
          if (!valid) {
           this.$message.error('请填写相关项目!')
           return
         }
-        let username = this.user.username,
+        let userId = this.user.userId,
+            username = this.user.username,
             gender = this.user.sex,
             persionnum = this.user.studentId,
             email = this.user.email,
@@ -223,10 +209,9 @@ export default {
             wechart = this.user.wechart,
             QQ = this.user.QQ,
             descs = this.user.descs,
-            password = this.user.password,
             [college, collegetie] = this.computedCollege
-        addUserApi( this.corid, username, gender, persionnum, password, email, mobile, wechart, QQ, descs, college, collegetie).then((result) => {
-          this.$message.success('添加成功')
+        updateUserApi( this.corid, userId, username, gender, persionnum, email, mobile, wechart, QQ, descs, college, collegetie).then((result) => {
+          this.$message.success('修改成功')
           setTimeout(() => {
             this.$router.replace({name: 'user'})
           }, 1500)
@@ -235,16 +220,58 @@ export default {
         })
       })
       
+    },
+    setUserDate(user) {
+      this.user.userId = user.userId
+      this.user.fileId = user.fileId
+      this.user.username = user.username
+      this.user.sex = user.gender
+      this.user.studentId = user.persionnum
+      this.user.collegeInfo = [user.college, user.collegetie]
+      this.user.email = user.email
+      this.user.mobile = user.mobile
+      this.user.wechart = user.wechart
+      this.user.QQ = user.QQ
+      this.user.descs = user.descs
     }
   },
   mounted() {
-    getCollegeInfoApi(this.typeId, this.parentValue).then((result) => {
+    let id = this.$route.params.id
+    Promise.all([getCollegeInfoApi(this.typeId, this.parentValue), getUserApi(id)]).then((result) => {
       // console.log(result)
-      let { data: list } = result
+      let [collegeRes, userRes] = result
+      let { data: list } = collegeRes
+      let user  = Object.assign({}, userRes.user) 
       this.options = list.map((item) => {
+        // 查找parentId
+        if(item.value === user.college){
+          // 将college对应的学院设置成id
+          user.college = item.id
+          this.parentValue = item.id
+        }
         return {id: item.id, label: item.value, value: item.id, children: []}
       })
-    })
+      if(this.parentValue){
+        getCollegeInfoApi(null, this.parentValue).then((res => {
+          let { data } = res
+          this.options.some((item) => {
+            if(item.id === this.parentValue){
+              item.children = data.map((child) => {
+                if(child.value === user.collegetie){
+                  // 将collegetie对应的系别设置成id
+                  user.collegetie = child.id
+                }
+                return { id: child.id, label: child.value, value: child.id }
+              })
+              return true
+            }
+          })
+          // 设置用户信息
+          this.setUserDate(user)
+        }))
+      }
+      
+    }).catch((err) => {})
   }
 }
 </script>
@@ -260,15 +287,6 @@ export default {
 </style>
 <style lang="less">
   /** 头像上传样式 **/
-  .avatar-area {
-    width: 150px;
-    height: 150px;
-    img{
-      width: 100%;
-      height: 100%;
-    }
-  }
-
   .avatar-view {
     position: relative;
     width: 150px;

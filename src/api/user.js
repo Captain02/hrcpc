@@ -30,19 +30,19 @@ export const getUserInfo = () => {
 
 /**
  * 获取用户列表
- * @param {Number} page 页码
- * @param {Number} limit 每页大小
+ * @param {Number} pn 页码
+ * @param {Number} size 每页大小
  * @param {String} sidx 排序字段
  * @param {String} order 排序方式，如：asc、desc
  * @param {String} username 用户名
  */
-export const getUsers = ({page, limit, sidx = 'username', order = 'desc', username}) => {
+export const getUsers = ({pn, size, sidx , order , username}) => {
   return request({
     url: '/user/list',
     method: 'GET',
     params: {
-      page,
-      limit,
+      pn,
+      size,
       sidx,
       order,
       username
@@ -56,11 +56,8 @@ export const getUsers = ({page, limit, sidx = 'username', order = 'desc', userna
  */
 export const getUser = (userId) => {
   return request({
-    url: '/user/info',
-    method: 'GET',
-    params: {
-      userId
-    }
+    url: `/user/info/${userId}`,
+    method: 'GET'
   })
 }
 
@@ -81,12 +78,66 @@ export const changePwd = (password, newPassword) => {
   })
 }
 
-export const addUser = (fileId, username, gender, persionnum, email, mobile, wechart, QQ, descs, college, collegetie, password, corid) => {
+/**
+ * 添加社团用户
+ * @param {Number} corid 
+ * @param {Number} fileId 头像的id    // out
+ * @param {String} username 用户名
+ * @param {String} gender 性别
+ * @param {String} persionnum 学号
+ * @param {String} password 密码
+ * @param {String} email 
+ * @param {String} mobile 
+ * @param {String} wechart 
+ * @param {String} QQ 
+ * @param {String} descs 自我描述
+ * @param {String} college 院系
+ * @param {String} collegetie 系别
+ * 
+ */
+export const addUser = (corid, username, gender, persionnum, password, email, mobile, wechart, QQ, descs, college, collegetie) => {
   return request({
     url: '/user/save',
     method: 'POST',
     params: {
-      fileId,
+      corid,
+      username,
+      gender,
+      persionnum,
+      password,
+      email,
+      mobile,
+      wechart,
+      QQ,
+      descs,
+      college,
+      collegetie
+    }
+  })
+}
+
+/**
+ * 修改用户信息
+ * @param {*} corid 
+ * @param {*} userId 
+ * @param {*} username 
+ * @param {*} gender 
+ * @param {*} persionnum 
+ * @param {*} email 
+ * @param {*} mobile 
+ * @param {*} wechart 
+ * @param {*} QQ 
+ * @param {*} descs 
+ * @param {*} college 
+ * @param {*} collegetie 
+ */
+export const updateUser = ( corid, userId, username, gender, persionnum, email, mobile, wechart, QQ, descs, college, collegetie) => {
+  return request({
+    url: '/user/update',
+    method: 'POST',
+    params: {
+      corid,
+      userId,
       username,
       gender,
       persionnum,
@@ -96,30 +147,22 @@ export const addUser = (fileId, username, gender, persionnum, email, mobile, wec
       QQ,
       descs,
       college,
-      collegetie,
-      password,
-      corid
+      collegetie
     }
   })
 }
 
-export const updateUser = () => {
-  return request({
-    url: '/user/update',
-    method: 'POST',
-    params: {
-
-    }
-  })
-}
-
-
-export const deleteUsers = () => {
+/**
+ * 删除社团用户
+ * @param {Array} userIds 
+ */
+export const deleteUsers = (userIds) => {
+  userIds = userIds.join(',')
   return request({
     url: '/user/delete',
     method: 'POST',
     params: {
-
+      userIds
     }
   })
 }

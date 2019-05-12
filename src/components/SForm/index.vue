@@ -63,6 +63,7 @@ export default {
     formItems: {
       handler() {
         this.formItems.forEach((item) => {
+          if (!item.attrs || !item.attrs.key) return       //跳过没有key的属性(插槽)
           let value = (item.attrs &&  item.attrs.value) ? item.attrs.value : ''
           // console.log(item.key, value)
           this.$set(this.formModel, item.key ,value)
@@ -72,7 +73,7 @@ export default {
       immediate: true
     }
   },
-    methods: {
+  methods: {
     computeformItem(formItem, model) {
       let item = {...formItem}
       

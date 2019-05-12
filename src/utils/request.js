@@ -2,7 +2,7 @@ import axios from 'axios'
 import { Message } from 'element-ui'
 import router from "@/router"
 import store from '@/store'
-import { removeToken } from '@/utils/cookie'
+import { removeToken, removeCorId } from '@/utils/cookie'
 /**
  * 跳转至登录
  */
@@ -29,8 +29,11 @@ const failHandle = (code, msg) => {
         type: 'error',
         duration: 5 * 1000
       })
+      // 删除token跟社团id信息
+      removeToken()
+      removeCorId()
       setTimeout(() => {
-        toLogin()
+        location.reload()
       }, 1500)
       break
     case 403: 

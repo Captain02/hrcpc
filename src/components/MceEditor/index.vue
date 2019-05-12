@@ -39,9 +39,11 @@ export default {
     }
   },
   data() {
-    const Id = Date.now();
+    const Id = 'vue-tinymce-' + +new Date() + ((Math.random() * 1000).toFixed(0) + '')
     return {
       Id: Id,
+      hasChange: false,
+      hasInit: false,
       Editor: null,
       DefaultConfig: {
         // GLOBAL
@@ -49,7 +51,7 @@ export default {
         height: 500,
         theme: "modern",
         menubar: false,
-        toolbar: `styleselect | fontselect | formatselect | fontsizeselect | forecolor backcolor | bold italic underline strikethrough | image  media | table | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | preview removeformat  hr | paste code  link | undo redo | fullscreen `,
+        toolbar: `styleselect | fontselect | formatselect | fontsizeselect | forecolor backcolor | bold italic underline strikethrough | emoticons image  media | table | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | preview removeformat  hr | paste code  link | undo redo | fullscreen `,
         plugins: `
             paste
             importcss
@@ -59,7 +61,7 @@ export default {
             advlist
             fullscreen
             link
-            
+            emoticons
             lists
             textcolor
             colorpicker
@@ -77,7 +79,7 @@ export default {
         content_style: `
             *                         { padding:0; margin:0; }
             html, body                { height:100%; }
-            img                       { max-width:100%; display:block;height:auto; }
+            img                       { max-width:100%; height:auto; }
             a                         { text-decoration: none; }
             iframe                    { width: 100%; }
             p                         { line-height:1.6; margin: 0px; }
@@ -166,6 +168,15 @@ export default {
       }
     };
   },
+  watch: {
+    value(val) {
+      if(!this.hasChange && this.hasInit){
+        this.$nextTick(() =>{
+          window.tinymce.get(this.Id).setContent(val || '')
+        })
+      }
+    }
+  },
   methods: {
     init() {
       const self = this
@@ -214,21 +225,37 @@ export default {
         // 挂载的DOM对象
         selector: `#${this.Id}`,
         setup: editor => {
-          // 抛出 'on-ready' 事件钩子
-          editor.on("init", () => {
-            self.loading = false
-            self.$emit("on-ready")
+          // // debugger
+          // self.$nextTick(() => {
+          //   // 抛出 'on-ready' 事件钩子
+          //   editor.on("init", () => {
+          //     self.loading = false
+          //     self.$emit("on-ready")
+          //     // debugger
+          //     console.log('init', self.value)
+          //     editor.setContent(self.value)
+          //   })
+           
+          // })
+          
+        },
+        init_instance_callback: editor => {
+          if(self.value){
             editor.setContent(self.value)
-          });
+          }
+          
+          self.hasInit = true
           // 抛出 'input' 事件钩子，同步value数据
           editor.on("input change undo redo", () => {
+            self.hasChange = true
             self.$emit("input", editor.getContent())
           })
-        }
+        },
       })
     }
   },
   mounted() {
+    // console.log('mount', this.value)
     this.init()
   },
   beforeDestroy() {

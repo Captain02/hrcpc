@@ -8,7 +8,7 @@
         :key="index"
         :class="{'active': isActive(item.path)}"
       >
-        <router-link :to="{ path: item.path, query: item.query, fullPath: item.fullPath }" class="tags-li-title">{{item.title}}</router-link>
+        <router-link :to="{ path: item.path, query: item.query, fullPath: item.fullPath }" class="tags-li-title">{{item.title}}{{item.params.id ? '-' + item.params.id : ''}}</router-link>
         <span class="tags-li-icon" @click="closeTags(index,item.path)">
           <icon-svg icon-class="close"></icon-svg>
         </span>
@@ -32,12 +32,6 @@
 <script>
 export default {
   name: 'Tags',
-  created() {
-    //判断标签里面是否有值 有的话直接加载
-    if (this.tagsList.length == 0) {
-      this.setTags(this.$route)
-    }
-  },
   computed: {
     //computed 方法里面没有set方法因此不能使用mapState,需要重新定义set方法
     tagsList: {
@@ -86,12 +80,14 @@ export default {
     },
     //添加标签
     setTags(route) {
+      
       let isIn = this.tagsList.some(item => {
         //判断标签是否存在
         return item.path === route.fullPath
       })
       //不存在
       if (!isIn) {
+        // console.log('tags', route)
         // 判断当前的标签个数
         if (this.tagsList.length >= 10) {
           // 大于十个标签时删除前边的标签
@@ -101,6 +97,7 @@ export default {
           title: route.meta.title,
           path: route.fullPath,
           name: route.name,
+          params: route.params ? route.params : null,
           useCache: route.meta.useCache
         })
         //存到vuex
@@ -129,10 +126,18 @@ export default {
       }
       if (path === this.$route.fullPath) {
         //如果关闭当前直接跳到下一个
-        this.$router.push(
-          this.$store.state.app.tagsList[this.$store.state.app.tagsList.length - 1]
-        );
+        this.$nextTick(() => {
+          // let next = this.$store.state.app.tagsList[this.$store.state.app.tagsList.length - 1]
+          // console.log('next', next)
+          this.$router.push(this.$store.state.app.tagsList[this.$store.state.app.tagsList.length - 1])
+        }) 
       }
+    }
+  },
+  created() {
+    //判断标签里面是否有值 有的话直接加载
+    if (this.tagsList.length == 0) {
+      this.setTags(this.$route)
     }
   }
 };
@@ -184,7 +189,7 @@ export default {
 
 .tags-li-title {
   float: left;
-  max-width: 80px;
+  max-width: 95px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
