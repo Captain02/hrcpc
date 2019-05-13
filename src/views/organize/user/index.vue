@@ -22,6 +22,7 @@
 <script>
 import {getUsers as getUsersApi, deleteUsers as deleteUsersApi } from '@/api/user'
 import { parseTime } from '@/utils'
+import { mapState } from 'vuex'
 import STable from '_c/STable'
 import Pagination from '_c/Pagination'
 import UserDetails from './details'
@@ -114,13 +115,16 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      corid: (state) => state.user.corid
+    }),
     selectedItemsCount() {
       return this.selectedItems.length
     }
   },
   methods: {
     getUserList() {
-      getUsersApi(this.listQuery).then((result) => {
+      getUsersApi(this.corid, this.listQuery).then((result) => {
         // console.log(result)
         let { page, data } = result
         this.total = page.totalCount
@@ -159,7 +163,7 @@ export default {
       }).catch(() => {})
     },
     handleEdit(id) {
-      this.$router.push({name: 'edit-user', params: {id}})
+      this.$router.push({name: 'edit-user', params: { id }})
     }
   },
   mounted() {

@@ -30,17 +30,19 @@ export const getUserInfo = () => {
 
 /**
  * 获取用户列表
+ * @param {String} corid 社团id
  * @param {Number} pn 页码
  * @param {Number} size 每页大小
  * @param {String} sidx 排序字段
  * @param {String} order 排序方式，如：asc、desc
  * @param {String} username 用户名
  */
-export const getUsers = ({pn, size, sidx , order , username}) => {
+export const getUsers = (corid, {pn, size, sidx , order , username}) => {
   return request({
     url: '/user/list',
     method: 'GET',
     params: {
+      corid,
       pn,
       size,
       sidx,

@@ -1,4 +1,4 @@
-
+import Vue from 'vue'
 /**
  * 格式化时间
  * @param {Date} time 时间 
@@ -41,4 +41,39 @@ export function parseTime(time, cFormat) {
     return value || 0
   })
   return time_str
+}
+
+/**
+ * 根据prop属性查找父组件
+ * @param {Component} vm 组件
+ * @param {Object} prop 属性
+ * @returns vm
+ */
+export function findComponentByProp(vm, prop) {
+  let res = null
+  let parent = vm.$parent
+  while(parent){
+    if(parent[prop] !== undefined){
+      res = parent
+      break
+    }
+    parent = parent.$parent
+  }
+  return res
+}
+
+/**
+ * 代理
+ * @param {Object} prop 
+ */
+export function proxyProp(prop) {
+  //使用Proxy可以拦截对象的动态生成的属性
+  return new Proxy(prop, {
+    set(target, key, value) {
+      if (prop[key] !== value) {
+        Vue.set(prop, key, value);
+      }
+      return Reflect.set(target, key, value)
+    }
+  })
 }
