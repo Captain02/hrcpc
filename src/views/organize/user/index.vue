@@ -8,12 +8,12 @@
       <el-button class="filter-item filter-delete-btn" type="danger" size="medium" icon="el-icon-delete" :disabled="!selectedItemsCount" @click="deleteSelectedItems">删除</el-button>
     </div>
     <s-table :data="userList" :columns="columns" @selection-change="handleSelectionChange">
-      <template slot="action" slot-scope="{scope}">
+      <template v-slot:action="{scope}">
         <!-- <router-link class="el-button el-button--text el-button--small" :to="{name: 'details-user', params:{id: scope.row.userId}}">查看</router-link> -->
         <!-- <el-button type="text" size="small" @click="handleDetails(scope.row)">查看</el-button> -->
-        <user-details :data="scope.row" class="handle-btn"></user-details>
+        <user-details :data="scope.row" class="handle-btn" v-slot:btn-label>查看 </user-details>
         <el-button type="text" size="small" @click="handleEdit(scope.row.user_id)">编辑</el-button>
-        <el-button type="text" size="small" @click="handleDelete([scope.row.user_id])">删除</el-button>
+        <el-button type="text" size="small" @click="handleDelete([scope.row])">删除</el-button>
       </template>
     </s-table>
     <pagination v-show="total>0" :total="total" :curr.sync="listQuery.pn" :size.sync="listQuery.size" @on-page-change="getUserList" />
@@ -83,15 +83,15 @@ export default {
         },
         {
           attrs: {
-            prop: 'deptName',
-            label: '所在部门',
+            prop: 'college',
+            label: '所在学院',
             align: "center"
           }
         },
         {
           attrs: {
-            prop: 'college',
-            label: '所在学院',
+            prop: 'collegetie',
+            label: '所在专业',
             align: "center"
           }
         },
@@ -141,13 +141,13 @@ export default {
       // console.log(val)
     },
     deleteSelectedItems() {
+      this.handleDelete(this.selectedItems)
+    },
+    handleDelete(items) {
       let ids = []
-      this.selectedItems.forEach((item) => {
+      items.forEach((item) => {
         ids.push(item.user_id)
       })
-      this.handleDelete(ids)
-    },
-    handleDelete(ids) {
       // console.log(ids)
       this.$confirm('确定要删除吗?', '提示', {
         confirmButtonText: '确定',
@@ -174,12 +174,5 @@ export default {
 <style scoped>
 .handle-btn {
   display: inline-block;
-}
-</style>
-<style>
-
-.filter-delete-btn {
-  float: right;
-  margin-right: 25px;
 }
 </style>

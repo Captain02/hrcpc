@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import cloneDeep from 'clonedeep'
 /**
  * 格式化时间
  * @param {Date} time 时间 
@@ -76,4 +77,32 @@ export function proxyProp(prop) {
       return Reflect.set(target, key, value)
     }
   })
+}
+
+/**
+ * 将部门数据转换为树状数据
+ * @param {Array} list 
+ * @returns {Array} 转换后的数据
+ */
+export function transferDepartToTree(list) {
+  if(!list.length){
+    return []
+  }
+  const cloneList = cloneDeep(list)
+  const handle = (id) => {
+    const arr = []
+    cloneList.forEach((item) => {
+      if (item.parent_id === id) {
+        const children = handle(item.dept_id)
+        if (item.children) {
+          item.children = [].concat(item.children, children)
+        } else {
+          item.children = children
+        }
+        arr.push(item)
+      }
+    })
+    return arr
+  }
+  return handle(0)
 }

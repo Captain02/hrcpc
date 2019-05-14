@@ -1,8 +1,10 @@
 <template>
   <div>
-    <el-button type="text" size="small" @click="handleDetails">查看</el-button>
+    <el-button type="text" size="small" @click="handleDetails">
+      <slot name="btn-label">查看</slot>
+    </el-button>
     <el-dialog
-      title="查看"
+      title="成员信息"
       :visible.sync="dialogFormVisible"
       width="800px"
       :append-to-body="true"
