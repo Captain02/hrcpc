@@ -10,7 +10,8 @@
     </div>
     <s-table :data="departList" :columns="columns" row-key="dept_id"  @selection-change="handleSelectionChange">
       <template v-slot:action="{scope}">
-        <el-button type="text" size="small" @click="handleEdit(scope.row.dept_id)">编辑</el-button>
+        <!-- <el-button type="text" size="small" @click="handleEdit(scope.row.dept_id)">编辑</el-button> -->
+        <edit-depart :data="scope.row" :departs-tree="departList" class="handle-btn" v-slot:btn-label>编辑</edit-depart>
         <el-button type="text" size="small" @click="handleDelete([scope.row])">删除</el-button>
       </template>
     </s-table>
@@ -24,12 +25,14 @@ import { mapState } from 'vuex'
 import STable from '_c/STable'
 import Pagination from '_c/Pagination'
 import addDepart from './add'
+import editDepart from './edit'
 export default {
   name: "depart",
   components: {
     STable,
     Pagination,
-    addDepart
+    addDepart,
+    editDepart
   },
   data() {
     return {
@@ -165,9 +168,6 @@ export default {
           console.log(err)
         })
       }).catch(() => {})
-    },
-    handleEdit(id) {
-      // 修改
     },
     hasChildren(depts) {
       return depts.some((item) => {

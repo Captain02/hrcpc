@@ -19,12 +19,16 @@ export const getCollegeInfo = (typeId, parentValue) => {
 
 /**
  * 获取当前用户信息
+ * @param {Number} 所在社团id
  * @description 将token放入请求头的Authorization字段
  */
-export const getUserInfo = () => {
+export const getUserInfo = (corid) => {
   return request({
     method: 'GET',
-    url: '/user/info'
+    url: '/user/info',
+    params:{
+      corid
+    }
   })
 }
 
@@ -37,13 +41,13 @@ export const getUserInfo = () => {
  * @param {String} order 排序方式，如：asc、desc
  * @param {String} username 用户名
  */
-export const getUsers = (corid, {pn, size, sidx , order , username}) => {
+export const getUsers = (corid, {page, size, sidx , order , username}) => {
   return request({
     url: '/user/list',
     method: 'GET',
     params: {
       corid,
-      pn,
+      page,
       size,
       sidx,
       order,
@@ -54,12 +58,17 @@ export const getUsers = (corid, {pn, size, sidx , order , username}) => {
 
 /**
  * 获取单个用户信息
- * @param {Number} userId 
+ * @param {Number} id 
+ * @param {Number} corid 
  */
-export const getUser = (userId) => {
+export const getUser = (id, corid) => {
   return request({
-    url: `/user/info/${userId}`,
-    method: 'GET'
+    url: `/user/info/`,
+    method: 'GET',
+    params: {
+      id,
+      corid
+    }
   })
 }
 

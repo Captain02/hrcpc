@@ -16,7 +16,7 @@
         <el-button type="text" size="small" @click="handleDelete([scope.row])">删除</el-button>
       </template>
     </s-table>
-    <pagination v-show="total>0" :total="total" :curr.sync="listQuery.pn" :size.sync="listQuery.size" @on-page-change="getUserList" />
+    <pagination v-show="total>0" :total="total" :curr.sync="listQuery.page" :size.sync="listQuery.size" @on-page-change="getUserList" />
   </div>
 </template>
 <script>
@@ -38,7 +38,7 @@ export default {
     return {
       listQuery: {
         username: '',
-        pn: 1,
+        page: 1,
         size: 10,
       },
       selectedItems:[],
@@ -171,8 +171,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-.handle-btn {
-  display: inline-block;
-}
-</style>

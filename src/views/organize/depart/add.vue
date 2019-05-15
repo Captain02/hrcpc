@@ -11,11 +11,11 @@
     >
       <el-row>
         <el-col :span="8">
+          <h2 class="title">请选择上级部门</h2>
           <el-tree
             :default-expand-all="true"
-            :data="departsTree"
+            :data="computDeparts"
             :expand-on-click-node="false"
-            :highlight-current="true"
             :props="defaultProps"
             @node-click="handleClick"
             node-key="dept_id"
@@ -23,13 +23,20 @@
         </el-col>
         <el-col :span="16">
           <el-form
-           :model="depart" label-width="100px" :rules="rules" ref="departForm" :hide-required-asterisk="true"
+           :model="depart"
+           label-width="100px"
+           :rules="rules"
+           ref="departForm" 
+           :hide-required-asterisk="true"
           >
-            <el-form-item label="部门名称：">
-              <el-input v-model="depart.name" placeholder="请输入部门姓名"></el-input>
+            <el-form-item prop="name" label="部门名称：">
+              <el-input v-model="depart.name" placeholder="请输入部门名称"></el-input>
             </el-form-item>
-            <el-form-item label="上级部门：">
-              {{depart.parentName}}
+            <el-form-item prop="parentName" label="上级部门：">
+              <strong class="text-label">{{depart.parentName}}</strong> 
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="addDepart">添加</el-button> 
             </el-form-item>
           </el-form>
         </el-col>
@@ -38,6 +45,10 @@
   </div>
 </template>
 <script>
+import { addDepart as addDepartApi} from '@/api/depart'
+import cloneDeep from 'clonedeep'
+import { mapState } from 'vuex'
+
 export default {
   name: 'add-depart',
   props: {
@@ -52,18 +63,28 @@ export default {
       defaultProps: {
         label: 'name'
       },
+      // departsData: this.departsTree,
       depart: {
         name: '',
         parentId: 0,
-        parentName: '独立部门'
+        parentName: '无上级部门'
       },
+      rules: {
+        name: [
+          { required: true, message: '请输入部门名称！', trigger: 'blur' },
+        ]
+      }
     }
   },
   computed: {
-    rules() {
-      name: [
-        { required: true, message: '请输入部门名称！', trigger: 'blur' },
-      ]
+    ...mapState({
+      corid: (state) => state.user.corid
+    }),
+    computDeparts() {
+      let tree = []
+      tree = [{dept_id: -1, name: '无上级部门', parent_id: 0}].concat(cloneDeep(this.departsTree))
+      // console.log(tree)
+      return tree
     }
   },
   methods: {
@@ -71,7 +92,7 @@ export default {
       this.depart = {
         name: '',
         parentId: 0,
-        parentName: '独立部门'
+        parentName: '无上级部门'
       }
     },
     handleAdd() {
@@ -81,6 +102,19 @@ export default {
         this.$refs['departForm'].clearValidate()
       })
     },
+    addDepart() {
+      this.$refs['departForm'].validate((valid) => {
+        if(!valid){
+          this.$message.error('请添加相关项目！')
+          return 
+        }
+        addDepartApi(this.corid, this.depart).then((result) => {
+          console.log(result)
+          this.dialogFormVisible = false
+        }).catch((err) => { })
+      })
+      
+    },
     handleClick(data) {
       // console.log(data)
       this.depart.parentId = data.parent_id
@@ -89,3 +123,14 @@ export default {
   }
 }
 </script>
+<style lang="less" scoped>
+  .title{
+    font-size: 15px;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  .text-label {
+    font-weight: bold;
+  }
+</style>

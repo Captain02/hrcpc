@@ -22,13 +22,31 @@ export const getDeparts = (corId, {deptName, currPage, pageSize}) => {
 }
 
 /**
+ * 添加社团部门
+ * @param {Number} corId 
+ * @param {String} name 
+ * @param {Number} parentId 
+ */
+export const addDepart = (corId, {name, parentId}) => {
+  return request({
+    url: 'POST',
+    url: '/dept/add',
+    params: {
+      corId,
+      name,
+      parentId
+    }
+  })
+}
+
+
+/**
  * 删除社团部门
  * @param {Array} ids 
  */
 export const deleteDeparts = (deptId) => {
   deptId = deptId.join(',')
   return request({
-    baseURL: 'http://192.168.137.182:8081/HBO/sys',
     url: '/dept/delete',
     method: 'GET',
     params: {
