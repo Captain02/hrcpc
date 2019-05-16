@@ -4,14 +4,14 @@
       <slot name="btn-label"></slot>
     </el-button>
     <el-dialog
-      title="添加新部门"
+      title="添加新角色"
       :visible.sync="dialogFormVisible"
       width="700px"
       :append-to-body="true"
     >
       <el-row>
         <el-col :span="8">
-          <h2 class="title">请选择上级部门</h2>
+          <h2 class="title">请选择所属部门</h2>
           <el-tree
             :default-expand-all="true"
             :data="computDeparts"
@@ -23,20 +23,20 @@
         </el-col>
         <el-col :span="16">
           <el-form
-           :model="depart"
+           :model="role"
            label-width="100px"
            :rules="rules"
-           ref="departForm" 
+           ref="roleForm" 
            :hide-required-asterisk="true"
           >
-            <el-form-item prop="name" label="部门名称：">
-              <el-input v-model="depart.name" placeholder="请输入部门名称"></el-input>
+            <el-form-item prop="roleName" label="角色名称：">
+              <el-input v-model="role.roleName" placeholder="请输入角色名称"></el-input>
             </el-form-item>
-            <el-form-item prop="parentName" label="上级部门：">
-              <strong class="text-label">{{depart.parentName}}</strong> 
+            <el-form-item prop="deptName" label="隶属于：">
+              <strong class="text-label">{{role.deptName}}</strong> 
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="addDepart">添加</el-button> 
+              <el-button type="primary" @click="addRole">添加</el-button> 
             </el-form-item>
           </el-form>
         </el-col>
@@ -45,12 +45,11 @@
   </div>
 </template>
 <script>
-import { addDepart as addDepartApi} from '@/api/depart'
+import { addRole as addRoleApi } from '@/api/role'
 import cloneDeep from 'clonedeep'
-import { mapState } from 'vuex'
-
+import { mapState } from 'vuex';
 export default {
-  name: 'add-depart',
+  name: 'add-role',
   props: {
     departsTree: {
       type: Array,
@@ -63,15 +62,14 @@ export default {
       defaultProps: {
         label: 'name'
       },
-      // departsData: this.departsTree,
-      depart: {
-        name: '',
-        parentId: 0,
-        parentName: '无上级部门'
+      role: {
+        roleName: '',
+        deptId: null,
+        deptName: ''
       },
       rules: {
-        name: [
-          { required: true, message: '请输入部门名称！', trigger: 'blur' },
+        roleName: [
+          { required: true, message: '请输入角色名称！', trigger: 'blur' },
         ]
       }
     }
@@ -81,46 +79,40 @@ export default {
       corid: (state) => state.user.corid
     }),
     computDeparts() {
-      let tree = []
-      tree = [{dept_id: 0, name: '无上级部门', parent_id: 0}].concat(cloneDeep(this.departsTree))
-      // console.log(tree)
-      return tree
+      return cloneDeep(this.departsTree)
     }
   },
   methods: {
     resetForm() {
-      this.depart = {
-        name: '',
-        parentId: 0,
-        parentName: '无上级部门'
+      this.role = {
+        roleName: '',
+        deptId: null,
+        deptName: ''
       }
     },
     handleAdd() {
       this.resetForm()
       this.dialogFormVisible = true
       this.$nextTick(() => {
-        this.$refs['departForm'].clearValidate()
+        this.$refs['roleForm'].clearValidate()
       })
     },
-    addDepart() {
-      this.$refs['departForm'].validate((valid) => {
+    handleClick(data) {
+      this.role.deptId = data.dept_id
+      this.role.deptName = data.name
+    },
+    addRole() {
+      this.$refs['roleForm'].validate((valid) => {
         if(!valid){
           this.$message.error('请添加相关项目！')
           return 
         }
-        addDepartApi(this.corid, this.depart).then((result) => {
-          // console.log(result)
+        addRoleApi(this.corid, this.role).then((result) => {
           this.$message.success('添加成功!')
           this.dialogFormVisible = false
           this.$emit('on-add-success')
         }).catch((err) => { })
       })
-      
-    },
-    handleClick(data) {
-      // console.log(data)
-      this.depart.parentId = data.dept_id
-      this.depart.parentName = data.name
     }
   }
 }

@@ -2,23 +2,23 @@ import request from '@/utils/request'
 
 
 /**
- * 获取角色列表
- * @param {Number} page 页码
- * @param {Number} limit 每页大小
- * @param {String} sidx 排序字段
- * @param {String} order 排序方式，如：asc、desc
+ * 获取社团的角色列表
+ * @param {Number} corId 社团id
  * @param {String} roleName 角色名
+ * @param {Number} currPage 当前页
+ * @param {Number} pageSize 每页的大小
+ * 
  */
-export const getRoles = ({page, limit, sidx, order = 'desc', roleName}) => {
+export const getRoles = (corId, {roleName, currPage, pageSize}) => {
   return request({
+    baseURL: 'http://192.168.137.182:8081/HBO/sys',
     url: '/role/list',
     method: 'GET',
     params: {
-      page,
-      limit,
-      sidx,
-      order,
-      roleName
+      corId,
+      roleName,
+      currPage,
+      pageSize
     }
   })
 }
@@ -49,13 +49,21 @@ export const getRole = (roleId) => {
 }
 
 
-
-export const addRole = () => {
+/**
+ * 添加社团角色
+ * @param {Number} corId 
+ * @param {String} roleName 
+ * @param {Number} deptId 
+ */
+export const addRole = (corId, {roleName, deptId}) => {
   return request({
+    baseURL: 'http://192.168.137.182:8081/HBO/sys',
     url: '/role/save',
     method: 'POST',
     params: {
-
+      corId,
+      roleName,
+      deptId
     }
   })
 }

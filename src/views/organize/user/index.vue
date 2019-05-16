@@ -9,11 +9,23 @@
     </div>
     <s-table :data="userList" :columns="columns" @selection-change="handleSelectionChange">
       <template v-slot:action="{scope}">
+        <el-dropdown trigger="click">
+          <el-button type="info" size="mini">
+            操作<i class="el-icon-arrow-down el-icon--right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <user-details :data="scope.row" class="el-dropdown-menu__item" v-slot:btn-label>查看 </user-details>
+            <el-dropdown-item>
+              <el-button type="text" size="small" class="el-dropdown-menu__item" @click="handleEdit(scope.row.user_id)">编辑</el-button>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <el-button type="text" size="small" class="el-dropdown-menu__item" @click="handleDelete([scope.row])">删除</el-button>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
         <!-- <router-link class="el-button el-button--text el-button--small" :to="{name: 'details-user', params:{id: scope.row.userId}}">查看</router-link> -->
         <!-- <el-button type="text" size="small" @click="handleDetails(scope.row)">查看</el-button> -->
-        <user-details :data="scope.row" class="handle-btn" v-slot:btn-label>查看 </user-details>
-        <el-button type="text" size="small" @click="handleEdit(scope.row.user_id)">编辑</el-button>
-        <el-button type="text" size="small" @click="handleDelete([scope.row])">删除</el-button>
+       
       </template>
     </s-table>
     <pagination v-show="total>0" :total="total" :curr.sync="listQuery.page" :size.sync="listQuery.size" @on-page-change="getUserList" />

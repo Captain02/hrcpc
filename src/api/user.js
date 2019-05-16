@@ -7,7 +7,7 @@ import request from '@/utils/request'
  */
 export const getCollegeInfo = (typeId, parentValue) => {
   return request({
-    baseURL: 'http://140.143.201.244:8081/HBO/',
+    baseURL: 'http://140.143.201.244:8081/HBO/sys/comm/',
     method: 'GET',
     url: '/getselectes',
     params: {
@@ -63,7 +63,7 @@ export const getUsers = (corid, {page, size, sidx , order , username}) => {
  */
 export const getUser = (id, corid) => {
   return request({
-    url: `/user/info/`,
+    url: `/user/infoById/`,
     method: 'GET',
     params: {
       id,
@@ -93,6 +93,7 @@ export const changePwd = (password, newPassword) => {
  * 添加社团用户
  * @param {Number} corid 
  * @param {Number} fileId 头像的id    // out
+ * @param {String} name 姓名
  * @param {String} username 用户名
  * @param {String} gender 性别
  * @param {String} persionnum 学号
@@ -106,12 +107,13 @@ export const changePwd = (password, newPassword) => {
  * @param {String} collegetie 系别
  * 
  */
-export const addUser = (corid, username, gender, persionnum, password, email, mobile, wechart, QQ, descs, college, collegetie) => {
+export const addUser = (corid, name, username, gender, persionnum, password, email, mobile, wechart, QQ, descs, college, collegetie) => {
   return request({
     url: '/user/save',
     method: 'POST',
     params: {
       corid,
+      name,
       username,
       gender,
       persionnum,
@@ -174,6 +176,22 @@ export const deleteUsers = (userIds) => {
     method: 'POST',
     params: {
       userIds
+    }
+  })
+}
+
+/**
+ * 删除头像
+ * @param {Number} id fileId
+ * @param {*} url 头像的url
+ */
+export const deleteAvatar = (id, url) => {
+  return request({
+    url: '',
+    method: 'POST',
+    params: {
+      id,
+      url
     }
   })
 }
