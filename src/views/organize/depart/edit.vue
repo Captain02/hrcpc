@@ -14,7 +14,7 @@
           <h2 class="title">拖拽更改部门关系</h2>
           <el-tree
             :default-expand-all="true"
-            :data="departsData"
+            :data="computDepart"
             :expand-on-click-node="false"
             :props="defaultProps"
             draggable
@@ -48,8 +48,10 @@
   </div>
 </template>
 <script>
+import { getDepart as getDepartApi, editDepart as editDepartApi } from "@/api/depart"
 import cloneDeep from 'clonedeep'
 import { mapState } from 'vuex'
+
 export default {
   name: 'edit-depart',
   props: {
@@ -68,7 +70,8 @@ export default {
       defaultProps: {
         label: 'name'
       },
-      departsData: cloneDeep(this.departsTree),
+      // departsData: cloneDeep(this.departsTree),
+      departsData: [],
       depart: null,
       rules: {
         name: [
@@ -78,26 +81,35 @@ export default {
     }
   },
   // watch: {
-  //   'depart.parentId'(newParentId, oldVal) {
-  //     if(newParentId === 0){
-  //       this.depart.parentName = '无'
-  //     }else{
-  //       this.depart.parentName = 
-  //     }
+  //   departsTree:{
+  //     handle(newVal) {
+  //       console.log(newVal)
+  //       this.departsData = cloneDeep(newVal)
+  //     },
+  //     deep: true
   //   }
   // },
   computed: {
-    ...mapState({
-      corid: (state) => state.user.corid
-    }),
+    // ...mapState({
+    //   corid: (state) => state.user.corid
+    // }),
     computDepart() {
       return cloneDeep(this.departsTree)
     }
+    // computDepart: {
+    //   get() {
+    //     return this.departsData
+    //   },
+    //   set(val) {
+
+    //   }
+    // }
   },
   methods: {
     getDepartNameByParentId(id) {
-      let name = '无'
+      let name = '无上级部门'
       function handle(list, id){
+        // console.log(list)
         list.some((item) => {
           if(item.dept_id === id){
             name = item.name
@@ -108,7 +120,7 @@ export default {
           }
         })
       }
-      handle(this.departsData, id)
+      handle(this.computDepart, id)
       return name
     },
     hasAllowDrag(node) {
@@ -128,21 +140,28 @@ export default {
       this.depart.parentName = this.getDepartNameByParentId(this.depart.parentId)
     },
     handleEdit() {
+      
       this.dialogFormVisible = true
-      if(this.depart === null){
-        setTimeout(() => {
-          this.depart = {
-            deptId: 3,
-            name: '上海分公司',
-            parentId: 1,
-            parentName: '开源',
-            orderNum: 0
-          }
-        }, 1500)
-      }
+      let id = this.data.dept_id
+      getDepartApi(id).then((result) => {
+        let { data } = result
+        // console.log(data[0])
+        this.depart = {
+          deptId: data[0].dept_id,
+          name: data[0].name,
+          parentId: data[0].parent_id,
+          parentName: this.getDepartNameByParentId(data[0].parent_id)
+        }
+      //  console.log(this.depart)
+      }).catch((err) => {})
     },
     editDepart() {
-      
+      editDepartApi(this.depart).then((result) => {
+        // console.log(result)
+        this.$message.success('修改成功!')
+        this.dialogFormVisible = false
+        this.$emit('on-edit-success')
+      }).catch((err) => {})
     }
   }
 }

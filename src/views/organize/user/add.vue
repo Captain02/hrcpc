@@ -5,8 +5,8 @@
       <el-form :model="user" label-width="100px" :rules="rules" ref="userForm" :hide-required-asterisk="true">
         <el-form-item label="默认头像：">
           <div class="avatar-area">
-            <img :src="menAvatar" alt="默认头像男" v-if="user.sex === '男'">
-            <img :src="womenAvatar" alt="默认头像女" v-else>
+            <img src="http://140.143.201.244:8081/HBO/file/persionDefaultHeadPicture/20190516000727man.png" alt="默认头像男" v-if="user.sex === '男'">
+            <img src="http://140.143.201.244:8081/HBO/file/persionDefaultHeadPicture/20190516000741woman.png" alt="默认头像女" v-else>
           </div>
         </el-form-item>
         <!-- <el-form-item prop="fileId" label="上传头像：">
@@ -30,8 +30,11 @@
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2M，不上传则使用默认头像</div>
           </el-upload>
         </el-form-item> -->
-        <el-form-item prop="username" label="姓名：">
-          <el-input v-model="user.username" placeholder="请输入姓名"></el-input>
+        <el-form-item prop="username" label="用户名：">
+          <el-input v-model="user.username" placeholder="请输入用户名"></el-input>
+        </el-form-item>
+        <el-form-item prop="name" label="姓名：">
+          <el-input v-model="user.name" placeholder="请输入姓名"></el-input>
         </el-form-item>
         <el-form-item prop="sex" label="性别：">
           <el-radio-group v-model="user.sex">
@@ -84,8 +87,6 @@
 <script>
 import { addUser as addUserApi, getCollegeInfo as getCollegeInfoApi } from '@/api/user'
 import { mapState } from 'vuex'
-import menAvatar from '@/assets/img/men.png'
-import womenAvatar from '@/assets/img/women.png'
 import MceEditor from '@/components/MceEditor'
 window.tinymce.baseURL = '/static/tinymce'
 window.tinymce.suffix = '.min'
@@ -102,11 +103,10 @@ export default {
       callback()
     }
     return {
-      menAvatar,
-      womenAvatar,
       user: {
         // fileId: '',
-        username: '',           // 成员名
+        name: '',               // 成员姓名
+        username: '',           // 用户名
         sex: '男',              // 性别
         studentId: '',          // 学号
         password: '',
@@ -122,8 +122,14 @@ export default {
         
       },
       rules: {
+        name: [
+          { required: true, message: '请填写姓名!', trigger: 'blur' }
+        ],
         username: [
-          { required: true, message: '请输入姓名！', trigger: 'blur' },
+          { required: true, message: '请输入用户名！', trigger: 'blur' },
+        ],
+        password: [
+          { required: true, message: '请输入密码！', trigger: 'blur' },
         ],
         studentId: [
           { required: true, message: '请输入学号！', trigger: 'blur' },
@@ -215,7 +221,8 @@ export default {
           this.$message.error('请填写相关项目!')
           return
         }
-        let username = this.user.username,
+        let name = this.user.name,
+            username = this.user.username,
             gender = this.user.sex,
             persionnum = this.user.studentId,
             email = this.user.email,
@@ -225,7 +232,7 @@ export default {
             descs = this.user.descs,
             password = this.user.password,
             [college, collegetie] = this.computedCollege
-        addUserApi( this.corid, username, gender, persionnum, password, email, mobile, wechart, QQ, descs, college, collegetie).then((result) => {
+        addUserApi( this.corid, name, username, gender, persionnum, password, email, mobile, wechart, QQ, descs, college, collegetie).then((result) => {
           this.$message.success('添加成功')
           setTimeout(() => {
             this.$router.replace({name: 'user'})

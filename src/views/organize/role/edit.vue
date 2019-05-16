@@ -1,6 +1,5 @@
 <template>
-  <div class="app-container">
-    {{$route.params.id}}
+  <div>
   </div>
 </template>
 <script>

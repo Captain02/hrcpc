@@ -9,42 +9,64 @@
       width="800px"
       :append-to-body="true"
     >
+    <template v-if="user">
       <el-row class="details-row">
         <el-col :span="3"><span>头像：</span></el-col>
         <el-col :span="21">
           <div class="avatar-area">
-            <img :src="user ? user.filepath : ''">
+            <img :src="user.filepath ? user.filepath : ''">
           </div>
         </el-col>
       </el-row>
       <el-row class="details-row">
         <el-col :span="3"><span>姓名：</span> </el-col>
-        <el-col :span="9">{{user ? user.username : ''}}</el-col>
+        <el-col :span="9">{{user.name ? user.name : ''}}</el-col>
         <el-col :span="3"><span>性别：</span> </el-col>
-        <el-col :span="9">{{user ? user.gender : ''}}</el-col>
+        <el-col :span="9">{{user.gender ? user.gender : ''}}</el-col>
       </el-row>
       <el-row class="details-row">
+        <el-col :span="3"><span>用户名：</span> </el-col>
+        <el-col :span="9">{{user.username ? user.username : ''}}</el-col>
         <el-col :span="3"><span>学号：</span> </el-col>
-        <el-col :span="9">{{user ? user.persionnum : ''}}</el-col>
-        <el-col :span="3"><span>邮箱：</span> </el-col>
-        <el-col :span="9">{{user ? user.email : ''}}</el-col>
+        <el-col :span="9">{{user.persionnum ? user.persionnum : ''}}</el-col>
       </el-row>
       <el-row class="details-row">
         <el-col :span="3"><span>院系：</span> </el-col>
-        <el-col :span="9">{{user ? user.college : ''}}</el-col>
+        <el-col :span="9">{{user.college ? user.college : ''}}</el-col>
         <el-col :span="3"><span>专业：</span> </el-col>
-        <el-col :span="9">{{user ? user.collegetie : ''}}</el-col>
+        <el-col :span="9">{{user.collegetie ? user.collegetie : ''}}</el-col>
       </el-row>
       <el-row class="details-row">
+        <el-col :span="3"><span>邮箱：</span> </el-col>
+        <el-col :span="9">{{user.email ? user.email : ''}}</el-col>
         <el-col :span="3"><span>手机号：</span> </el-col>
-        <el-col :span="9">{{user ? user.mobile : ''}}</el-col>
+        <el-col :span="9">{{user.mobile ? user.mobile : ''}}</el-col>
+      </el-row>
+      <el-row class="details-row">
+        <el-col :span="3"><span>QQ：</span> </el-col>
+        <el-col :span="9">{{user.QQ ? user.QQ : ''}}</el-col>
         <el-col :span="3"><span>微信：</span> </el-col>
-        <el-col :span="9">{{user ? user.wechart : ''}}</el-col>
+        <el-col :span="9">{{user.wechart ? user.wechart : ''}}</el-col>
+      </el-row>
+      <el-row class="details-row">
+        <el-col :span="3"><span>所属部门：</span> </el-col>
+        <el-col :span="9">{{user.depts.length ? user.depts[0].name : '无'}}</el-col>
+        <el-col :span="3"><span>拥有角色：</span> </el-col>
+        <el-col :span="9">
+          <template v-if="user.roles.length">
+            <el-tag style="margin-right: 15px;" v-for="role in user.roles" size="small" :key="role.role_id">{{role.role_name}}</el-tag>
+          </template>
+          <template v-else>
+            <span>无</span>
+          </template>
+        </el-col>
       </el-row>
       <el-row class="details-row">
         <el-col :span="3"><span>自我描述：</span></el-col>
-        <el-col :span="21" v-html="user ? user.descs : ''"></el-col>
+        <el-col :span="21" v-html="user.descs ? user.descs : ''"></el-col>
       </el-row>
+    </template>
+      
     </el-dialog>
   </div>
 </template>
@@ -76,7 +98,8 @@ export default {
         let id = this.data.user_id
         getUserApi(id, this.corid).then((result) => {
           this.dialogFormVisible = true
-          this.user = result.user
+          this.user = result.data
+          // console.log(this.user)
         }).catch((err) => { })
       }else{
         this.dialogFormVisible = true
@@ -91,6 +114,14 @@ export default {
   span {
     font-size: 15px;
     color: #909399;
+  }
+  .avatar-area {
+    width: 150px;
+    height: 150px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 </style>

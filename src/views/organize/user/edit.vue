@@ -13,9 +13,9 @@
           <el-upload
             v-else
             class="avatar-uploader"
-            action="http://192.168.137.182:8081/HBO/img/save"
+            action="http://192.168.137.182:8081/HBO/sys/user/chatHead"
             :data="{corid}"
-            name="fileId"
+            name="chatHead"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
@@ -73,7 +73,7 @@
   </div>
 </template>
 <script>
-import { getUser as getUserApi, updateUser as updateUserApi, getCollegeInfo as getCollegeInfoApi } from '@/api/user'
+import { getUser as getUserApi, updateUser as updateUserApi, getCollegeInfo as getCollegeInfoApi, deleteAvatar as deleteAvatarApi } from '@/api/user'
 import { mapState } from 'vuex'
 import MceEditor from '@/components/MceEditor'
 window.tinymce.baseURL = '/static/tinymce'
@@ -119,7 +119,7 @@ export default {
         ]
       },
       avatar: null,
-      imagename: '',
+      // imagename: '',
       typeId: 1,                // 为1查询所有的院系
       parentValue: null,        // 查询系别
       options: []
@@ -150,12 +150,12 @@ export default {
   methods: {
     handleAvatarSuccess(res, file) {
       console.log(res, file)
-      if(res.data.code !== 0){
+      if(res.code !== 0){
         this.$message.error('上传失败，请重新上传!')
         return
       }
-      this.avatar = URL.createObjectURL(file.raw)
-      this.imagename = res.data.imagename
+      this.avatar = res.data.url
+      // this.imagename = res.data.imagename
       this.user.fileId = res.data.id
     },
     beforeAvatarUpload(file) {
@@ -173,6 +173,11 @@ export default {
     },
     deleteAvatar() {
       // 删除头像
+      deleteAvatarApi(this.user.fileId, this.avatar).then((result) => {
+        console.log('删除头像', result)
+        this.user.fileId = null
+        this.avatar = null
+      })
     },
     handleItemChange(val) {
       this.typeId = null
@@ -222,7 +227,8 @@ export default {
       
     },
     setUserDate(user) {
-      this.user.userId = user.userId
+      this.avatar = user.filepath
+      this.user.userId = user.user_id
       this.user.fileId = user.fileId
       this.user.username = user.username
       this.user.sex = user.gender
@@ -237,11 +243,11 @@ export default {
   },
   mounted() {
     let id = this.$route.params.id
-    Promise.all([getCollegeInfoApi(this.typeId, this.parentValue), getUserApi(id)]).then((result) => {
+    Promise.all([getCollegeInfoApi(this.typeId, this.parentValue), getUserApi(id, this.corid)]).then((result) => {
       // console.log(result)
       let [collegeRes, userRes] = result
       let { data: list } = collegeRes
-      let user  = Object.assign({}, userRes.user) 
+      let user = Object.assign({}, userRes.data) 
       this.options = list.map((item) => {
         // 查找parentId
         if(item.value === user.college){
@@ -251,6 +257,7 @@ export default {
         }
         return {id: item.id, label: item.value, value: item.id, children: []}
       })
+      // 如果没有学院信息不回执行下面
       if(this.parentValue){
         getCollegeInfoApi(null, this.parentValue).then((res => {
           let { data } = res
