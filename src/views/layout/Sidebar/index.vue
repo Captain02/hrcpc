@@ -9,8 +9,7 @@
         text-color="#bfcbd9"
       >
         <template v-for="item in routes" v-if="!item.hidden && item.children">
-        <menu-item v-if="hasOneShowChildren(item.children) && !item.alwaysShow" :key="item.path" :base-path="item.path" :item-info="item"></menu-item>
-        
+        <menu-item v-if="hasOneShowChildren(item.children) && !item.alwaysShow" :key="item.path + 1" :base-path="item.path" :item-info="item"></menu-item>
         <sub-menu v-else :base-path="item.path" :menu-info="item" :key="item.path"></sub-menu>
       </template>
       </el-menu>
