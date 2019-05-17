@@ -3,8 +3,8 @@ export default (file) => {
 }
 
 let map = {
-  // 根路由必须使用layout模板
-  organize: () => import('@/views/layout'),
+  // organize: () => import('@/views/layout'),
+  // 组织管理
   user: () => import('@/views/organize/user'),
   'add-user': () => import('@/views/organize/user/add'),
   'details-user': () => import('@/views/organize/user/details'),
@@ -14,7 +14,13 @@ let map = {
   role: () => import('@/views/organize/role'),
   'edit-role': () => import('@/views/organize/role/edit'),
 
-  picture: () => import('@/views/layout'),
+  // picture: () => import('@/views/layout'),
+  // 社团相册
   'picture-list': () => import('@/views/picture/picture-list'),
-  'add-picture': () => import('@/views/picture/add-picture')
+  'add-picture': () => import('@/views/picture/add-picture'),
+
+  // 纳新管理
+  'resume-list': () => import('@/views/recruited/resume'),
+  'report': () => import('@/views/recruited/report')
+
 }
