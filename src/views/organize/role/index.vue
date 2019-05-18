@@ -2,12 +2,16 @@
   <div class="app-container">
     <h1 class="page-title"> 角色管理 </h1>
     <div class="filter-container">
-      <el-input class="filter-item" v-model="listQuery.roleName" placeholder="请输入角色名" style="width: 200px;" size="medium"></el-input>
-      <el-button class="filter-item" type="primary" size="medium" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-      <add-role class="filter-item" :departs-tree="departsList" @on-add-success="getRoleList" v-slot:btn-label>添加新角色</add-role>
-      <el-button class="filter-item filter-delete-btn" type="danger" size="medium" icon="el-icon-delete" :disabled="!selectedItemsCount" @click="deleteSelectedItems">删除</el-button>
+      <el-input class="filter-item" v-model="listQuery.roleName" placeholder="请输入角色名" style="width: 200px;" size="small"></el-input>
+      <el-button class="filter-item" type="primary" size="small" icon="el-icon-search" @click="handleSearch">搜索</el-button>
+      <add-role class="filter-item" :departs-tree="departsList" @on-add-success="getRoleList" >
+        <template v-slot:action-btn>
+          <el-button type="primary" size="small" icon="el-icon-circle-plus-outline">添加新角色</el-button>
+        </template>
+      </add-role>
+      <el-button class="filter-item filter-right-btn" type="danger" size="small" icon="el-icon-delete" :disabled="!selectedItemsCount" @click="deleteSelectedItems">删除</el-button>
     </div>
-    <s-table :columns="columns" :data="roleList" @selection-change="handleSelectionChange">
+    <s-table :columns="columns" :data="roleList" @selection-change="handleSelectionChange" size="medium">
       <template v-slot:action="{scope}">
         <!-- <edit-role :data="scope.row" :departs-tree="departList" class="handle-btn" @on-edit-success="getRoleList" v-slot:btn-label>编辑</edit-role> -->
         <el-button type="text" size="small" @click="handleDelete([scope.row])">删除</el-button>

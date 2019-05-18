@@ -1,8 +1,11 @@
 <template>
   <div>
-    <el-button class="filter-item" type="primary" size="medium" icon="el-icon-circle-plus-outline" @click="handleAdd">
+    <div @click="handleAdd">
+      <slot name="action-btn"></slot>
+    </div>
+    <!-- <el-button class="filter-item" type="primary" size="medium" icon="el-icon-circle-plus-outline" >
       <slot name="btn-label"></slot>
-    </el-button>
+    </el-button> -->
     <el-dialog
       title="添加新部门"
       :visible.sync="dialogFormVisible"

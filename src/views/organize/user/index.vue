@@ -2,19 +2,23 @@
   <div class="app-container">
     <h1 class="page-title"> 社团成员 </h1>
     <div class="filter-container">
-      <el-input class="filter-item" v-model="listQuery.username" placeholder="请输入成员名字" style="width: 200px;" size="medium"></el-input>
-      <el-button class="filter-item" type="primary" size="medium" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-      <el-button class="filter-item" type="primary" size="medium" icon="el-icon-circle-plus-outline" @click="() => this.$router.push({name: 'add-user'})">添加新成员</el-button>
-      <el-button class="filter-item filter-delete-btn" type="danger" size="medium" icon="el-icon-delete" :disabled="!selectedItemsCount" @click="deleteSelectedItems">删除</el-button>
+      <el-input class="filter-item" v-model="listQuery.username" placeholder="请输入成员名字" style="width: 200px;" size="small"></el-input>
+      <el-button class="filter-item" type="primary" size="small" icon="el-icon-search" @click="handleSearch">搜索</el-button>
+      <el-button class="filter-item" type="primary" size="small" icon="el-icon-circle-plus-outline" @click="() => this.$router.push({name: 'add-user'})">添加新成员</el-button>
+      <el-button class="filter-item filter-right-btn" type="danger" size="small" icon="el-icon-delete" :disabled="!selectedItemsCount" @click="deleteSelectedItems">删除</el-button>
     </div>
-    <s-table :data="userList" :columns="columns" @selection-change="handleSelectionChange">
+    <s-table :data="userList" :columns="columns" @selection-change="handleSelectionChange" size="medium">
       <template v-slot:action="{scope}">
         <el-dropdown trigger="click">
           <el-button type="info" size="mini">
             操作<i class="el-icon-arrow-down el-icon--right"></i>
           </el-button>
           <el-dropdown-menu slot="dropdown">
-            <user-details :data="scope.row" class="el-dropdown-menu__item" v-slot:btn-label>查看 </user-details>
+            <details-user :data="scope.row" class="el-dropdown-menu__item">
+              <template v-slot:action-btn>
+                <el-button type="text" size="small" >查看 </el-button>
+              </template>
+            </details-user>
             <el-dropdown-item>
               <el-button type="text" size="small" class="el-dropdown-menu__item" @click="handleEdit(scope.row.user_id)">编辑</el-button>
             </el-dropdown-item>
@@ -37,14 +41,14 @@ import { parseTime } from '@/utils'
 import { mapState } from 'vuex'
 import STable from '_c/STable'
 import Pagination from '_c/Pagination'
-import UserDetails from './details'
+import detailsUser from './details'
 
 export default {
   name: 'user',
   components: {
     STable,
     Pagination,
-    UserDetails
+    detailsUser
   },
   data () {
     return {
@@ -60,7 +64,7 @@ export default {
         {
           attrs: {
             type: 'selection',
-            width: '30'
+            width: '35'
           }
         },
         {

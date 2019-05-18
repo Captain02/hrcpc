@@ -1,8 +1,11 @@
 <template>
   <div>
-    <el-button type="text" size="small" @click="handleEdit">
+    <div @click="handleEdit">
+      <slot name="action-btn"></slot>
+    </div>
+    <!-- <el-button type="text" size="small">
       <slot name="btn-label"></slot>
-    </el-button>
+    </el-button> -->
     <el-dialog
       title="修改社团信息"
       :visible.sync="dialogFormVisible"

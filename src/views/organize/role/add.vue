@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-button class="filter-item" type="primary" size="medium" icon="el-icon-circle-plus-outline" @click="handleAdd">
-      <slot name="btn-label"></slot>
-    </el-button>
+    <div @click="handleAdd">
+      <slot name="action-btn"></slot>
+    </div>
     <el-dialog
       title="添加新角色"
       :visible.sync="dialogFormVisible"

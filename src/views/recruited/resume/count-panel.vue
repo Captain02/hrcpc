@@ -7,7 +7,7 @@
         </div>
         <div class="count-card-description">
           <div class="count-card-text">全部</div>
-          <count-to class="count-card-number" :startVal='0' :endVal="10"></count-to>
+          <count-to class="count-card-number" :startVal='0' :endVal="+countData.total"></count-to>
         </div>
       </el-card>
     </el-col>
@@ -18,7 +18,7 @@
         </div>
         <div class="count-card-description">
           <div class="count-card-text">录用</div>
-          <count-to class="count-card-number" :startVal='0' :endVal="10"></count-to>
+          <count-to class="count-card-number" :startVal='0' :endVal="+countData['1']"></count-to>
         </div>
       </el-card>
     </el-col>
@@ -29,18 +29,7 @@
         </div>
         <div class="count-card-description">
           <div class="count-card-text">未录用</div>
-          <count-to class="count-card-number" :startVal='0' :endVal="10"></count-to>
-        </div>
-      </el-card>
-    </el-col>
-    <el-col :span="4" class="count-panel-col">
-      <el-card shadow="hover" class="count-card">
-        <div class="count-card-icon-wrapper icon-bishi">
-          <icon-svg icon-class="bishi" class-name="count-card-icon"></icon-svg>
-        </div>
-        <div class="count-card-description">
-          <div class="count-card-text">笔试</div>
-          <count-to class="count-card-number" :startVal='0' :endVal="10"></count-to>
+          <count-to class="count-card-number" :startVal='0' :endVal="+countData['2']"></count-to>
         </div>
       </el-card>
     </el-col>
@@ -51,7 +40,29 @@
         </div>
         <div class="count-card-description">
           <div class="count-card-text">面试</div>
-          <count-to class="count-card-number" :startVal='0' :endVal="10"></count-to>
+          <count-to class="count-card-number" :startVal='0' :endVal="+countData['3']"></count-to>
+        </div>
+      </el-card>
+    </el-col>
+    <el-col :span="4" class="count-panel-col">
+      <el-card shadow="hover" class="count-card">
+        <div class="count-card-icon-wrapper icon-bishi">
+          <icon-svg icon-class="bishi" class-name="count-card-icon"></icon-svg>
+        </div>
+        <div class="count-card-description">
+          <div class="count-card-text">笔试</div>
+          <count-to class="count-card-number" :startVal='0' :endVal="+countData['4']"></count-to>
+        </div>
+      </el-card>
+    </el-col>
+    <el-col :span="4" class="count-panel-col">
+      <el-card shadow="hover" class="count-card">
+        <div class="count-card-icon-wrapper icon-weichuli">
+          <icon-svg icon-class="weichuli" class-name="count-card-icon"></icon-svg>
+        </div>
+        <div class="count-card-description">
+          <div class="count-card-text">未处理</div>
+          <count-to class="count-card-number" :startVal='0' :endVal="+countData['5']"></count-to>
         </div>
       </el-card>
     </el-col>
@@ -63,6 +74,19 @@ export default {
   name: 'count-panel',
   components: {
     countTo
+  },
+  props: {
+    countData: {
+      type: Object,
+      default: () => ({
+        'total': 2019,         // 全部
+        '1': 2019,             // 录用
+        '2': 2019,             // 未录用
+        '3': 2019,             // 面试
+        '4': 2019,             // 笔试
+        '5': 2019              // 未处理
+      })
+    }
   }
 }
 </script>
@@ -89,7 +113,9 @@ export default {
       .icon-mianshi {
         color: #67C23A;
       }
-     
+     .icon-weichuli {
+       color: #f4ea2a;
+     }
       &:hover {
         .icon-quanbu{
           background: #409eff;
@@ -105,6 +131,9 @@ export default {
         }
         .icon-mianshi {
           background: #67C23A;
+        }
+        .icon-weichuli {
+          background: #f4ea2a;
         }
         .count-card-icon{
           color: #fff;

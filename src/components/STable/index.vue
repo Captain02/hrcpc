@@ -35,6 +35,22 @@ export default {
       type: Array,
       default: () => ([])
     }
+  },
+  // computed: {
+  //   computedColumns() {
+  //     console.log(this.columns)
+  //     return this.columns.filter((column) => {
+  //       return !column.hidden
+  //     })
+  //   }
+  // },
+  watch: {
+    columns: {
+      handler(newVal, oldVal){
+        this.columns = newVal
+      },
+      deep:true
+    }
   }
 }
 </script>

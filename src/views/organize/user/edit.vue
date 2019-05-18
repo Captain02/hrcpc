@@ -159,6 +159,7 @@ export default {
       this.user.fileId = res.data.id
     },
     beforeAvatarUpload(file) {
+      console.log('file', file)
       let typeWhiteList = ['image/jpeg', 'image/png']
       const isJPG = typeWhiteList.includes(file.type)
       const isLt2M = file.size / 1024 / 1024 < 2

@@ -5,13 +5,21 @@
       <!-- <el-input class="filter-item" v-model="listQuery.deptName" placeholder="请输入部门名字" style="width: 200px;" size="medium"></el-input>
       <el-button class="filter-item" type="primary" size="medium" icon="el-icon-search" @click="handleSearch">搜索</el-button> -->
       <!-- <el-button class="filter-item" type="primary" size="medium" icon="el-icon-circle-plus-outline" @click="() => this.$router.push({name: 'add-user'})">添加部门</el-button> -->
-      <add-depart class="filter-item" v-slot:btn-label :departs-tree="departList" @on-add-success="getDepartList">添加部门</add-depart>
-      <el-button class="filter-item filter-delete-btn" type="danger" size="medium" icon="el-icon-delete" :disabled="!selectedItemsCount" @click="deleteSelectedItems">删除</el-button>
+      <add-depart class="filter-item" :departs-tree="departList" @on-add-success="getDepartList">
+        <template v-slot:action-btn>
+          <el-button type="primary" size="small" icon="el-icon-circle-plus-outline" >添加部门</el-button>
+        </template>
+      </add-depart>
+      <el-button class="filter-item filter-right-btn" type="danger" size="small" icon="el-icon-delete" :disabled="!selectedItemsCount" @click="deleteSelectedItems">删除</el-button>
     </div>
-    <s-table :data="departList" :columns="columns" row-key="dept_id"  @selection-change="handleSelectionChange">
+    <s-table :data="departList" :columns="columns" row-key="dept_id"  @selection-change="handleSelectionChange" size="medium">
       <template v-slot:action="{scope}">
         <!-- <el-button type="text" size="small" @click="handleEdit(scope.row.dept_id)">编辑</el-button> -->
-        <edit-depart :data="scope.row" :departs-tree="departList" class="handle-btn" @on-edit-success="getDepartList" v-slot:btn-label>编辑</edit-depart>
+        <edit-depart :data="scope.row" :departs-tree="departList" class="handle-btn" @on-edit-success="getDepartList">
+          <template v-slot:action-btn>
+            <el-button type="text" size="small">编辑</el-button>
+          </template>
+        </edit-depart>
         <el-button type="text" size="small" @click="handleDelete([scope.row])">删除</el-button>
       </template>
     </s-table>
