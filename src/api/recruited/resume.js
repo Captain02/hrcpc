@@ -10,19 +10,19 @@ import request from '@/utils/request'
  * @param {Number} pageSize 
  */
 export const getResumes = (corId, { name, persionNum, status, currPage, pageSize }) => {
-  // return request({
-  //   baseURL: 'http://192.168.137.182:8081/HBO/sys',
-  //   url: '/resume/manage',
-  //   method: 'POST',
-  //   params: {
-  //     corId,
-  //     name,
-  //     persionNum,
-  //     status,
-  //     currPage,
-  //     pageSize
-  //   }
-  // })
+  return request({
+    baseURL: 'http://192.168.137.182:8081/HBO/sys',
+    url: '/resume/manage',
+    method: 'POST',
+    params: {
+      corId,
+      name,
+      persionNum,
+      status,
+      currPage,
+      pageSize
+    }
+  })
   return new Promise((resolve) => {
     let data =  {
               code: 0,
@@ -99,11 +99,11 @@ export const getResumes = (corId, { name, persionNum, status, currPage, pageSize
  * @param {Number} resumeId 
  */
 export const getResume = (resumeId) => {
-  // return request({
-  //   baseURL: 'http://192.168.137.182:8081/HBO/sys',
-  //   url: `/resume/${resumeId}`,
-  //   method: 'GET',
-  // })
+  return request({
+    baseURL: 'http://192.168.137.182:8081/HBO/sys',
+    url: `/resume/${resumeId}`,
+    method: 'GET',
+  })
   return new Promise((resolve) => {
     let data = {
       code: 0,

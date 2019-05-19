@@ -3,7 +3,7 @@
     <h1 class="page-title"> 修改成员信息 </h1>
     <el-card class="form-wrapper" shadow="never">
       <el-form :model="user" label-width="100px" :rules="rules" ref="userForm" :hide-required-asterisk="true">
-        <el-form-item prop="fileId" label="上传头像：">
+        <!-- <el-form-item prop="fileId" label="上传头像：">
           <div v-if="avatar" class="avatar-view" @click="deleteAvatar">
             <img :src="avatar" alt="avatar">
             <div class="avatar-mark">
@@ -23,9 +23,9 @@
             <i class="el-icon-plus avatar-uploader-icon"></i>
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2M，不上传则使用默认头像</div>
           </el-upload>
-        </el-form-item>
-        <el-form-item prop="username" label="姓名：">
-          <el-input v-model="user.username" placeholder="请输入姓名"></el-input>
+        </el-form-item> -->
+        <el-form-item prop="name" label="姓名：">
+          <el-input v-model="user.name" placeholder="请输入姓名"></el-input>
         </el-form-item>
         <el-form-item prop="sex" label="性别：">
           <el-radio-group v-model="user.sex">
@@ -33,9 +33,9 @@
             <el-radio label="女"></el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item prop="studentId" label="学号：">
+        <!-- <el-form-item prop="studentId" label="学号：">
           <el-input v-model="user.studentId" placeholder="请输入学号"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item prop="collegeInfo" label="院系：">
           <el-cascader
             v-model="user.collegeInfo"
@@ -93,8 +93,8 @@ export default {
     return {
       user: {
         userId: null,
-        fileId: '',
-        username: '',           // 成员名
+        // fileId: '',
+        name: '',           // 成员名
         sex: '男',              // 性别
         studentId: '',          // 学号
         // college: '',            // 所在学院
@@ -108,17 +108,17 @@ export default {
         descs: ''               // 简介
       },
       rules: {
-        username: [
+        name: [
           { required: true, message: '请输入姓名！', trigger: 'blur' },
         ],
-        studentId: [
-          { required: true, message: '请输入学号！', trigger: 'blur' },
-        ],
+        // studentId: [
+        //   { required: true, message: '请输入学号！', trigger: 'blur' },
+        // ],
         collegeInfo: [
           { validator: validateCollegeInfo, trigger: 'change' }
         ]
       },
-      avatar: null,
+      // avatar: null,
       // imagename: '',
       typeId: 1,                // 为1查询所有的院系
       parentValue: null,        // 查询系别
@@ -148,38 +148,38 @@ export default {
     }
   },
   methods: {
-    handleAvatarSuccess(res, file) {
-      console.log(res, file)
-      if(res.code !== 0){
-        this.$message.error('上传失败，请重新上传!')
-        return
-      }
-      this.avatar = res.data.url
-      // this.imagename = res.data.imagename
-      this.user.fileId = res.data.id
-    },
-    beforeAvatarUpload(file) {
-      console.log('file', file)
-      let typeWhiteList = ['image/jpeg', 'image/png']
-      const isJPG = typeWhiteList.includes(file.type)
-      const isLt2M = file.size / 1024 / 1024 < 2
+    // handleAvatarSuccess(res, file) {
+    //   console.log(res, file)
+    //   if(res.code !== 0){
+    //     this.$message.error('上传失败，请重新上传!')
+    //     return
+    //   }
+    //   this.avatar = res.data.url
+    //   // this.imagename = res.data.imagename
+    //   this.user.fileId = res.data.id
+    // },
+    // beforeAvatarUpload(file) {
+    //   console.log('file', file)
+    //   let typeWhiteList = ['image/jpeg', 'image/png']
+    //   const isJPG = typeWhiteList.includes(file.type)
+    //   const isLt2M = file.size / 1024 / 1024 < 2
 
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式或PNG格式!')
-      }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!')
-      }
-      return isJPG && isLt2M
-    },
-    deleteAvatar() {
-      // 删除头像
-      deleteAvatarApi(this.user.fileId, this.avatar).then((result) => {
-        console.log('删除头像', result)
-        this.user.fileId = null
-        this.avatar = null
-      })
-    },
+    //   if (!isJPG) {
+    //     this.$message.error('上传头像图片只能是 JPG 格式或PNG格式!')
+    //   }
+    //   if (!isLt2M) {
+    //     this.$message.error('上传头像图片大小不能超过 2MB!')
+    //   }
+    //   return isJPG && isLt2M
+    // },
+    // deleteAvatar() {
+    //   // 删除头像
+    //   deleteAvatarApi(this.user.fileId, this.avatar).then((result) => {
+    //     console.log('删除头像', result)
+    //     this.user.fileId = null
+    //     this.avatar = null
+    //   })
+    // },
     handleItemChange(val) {
       this.typeId = null
       this.parentValue = val[0]
@@ -207,16 +207,16 @@ export default {
           return
         }
         let userId = this.user.userId,
-            username = this.user.username,
+            name = this.user.name,
             gender = this.user.sex,
-            persionnum = this.user.studentId,
+            // persionnum = this.user.studentId,      //不提交学号
             email = this.user.email,
             mobile = this.user.mobile,
             wechart = this.user.wechart,
             QQ = this.user.QQ,
             descs = this.user.descs,
             [college, collegetie] = this.computedCollege
-        updateUserApi( this.corid, userId, username, gender, persionnum, email, mobile, wechart, QQ, descs, college, collegetie).then((result) => {
+        updateUserApi(userId, name, gender, email, mobile, wechart, QQ, descs, college, collegetie).then((result) => {
           this.$message.success('修改成功')
           setTimeout(() => {
             this.$router.replace({name: 'user'})
@@ -228,10 +228,10 @@ export default {
       
     },
     setUserDate(user) {
-      this.avatar = user.filepath
+      // this.avatar = user.filepath
       this.user.userId = user.user_id
-      this.user.fileId = user.fileId
-      this.user.username = user.username
+      // this.user.fileId = user.fileId
+      this.user.name = user.name
       this.user.sex = user.gender
       this.user.studentId = user.persionnum
       this.user.collegeInfo = [user.college, user.collegetie]

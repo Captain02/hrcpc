@@ -92,7 +92,6 @@ export const changePwd = (password, newPassword) => {
 /**
  * 添加社团用户
  * @param {Number} corid 
- * @param {Number} fileId 头像的id    // out
  * @param {String} name 姓名
  * @param {String} username 用户名
  * @param {String} gender 性别
@@ -131,33 +130,29 @@ export const addUser = (corid, name, username, gender, persionnum, password, ema
 
 /**
  * 修改用户信息
- * @param {*} corid 
- * @param {*} userId 
- * @param {*} username 
- * @param {*} gender 
- * @param {*} persionnum 
- * @param {*} email 
- * @param {*} mobile 
- * @param {*} wechart 
- * @param {*} QQ 
- * @param {*} descs 
- * @param {*} college 
- * @param {*} collegetie 
+ * @param {Number} userId 用户id
+ * @param {String} name 用户姓名
+ * @param {String} gender 性别
+ * @param {String} email 邮箱
+ * @param {String} mobile 手机号
+ * @param {String} wechart 微信
+ * @param {String} qq qq
+ * @param {String} descs 自我描述
+ * @param {String} college 院系
+ * @param {String} collegetie 专业
  */
-export const updateUser = ( corid, userId, username, gender, persionnum, email, mobile, wechart, QQ, descs, college, collegetie) => {
+export const updateUser = ( userId, name, gender, email, mobile, wechart, qq, descs, college, collegetie) => {
   return request({
     url: '/user/update',
     method: 'POST',
     params: {
-      corid,
       userId,
-      username,
+      name,
       gender,
-      persionnum,
       email,
       mobile,
       wechart,
-      QQ,
+      qq,
       descs,
       college,
       collegetie

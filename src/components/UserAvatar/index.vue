@@ -1,10 +1,16 @@
 <template>
   <el-dropdown class="avatar-container user-menu-item" trigger="click">
     <div class="avatar-wrapper">
-      <img
+      <!-- <img
         :src="avatar"
         class="user-avatar"
-      >
+      > -->
+      <el-image :src="avatar" class="user-avatar">
+        <div slot="error" class="image-slot">
+          <icon-svg icon-class="img-load-fail"></icon-svg>
+        </div>
+      </el-image>
+
       <icon-svg icon-class="arrow-down"></icon-svg>
     </div>
     <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -57,6 +63,7 @@ export default {
       width: 40px;
       height: 40px;
       border-radius: 10px;
+      overflow: hidden;
     }
     .el-icon-caret-bottom {
       position: absolute;

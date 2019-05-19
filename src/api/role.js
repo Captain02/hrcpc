@@ -10,16 +10,48 @@ import request from '@/utils/request'
  * 
  */
 export const getRoles = (corId, {roleName, currPage, pageSize}) => {
-  return request({
-    baseURL: 'http://192.168.137.182:8081/HBO/sys',
-    url: '/role/list',
-    method: 'GET',
-    params: {
-      corId,
-      roleName,
-      currPage,
-      pageSize
+  // return request({
+  //   baseURL: 'http://192.168.137.182:8081/HBO/sys',
+  //   url: '/role/list',
+  //   method: 'GET',
+  //   params: {
+  //     corId,
+  //     roleName,
+  //     currPage,
+  //     pageSize
+  //   }
+  // })
+  return new Promise((resolve) => {
+    let data = { 
+      code: 0,
+      msg: '',
+      page: {
+        totalCount: 3
+      },
+      data: [
+        {role_id: 1, role_name: '超级管理员', create_time: '2019-5-14 18:20:36', remark: 'big boss', menu_list: [
+          {menu_id: 1, title: '添加用户'},
+          {menu_id: 2, title: '删除用户'},
+          {menu_id: 3, title: '修改用户'},
+          {menu_id: 4, title: '添加部门'},
+          {menu_id: 5, title: '删除部门'},
+          {menu_id: 6, title: '修改部门'}
+        ]},
+        {role_id: 2, role_name: '管理员', create_time: '2019-6-4 17:20:36', remark: '管理者', menu_list: [
+          {menu_id: 1, title: '添加用户'},
+          {menu_id: 2, title: '删除用户'},
+          {menu_id: 3, title: '修改用户'}
+        ]},
+        {role_id: 3, role_name: '扫地僧', create_time: '2019-5-4 19:20:36', remark: '很厉害的角色', menu_list: [
+          {menu_id: 4, title: '添加部门'},
+          {menu_id: 5, title: '删除部门'},
+          {menu_id: 6, title: '修改部门'}
+        ]}
+      ]
     }
+    setTimeout(() => {
+      resolve(data)
+    }, 1500)
   })
 }
 

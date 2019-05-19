@@ -1,9 +1,7 @@
 <template>
   <div class="app-container">
     <count-panel :count-data="countNum"/>
-
     <h1 class="page-title"> 纳新信息 </h1>
-
     <div class="filter-container">
       <el-select class="filter-item" v-model="listQuery.status" placeholder="状态" style="width: 100px;" size="small">
         <el-option v-for="item in options" :key="item.id" :label="item.text" :value="item.value"></el-option>
@@ -11,20 +9,28 @@
       <el-input class="filter-item" v-model="listQuery.name" placeholder="姓名" style="width: 200px;" size="small "></el-input>
       <el-input class="filter-item" v-model="listQuery.persionNum" placeholder="学号" style="width: 200px;" size="small"></el-input>
       <el-button class="filter-item" type="primary" size="small" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-      <el-button class="filter-item" type="primary" size="small" icon="el-icon-circle-plus-outline">添加新简历</el-button>
-      <el-button type="success" class="filter-right-btn" size="small">导出Excel</el-button>
+      <el-tooltip class="item" effect="dark" content="导出列：姓名、性别、学号、手机号、学院、专业、QQ、微信、状态" placement="top">
+        <el-button type="success" class="filter-right-btn" @click="exportExcel" size="small">导出Excel</el-button>
+      </el-tooltip>
       <el-dropdown trigger="click" style="float: right;">
-        <el-button type="primary" size="small">选择隐藏列</el-button>
+        <el-button type="primary" size="small">更改显示列</el-button>
         <el-dropdown-menu slot="dropdown">
-          <el-checkbox v-model="column.hidden" class="el-dropdown-menu__item dropdown-check" v-for="column in columns" :key="column.attrs.prop">{{column.attrs.label}}</el-checkbox>
+          <template v-for="column in columns">
+            <el-checkbox v-if="!column.hiddenInCheck" :value="!column.hidden" @change="handleChange($event, column)" class="el-dropdown-menu__item dropdown-check" :key="column.attrs.prop">{{column.attrs.label}}</el-checkbox>
+          </template>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
 
     <s-table :columns="columns" :data="resumeList" size="medium">
       <template v-slot:avatar="{scope}">
-        <div class="avatar-wrapper">
-          <img :src="scope.row.filepath" alt="头像">
+        <div class="table-avatar">
+          <el-image :src="scope.row.filepath" alt="头像" >
+            <div slot="error" class="image-slot">
+              <icon-svg icon-class="img-load-fail"></icon-svg>
+              <!-- <i class="el-icon-picture-outline"></i> -->
+            </div>
+          </el-image>
         </div>
       </template>
       <template v-slot:status="{scope}">
@@ -53,7 +59,6 @@
 <script>
 import { getResumes as getResumesApi, deleteResume as deleteResumeApi } from '@/api/recruited/resume'
 import { mapState } from 'vuex'
-import { parseTime } from '@/utils'
 import { columns, options } from './data'
 import STable from '_c/STable'
 import Pagination from '_c/Pagination'
@@ -78,7 +83,14 @@ export default {
         currPage: 1,
         pageSize: 10
       },
-      countNum: {},
+      countNum: {
+        'total': 0,         // 全部
+        '1': 0,             // 录用
+        '2': 0,             // 未录用
+        '3': 0,             // 面试
+        '4': 0,             // 笔试
+        '5': 0              // 未处理
+      },
       resumeList: [],
       total: 0,
       columns,
@@ -118,6 +130,12 @@ export default {
           console.log(err)
         })
       }).catch(() => {})
+    },
+    handleChange(value, column) {
+      column.hidden = !value
+    },
+    exportExcel() {
+      window.open(`http://192.168.137.182:8081/HBO/sys/resume/exportExcel?corId=${this.corid}`)
     }
   },
   mounted() {
@@ -125,20 +143,6 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-.avatar-wrapper {
-  width: 50px;
-  height: 50px;
-  img {
-    width: 100%;
-    height: 100%;
-  }
-}
-.dropdown-check {
-  display: block;
-  margin-right: 0;
-}
-</style>
 <style lang="less">
 .count-card{
   .el-card__body{

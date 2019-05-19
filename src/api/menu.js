@@ -2,11 +2,17 @@ import request from '@/utils/request'
 
 /**
  * 获取左侧菜单栏
- * @description 通过请求头token获取
+ * @param {Number} userid 
+ * @param {Number} corid 
+ * @description 根据用户id和社团id获取可操作的菜单栏
  */
-export const getMenu = () => {
+export const getMenu = (userid, corid) => {
   return request({
     url: '/menu/nav',
-    method: 'GET'
+    method: 'GET',
+    params: {
+      userid,
+      corid
+    }
   })
 }

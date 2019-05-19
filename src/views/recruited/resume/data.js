@@ -1,3 +1,4 @@
+import { parseTime } from '@/utils'
 /**
  * 表格列属性
  */
@@ -47,14 +48,6 @@ export const columns = [
   {
     hidden: false,
     attrs: {
-      prop: 'mobile',
-      label: '手机号',
-      align: 'center'
-    }
-  },
-  {
-    hidden: false,
-    attrs: {
       prop: 'college',
       label: '院系',
       align: 'center'
@@ -65,6 +58,14 @@ export const columns = [
     attrs: {
       prop: 'collegetie',
       label: '专业',
+      align: 'center'
+    }
+  },
+  {
+    hidden: false,
+    attrs: {
+      prop: 'mobile',
+      label: '手机号',
       align: 'center'
     }
   },
@@ -112,8 +113,8 @@ export const columns = [
   },
   {
     slot: 'action',
+    hidden: false,
     attrs: {
-      fixed: "right",
       prop: 'action',
       label: '操作',
       align: 'center'

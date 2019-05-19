@@ -9,27 +9,6 @@
             <img src="http://140.143.201.244:8081/HBO/file/persionDefaultHeadPicture/20190516000741woman.png" alt="默认头像女" v-else>
           </div>
         </el-form-item>
-        <!-- <el-form-item prop="fileId" label="上传头像：">
-          <div v-if="avatar" class="avatar-view" @click="deleteAvatar">
-            <img :src="avatar" alt="avatar">
-            <div class="avatar-mark">
-              <i class="el-icon-delete"></i>
-            </div>
-          </div>
-          <el-upload
-            v-else
-            class="avatar-uploader"
-            action="http://192.168.137.182:8081/HBO/img/save"
-            :data="{corid}"
-            name="fileId"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
-            >
-            <i class="el-icon-plus avatar-uploader-icon"></i>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2M，不上传则使用默认头像</div>
-          </el-upload>
-        </el-form-item> -->
         <el-form-item prop="username" label="用户名：">
           <el-input v-model="user.username" placeholder="请输入用户名"></el-input>
         </el-form-item>
@@ -104,7 +83,6 @@ export default {
     }
     return {
       user: {
-        // fileId: '',
         name: '',               // 成员姓名
         username: '',           // 用户名
         sex: '男',              // 性别
@@ -138,9 +116,6 @@ export default {
           { validator: validateCollegeInfo, trigger: 'change' }
         ]
       },
-      // avatar: null,
-      // avatarId: null,
-      // imagename: '',
       typeId: 1,                // 为1查询所有的院系
       parentValue: null,        // 查询系别
       options: []
@@ -169,33 +144,6 @@ export default {
     }
   },
   methods: {
-    // handleAvatarSuccess(res, file) {
-    //   console.log(res, file)
-    //   if(res.data.code !== 0){
-    //     this.$message.error('上传失败，请重新上传!')
-    //     return
-    //   }
-    //   this.avatar = URL.createObjectURL(file.raw)
-    //   this.avatarId = res.data.id
-    //   this.imagename = res.data.imagename
-    //   this.user.fileId = res.data.url
-    // },
-    // beforeAvatarUpload(file) {
-    //   let typeWhiteList = ['image/jpeg', 'image/png']
-    //   const isJPG = typeWhiteList.includes(file.type)
-    //   const isLt2M = file.size / 1024 / 1024 < 2
-
-    //   if (!isJPG) {
-    //     this.$message.error('上传头像图片只能是 JPG 格式或PNG格式!')
-    //   }
-    //   if (!isLt2M) {
-    //     this.$message.error('上传头像图片大小不能超过 2MB!')
-    //   }
-    //   return isJPG && isLt2M
-    // },
-    // deleteAvatar() {
-    //   // 删除头像
-    // },
     handleItemChange(val) {
       this.typeId = null
       this.parentValue = val[0]
@@ -264,77 +212,4 @@ export default {
 .college-cascader {
   width: 100%;
 }
-</style>
-<style lang="less">
-  /** 头像上传样式 **/
-  .avatar-area {
-    width: 150px;
-    height: 150px;
-    img{
-      width: 100%;
-      height: 100%;
-    }
-  }
-
-  .avatar-view {
-    position: relative;
-    width: 150px;
-    height: 150px;
-    overflow: hidden;
-    cursor: pointer;
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    &:hover .avatar-mark{
-      opacity: 1;
-      color: #409EFF;
-    }
-    img {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-    .avatar-mark {
-      position:absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      bottom: 0;
-      right: 0;
-      left: 0;
-      opacity: 0;
-      background: rgba(0, 0, 0, 0.25);
-      transition: all .3s;
-      i {
-        font-size: 25px;
-        line-height: 150px;
-        margin-left: 60px;
-      }
-    }
-  }
-.avatar-uploader{
-  .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    &:hover {
-      border-color: #409EFF;
-    }
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 150px;
-    height: 150px;
-    line-height: 150px;
-    text-align: center;
-  }
-  .el-upload__tip {
-    margin-top: 0;
-    line-height: 30px;
-  }
-}
-
-
 </style>

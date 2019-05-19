@@ -96,7 +96,7 @@ export default {
   methods: {
     getDepartList() {
       getDepartsApi(this.corid, this.listQuery).then(result => {
-        console.log(result)
+        console.log('获取部门列表', result)
         let { data, page } = result
         this.total = page.totalCount
         this.departList = transferDepartToTree(data)

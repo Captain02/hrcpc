@@ -12,14 +12,14 @@
       <el-row>
         <el-col :span="8">
           <h2 class="title">请选择所属部门</h2>
-          <el-tree
+          <!-- <el-tree
             :default-expand-all="true"
             :data="computDeparts"
             :expand-on-click-node="false"
             :props="defaultProps"
             @node-click="handleClick"
             node-key="dept_id"
-          ></el-tree>
+          ></el-tree> -->
         </el-col>
         <el-col :span="16">
           <el-form
@@ -51,10 +51,10 @@ import { mapState } from 'vuex';
 export default {
   name: 'add-role',
   props: {
-    departsTree: {
-      type: Array,
-      required: true
-    }
+    // departsTree: {
+    //   type: Array,
+    //   required: true
+    // }
   },
   data() {
     return {

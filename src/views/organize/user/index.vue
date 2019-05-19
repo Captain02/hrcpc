@@ -6,8 +6,26 @@
       <el-button class="filter-item" type="primary" size="small" icon="el-icon-search" @click="handleSearch">搜索</el-button>
       <el-button class="filter-item" type="primary" size="small" icon="el-icon-circle-plus-outline" @click="() => this.$router.push({name: 'add-user'})">添加新成员</el-button>
       <el-button class="filter-item filter-right-btn" type="danger" size="small" icon="el-icon-delete" :disabled="!selectedItemsCount" @click="deleteSelectedItems">删除</el-button>
+      <el-dropdown trigger="click" style="float: right;">
+        <el-button type="primary" size="small">更改显示列</el-button>
+        <el-dropdown-menu slot="dropdown">
+          <template v-for="column in columns">
+            <el-checkbox v-if="!column.hiddenInCheck" :value="!column.hidden" @change="handleChange($event, column)" class="el-dropdown-menu__item dropdown-check" :key="column.attrs.prop">{{column.attrs.label}}</el-checkbox>
+          </template>
+          
+        </el-dropdown-menu>
+      </el-dropdown>
     </div>
     <s-table :data="userList" :columns="columns" @selection-change="handleSelectionChange" size="medium">
+      <template v-slot:avatar="{scope}">
+        <div class="table-avatar">
+          <el-image :src="scope.row.filepath" alt="头像" >
+            <div slot="error" class="image-slot">
+              <icon-svg icon-class="img-load-fail"></icon-svg>
+            </div>
+          </el-image>
+        </div>
+      </template>
       <template v-slot:action="{scope}">
         <el-dropdown trigger="click">
           <el-button type="info" size="mini">
@@ -19,17 +37,18 @@
                 <el-button type="text" size="small" >查看 </el-button>
               </template>
             </details-user>
-            <el-dropdown-item>
-              <el-button type="text" size="small" class="el-dropdown-menu__item" @click="handleEdit(scope.row.user_id)">编辑</el-button>
-            </el-dropdown-item>
+              <!-- <el-button type="text" size="small" class="el-dropdown-menu__item" @click="handleEdit(scope.row.user_id)">编辑</el-button> -->
+            <edit-user-info :data="scope.row" class="el-dropdown-menu__item" @on-edit-success="getUserList">
+                <template v-slot:action-btn>
+                  <el-button type="text" size="small" >编辑 </el-button>
+                </template>
+            </edit-user-info>
+
             <el-dropdown-item>
               <el-button type="text" size="small" class="el-dropdown-menu__item" @click="handleDelete([scope.row])">删除</el-button>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <!-- <router-link class="el-button el-button--text el-button--small" :to="{name: 'details-user', params:{id: scope.row.userId}}">查看</router-link> -->
-        <!-- <el-button type="text" size="small" @click="handleDetails(scope.row)">查看</el-button> -->
-       
       </template>
     </s-table>
     <pagination v-show="total>0" :total="total" :curr.sync="listQuery.page" :size.sync="listQuery.size" @on-page-change="getUserList" />
@@ -37,18 +56,20 @@
 </template>
 <script>
 import {getUsers as getUsersApi, deleteUsers as deleteUsersApi } from '@/api/user'
-import { parseTime } from '@/utils'
 import { mapState } from 'vuex'
+import { columns } from './dada'
 import STable from '_c/STable'
 import Pagination from '_c/Pagination'
 import detailsUser from './details'
+import editUserInfo from './edit-info'
 
 export default {
   name: 'user',
   components: {
     STable,
     Pagination,
-    detailsUser
+    detailsUser,
+    editUserInfo
   },
   data () {
     return {
@@ -60,74 +81,7 @@ export default {
       selectedItems:[],
       userList: [],
       total: 0,
-      columns: [
-        {
-          attrs: {
-            type: 'selection',
-            width: '35'
-          }
-        },
-        {
-          attrs: {
-            prop: 'username',
-            label: '成员名',
-            sortable: true,
-            align: "center"
-          }
-        },
-        {
-          attrs: {
-            prop: 'email',
-            label: '邮箱',
-            sortable: true,
-            align: "center"
-          }
-        },
-        {
-          attrs: {
-            prop: 'mobile',
-            label: '手机号',
-            align: "center"
-          }
-        },
-        {
-          attrs: {
-            prop: 'wechart',
-            label: '微信',
-            align: "center"
-          }
-        },
-        {
-          attrs: {
-            prop: 'college',
-            label: '所在学院',
-            align: "center"
-          }
-        },
-        {
-          attrs: {
-            prop: 'collegetie',
-            label: '所在专业',
-            align: "center"
-          }
-        },
-        {
-          attrs: {
-            prop: 'create_time',
-            label: '加入时间',
-            align: "center",
-            formatter: (row, column, cellValue, index) => parseTime(cellValue, '{y}-{m}-{d}')
-          }
-        },
-        {
-          slot: 'action',
-          attrs: {
-            prop: 'action',
-            label: '操作',
-            align: "center"
-          }
-        }
-      ]
+      columns
     }
   },
   computed: {
@@ -180,6 +134,9 @@ export default {
     },
     handleEdit(id) {
       this.$router.push({name: 'edit-user', params: { id }})
+    },
+    handleChange(value, column) {
+      column.hidden = !value
     }
   },
   mounted() {
