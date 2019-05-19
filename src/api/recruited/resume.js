@@ -11,7 +11,7 @@ import request from '@/utils/request'
  */
 export const getResumes = (corId, { name, persionNum, status, currPage, pageSize }) => {
   return request({
-    baseURL: 'http://192.168.137.182:8081/HBO/sys',
+    // baseURL: 'http://192.168.137.182:8081/HBO/sys',
     url: '/resume/manage',
     method: 'POST',
     params: {
@@ -100,7 +100,7 @@ export const getResumes = (corId, { name, persionNum, status, currPage, pageSize
  */
 export const getResume = (resumeId) => {
   return request({
-    baseURL: 'http://192.168.137.182:8081/HBO/sys',
+    // baseURL: 'http://192.168.137.182:8081/HBO/sys',
     url: `/resume/${resumeId}`,
     method: 'GET',
   })
@@ -141,7 +141,7 @@ export const getResume = (resumeId) => {
  */
 export const editResume = (resumeId, status) => {
   return request({
-    baseURL: 'http://192.168.137.182:8081/HBO/sys',
+    // baseURL: 'http://192.168.137.182:8081/HBO/sys',
     url: '/resume/edit',
     method: 'POST',
     params: {
@@ -157,7 +157,7 @@ export const editResume = (resumeId, status) => {
  */
 export const deleteResume = (resumeId) => {
   return request({
-    baseURL: 'http://192.168.137.182:8081/HBO/sys',
+    // baseURL: 'http://192.168.137.182:8081/HBO/sys',
     url: '/resume/delete',
     method: 'POST',
     params: {

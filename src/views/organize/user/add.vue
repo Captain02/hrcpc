@@ -5,8 +5,8 @@
       <el-form :model="user" label-width="100px" :rules="rules" ref="userForm" :hide-required-asterisk="true">
         <el-form-item label="默认头像：">
           <div class="avatar-area">
-            <img src="http://140.143.201.244:8081/HBO/file/persionDefaultHeadPicture/20190516000727man.png" alt="默认头像男" v-if="user.sex === '男'">
-            <img src="http://140.143.201.244:8081/HBO/file/persionDefaultHeadPicture/20190516000741woman.png" alt="默认头像女" v-else>
+            <img src="/file/persionDefaultHeadPicture/20190517155219man.png" alt="默认头像男" v-if="user.sex === '男'">
+            <img src="/file/persionDefaultHeadPicture/20190517155056woman.png" alt="默认头像女" v-else>
           </div>
         </el-form-item>
         <el-form-item prop="username" label="用户名：">
