@@ -111,13 +111,5 @@ export default {
     font-size: 14px;
     color: #909399;
   }
-  .avatar-area {
-    width: 100px;
-    height: 100px;
-    img {
-      width: 100%;
-      height: 100%;
-    }
-  }
 }
 </style>

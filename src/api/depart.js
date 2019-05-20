@@ -2,20 +2,14 @@ import request from '@/utils/request'
 
 /**
  * 社团部门列表
- * @param {*} corid 
- * @param {*} deptName 
- * @param {*} currPage 
- * @param {*} pageSize 
+ * @param {Number} corid 
  */
-export const getDeparts = (corId, { currPage, pageSize }) => {
+export const getDeparts = (corId) => {
   return request({
     url: '/dept/list',
     method:'GET',
     params: {
-      corId,
-      // deptName,
-      currPage,
-      pageSize
+      corId
     }
   })
 }
@@ -23,7 +17,7 @@ export const getDeparts = (corId, { currPage, pageSize }) => {
 /**
  * 根据部门id获取部门信息
  * 
- * @param {*} deptId 部门id
+ * @param {Number} deptId 部门id
  */
 export const getDepart = (deptId) => {
   return request({

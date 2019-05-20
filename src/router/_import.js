@@ -7,12 +7,12 @@ let map = {
   // 组织管理
   user: () => import('@/views/organize/user'),
   'add-user': () => import('@/views/organize/user/add'),
-  'details-user': () => import('@/views/organize/user/details'),
-  'edit-user': () => import('@/views/organize/user/edit'),
+  // 'details-user': () => import('@/views/organize/user/details'),
+  // 'edit-user': () => import('@/views/organize/user/edit'),
   depart: () => import('@/views/organize/depart'),
-  permit: () => import('@/views/organize/permit'),
+  // permit: () => import('@/views/organize/permit'),
   role: () => import('@/views/organize/role'),
-  'edit-role': () => import('@/views/organize/role/edit'),
+  // 'edit-role': () => import('@/views/organize/role/edit'),
 
   // picture: () => import('@/views/layout'),
   // 社团相册

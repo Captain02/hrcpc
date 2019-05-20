@@ -4,7 +4,7 @@
 </template>
 <script>
 export default {
-  name: 'edit-role',
+  name: 'edit-role-info',
   data() {
     return {
       

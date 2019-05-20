@@ -19,6 +19,11 @@
       </template>
       <template v-slot:action="{scope}">
         <!-- <edit-role :data="scope.row" :departs-tree="departList" class="handle-btn" @on-edit-success="getRoleList" v-slot:btn-label>编辑</edit-role> -->
+        <edit-role-premit class="handle-btn" :data="scope.row">
+          <template v-slot:action-btn="{scope}">
+            <el-button type="text" size="small">修改角色权限</el-button>
+          </template>
+        </edit-role-premit>
         <el-button type="text" size="small" @click="handleDelete([scope.row])">删除</el-button>
       </template>
     </s-table>
@@ -32,14 +37,16 @@ import { mapState } from 'vuex'
 import STable from '_c/STable'
 import Pagination from '_c/Pagination'
 import addRole from './add'
-import editRole from './edit'
+import editRoleInfo from './edit-info'
+import editRolePremit from './edit-premit'
 export default {
   name: 'role',
   components: {
     STable,
     Pagination,
     addRole,
-    editRole
+    editRoleInfo,
+    editRolePremit
   },
   data() {
     return {

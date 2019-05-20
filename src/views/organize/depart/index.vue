@@ -14,7 +14,6 @@
     </div>
     <s-table :data="departList" :columns="columns" row-key="dept_id"  @selection-change="handleSelectionChange" size="medium">
       <template v-slot:action="{scope}">
-        <!-- <el-button type="text" size="small" @click="handleEdit(scope.row.dept_id)">编辑</el-button> -->
         <edit-depart :data="scope.row" :departs-tree="departList" class="handle-btn" @on-edit-success="getDepartList">
           <template v-slot:action-btn>
             <el-button type="text" size="small">编辑</el-button>
@@ -23,32 +22,24 @@
         <el-button type="text" size="small" @click="handleDelete([scope.row])">删除</el-button>
       </template>
     </s-table>
-    <pagination v-show="total>0" :total="total" :curr.sync="listQuery.currPage" :size.sync="listQuery.pageSize" @on-page-change="getDepartList" />
   </div>
 </template>
 <script>
 import { getDeparts as getDepartsApi, deleteDeparts as deleteDepartsApi } from "@/api/depart"
-import { transferDepartToTree } from '@/utils'
+import { transferData2Tree } from '@/utils'
 import { mapState } from 'vuex'
 import STable from '_c/STable'
-import Pagination from '_c/Pagination'
 import addDepart from './add'
 import editDepart from './edit'
 export default {
   name: "depart",
   components: {
     STable,
-    Pagination,
     addDepart,
     editDepart
   },
   data() {
     return {
-      listQuery: {
-        // deptName: '',
-        currPage: 1,
-        pageSize: 10,
-      },
       columns: [
         {
           attrs: {
@@ -95,11 +86,11 @@ export default {
   },
   methods: {
     getDepartList() {
-      getDepartsApi(this.corid, this.listQuery).then(result => {
+      getDepartsApi(this.corid).then(result => {
         console.log('获取部门列表', result)
         let { data, page } = result
         this.total = page.totalCount
-        this.departList = transferDepartToTree(data)
+        this.departList = transferData2Tree(0, data, 'parent_id', 'dept_id', 'children')
         // console.log(this.departList)
       }).catch(err => {
         console.log(err)
