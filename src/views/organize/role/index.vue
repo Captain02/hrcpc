@@ -19,7 +19,7 @@
       </template>
       <template v-slot:action="{scope}">
         <!-- <edit-role :data="scope.row" :departs-tree="departList" class="handle-btn" @on-edit-success="getRoleList" v-slot:btn-label>编辑</edit-role> -->
-        <edit-role-premit class="handle-btn" :data="scope.row">
+        <edit-role-premit class="handle-btn" :data="scope.row" :premit-data="premitList">
           <template v-slot:action-btn="{scope}">
             <el-button type="text" size="small">修改角色权限</el-button>
           </template>
@@ -31,7 +31,7 @@
   </div>
 </template>
 <script>
-import { getRoles as getRolesApi, deleteRoles as deleteRolesApi } from '@/api/role'
+import { getRoles as getRolesApi, deleteRoles as deleteRolesApi, getPremits as getPremitsApi  } from '@/api/role'
 import { parseTime } from '@/utils'
 import { mapState } from 'vuex'
 import STable from '_c/STable'
@@ -55,8 +55,10 @@ export default {
         currPage: 1,
         pageSize: 10,
       },
+      // premitList: [],             // 权限列表
+      premitList: {},               // 权限列表：分模块
       selectedItems:[],
-      roleList: [],
+      roleList: [],               // 角色列表
       total: 0,
       columns: [
         {
@@ -120,6 +122,17 @@ export default {
     }
   },
   methods: {
+    getPremitList() {
+      getPremitsApi(this.corid).then((result) => {
+        console.log('未理的权限列表', result)
+        let { organize, recruited } = result
+        this.premitList = {
+          organize,
+          recruited
+        }
+        console.log('处理后的权限列表', this.premitList)
+      }).catch((err) => { })
+    },
     getRoleList() {
       getRolesApi(this.corid, this.listQuery).then((result) => {
         console.log('角色列表', result)
@@ -162,6 +175,7 @@ export default {
   },
   mounted() {
     this.getRoleList()
+    this.getPremitList()
   }
 }
 </script>

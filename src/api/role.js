@@ -221,8 +221,7 @@ export const getPremits = () => {
       page: {
         totalCount: 4
       },
-      data: [
-        {
+      organize: [{
           "menuId": 1,
           "parentId": 0,
           "parentName": null,
@@ -412,7 +411,8 @@ export const getPremits = () => {
           "useCache": null,
           "query": null
         },
-        {
+      ],
+      recruited: [ {
           alwaysShow: null,
           hidden: null,
           icon: "recruited",
