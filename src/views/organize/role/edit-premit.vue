@@ -1,44 +1,32 @@
 <template>
-  <div>
-    <div @click="handleClick">
-      <slot name="action-btn"></slot>
-    </div>
-    <el-dialog
-      title="修改角色权限"
-      :visible.sync="dialogFormVisible"
-      width="800px"
-      class="role-dialog"
-      :append-to-body="true"
-    >
-      <el-collapse v-for="(premit, key) in premitData" :key="key">
+  <div class="app-container">
+    <h1 class="page-title"> 修改角色权限{{$route.params.id}} </h1>
+    <div class="edit-role-wrapper">
+      <el-collapse v-for="(premit, key) in premitList" :key="key">
         <el-collapse-item>
           <template slot="title">{{key}}</template>
           <el-checkbox v-for="item in premit" :key="item.menuId">{{item.title}}</el-checkbox>
         </el-collapse-item>
       </el-collapse>
-    </el-dialog>
+      <!-- <el-collapse>
+        <el-collapse-item v-for="(premit, key) in premitList" :key="key">
+          <template slot="title">{{key}}</template>
+          <el-checkbox v-for="item in premit" :key="item.menuId">{{item.title}}</el-checkbox>
+        </el-collapse-item>
+      </el-collapse> -->
+    </div> 
   </div>
 </template>
 <script>
-import { getRolePremit as getRolePremitApi} from '@/api/role'
+import { getRolePremit as getRolePremitApi, getPremits as getPremitsApi} from '@/api/role'
 import { mapState } from 'vuex'
 export default {
   name: 'edit-role-premit',
-  props: {
-    data: {
-      type: Object,
-      required: true
-    },
-    premitData: {
-      type: Object,
-      default: () => ({})
-    }
-  },
   data() {
     return {
-      dialogFormVisible: false,
       roleOwnPremit: [],          // 该角色所拥有的权限
       role: null,                 // 角色基本信息
+      premitList: {},               // 权限列表：分模块
     }
   },
   computed: {
@@ -47,18 +35,21 @@ export default {
     })
   },
   methods: {
-    handleClick() {
-      let id = this.data.role_id
-      // 修改：获取角色信息加获取角色权限信息
-      getRolePremitApi(id).then((result) => {
-        this.dialogFormVisible = true
-        console.log('获取单个角色的权限', result)
-        let { data } = result
-        this.roleOwnPremit = data
-        
-      })
-    }
+    getPremitList() {
+      getPremitsApi(this.corid).then((result) => {
+        console.log('未理的权限列表', result)
+        let { organize, recruited } = result
+        this.premitList = {
+          organize,
+          recruited
+        }
+        console.log('处理后的权限列表', this.premitList)
+      }).catch((err) => { })
+    },
   },
+  mounted() {
+    this.getPremitList()
+  }
 }
 </script>
 <style lang="less" scoped>
@@ -67,11 +58,8 @@ export default {
 </style>
 
 <style lang="less">
-
-.role-dialog {
-  .el-dialog {
-    min-height: 400px;
-  }
+.edit-role-wrapper {
+  margin-top: 25px;
   .el-collapse {
     margin-bottom: 25px;
     border: none;
@@ -90,7 +78,6 @@ export default {
       }
     }
   }
-  
 }
 
 </style>

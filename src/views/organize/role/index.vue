@@ -18,35 +18,51 @@
         </template>
       </template>
       <template v-slot:action="{scope}">
-        <!-- <edit-role :data="scope.row" :departs-tree="departList" class="handle-btn" @on-edit-success="getRoleList" v-slot:btn-label>编辑</edit-role> -->
-        <edit-role-premit class="handle-btn" :data="scope.row" :premit-data="premitList">
-          <template v-slot:action-btn="{scope}">
-            <el-button type="text" size="small">修改角色权限</el-button>
-          </template>
-        </edit-role-premit>
-        <el-button type="text" size="small" @click="handleDelete([scope.row])">删除</el-button>
-      </template>
+        <el-dropdown trigger="click">
+          <el-button type="info" size="mini">
+            操作<i class="el-icon-arrow-down el-icon--right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <details-role class="el-dropdown-menu__item" :data="scope.row">
+              <template v-slot:action-btn>
+                <el-button type="text" size="small">查看</el-button>
+              </template>
+            </details-role>
+            <edit-role-info class="el-dropdown-menu__item" :data="scope.row" @on-edit-success="getRoleList">
+              <template v-slot:action-btn>
+                <el-button type="text" size="small">编辑</el-button>
+              </template>
+            </edit-role-info>
+            <el-dropdown-item>
+              <el-button type="text" size="small"  @click="handleEditPremit(scope.row)">修改角色权限</el-button>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <el-button type="text" size="small" @click="handleDelete([scope.row])">删除</el-button>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </template>   
     </s-table>
     <pagination v-show="total>0" :total="total" :curr.sync="listQuery.currPage" :size.sync="listQuery.pageSize" @on-page-change="getRoleList"/>
   </div>
 </template>
 <script>
-import { getRoles as getRolesApi, deleteRoles as deleteRolesApi, getPremits as getPremitsApi  } from '@/api/role'
+import { getRoles as getRolesApi, deleteRoles as deleteRolesApi } from '@/api/role'
 import { parseTime } from '@/utils'
 import { mapState } from 'vuex'
 import STable from '_c/STable'
 import Pagination from '_c/Pagination'
+import detailsRole from './details'
 import addRole from './add'
 import editRoleInfo from './edit-info'
-import editRolePremit from './edit-premit'
 export default {
   name: 'role',
   components: {
     STable,
     Pagination,
+    detailsRole,
     addRole,
     editRoleInfo,
-    editRolePremit
   },
   data() {
     return {
@@ -55,8 +71,7 @@ export default {
         currPage: 1,
         pageSize: 10,
       },
-      // premitList: [],             // 权限列表
-      premitList: {},               // 权限列表：分模块
+
       selectedItems:[],
       roleList: [],               // 角色列表
       total: 0,
@@ -89,16 +104,7 @@ export default {
           attrs: {
             prop: 'remark',
             label: '描述',
-            width: '200',
             align: "center"
-          }
-        },
-        {
-          slot: 'permit',
-          attrs: {
-            prop: 'menu_list',
-            label: '拥有权限',
-            align: 'center'
           }
         },
         {
@@ -122,17 +128,6 @@ export default {
     }
   },
   methods: {
-    getPremitList() {
-      getPremitsApi(this.corid).then((result) => {
-        console.log('未理的权限列表', result)
-        let { organize, recruited } = result
-        this.premitList = {
-          organize,
-          recruited
-        }
-        console.log('处理后的权限列表', this.premitList)
-      }).catch((err) => { })
-    },
     getRoleList() {
       getRolesApi(this.corid, this.listQuery).then((result) => {
         console.log('角色列表', result)
@@ -143,6 +138,10 @@ export default {
     },
     handleSearch() {
       this.getRoleList()
+    },
+    handleEditPremit(role) {
+      // console.log(role)
+      this.$router.push({name: 'edit-role-premit', params:{id: role.role_id}})
     },
     deleteSelectedItems() {
       // 删除
@@ -175,7 +174,6 @@ export default {
   },
   mounted() {
     this.getRoleList()
-    this.getPremitList()
   }
 }
 </script>

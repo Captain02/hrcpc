@@ -45,7 +45,7 @@
             </edit-user-info>
 
             <el-dropdown-item>
-              <el-button type="text" size="small" class="el-dropdown-menu__item" @click="handleDelete([scope.row])">删除</el-button>
+              <el-button type="text" size="small" @click="handleDelete([scope.row])">删除</el-button>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>

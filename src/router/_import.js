@@ -12,7 +12,7 @@ let map = {
   depart: () => import('@/views/organize/depart'),
   // permit: () => import('@/views/organize/permit'),
   role: () => import('@/views/organize/role'),
-  // 'edit-role': () => import('@/views/organize/role/edit'),
+  'edit-role-premit': () => import('@/views/organize/role/edit-premit'),
 
   // picture: () => import('@/views/layout'),
   // 社团相册
