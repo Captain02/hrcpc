@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 let roleList = [
-  {role_id: 1, role_name: '超级管理员', create_time: '2019-5-14 18:20:36', remark: 'big boss', menu_list: [
+  {role_id: 2, role_name: '超级管理员', create_time: '2019-5-14 18:20:36', remark: 'big boss', menu_list: [
     {menu_id: 1, title: '添加用户'},
     {menu_id: 2, title: '删除用户'},
     {menu_id: 3, title: '修改用户'},
@@ -9,7 +9,7 @@ let roleList = [
     {menu_id: 5, title: '删除部门'},
     {menu_id: 6, title: '修改部门'}
   ]},
-  {role_id: 2, role_name: '管理员', create_time: '2019-6-4 17:20:36', remark: '管理者', menu_list: [
+  {role_id: 1, role_name: '管理员', create_time: '2019-6-4 17:20:36', remark: '管理者', menu_list: [
     {menu_id: 1, title: '添加用户'},
     {menu_id: 2, title: '删除用户'},
     {menu_id: 3, title: '修改用户'}
@@ -29,7 +29,7 @@ let roleList = [
  * @param {Number} pageSize 每页的大小
  * 
  */
-export const getRoles = (corId, {roleName, currPage, pageSize}) => {
+export function getRoles(corId, { roleName, currPage, pageSize } = { roleName: '', currPage: '', pageSize: '' }){
   // return request({
   //   baseURL: 'http://192.168.137.182:8081/HBO/sys',
   //   url: '/role/list',

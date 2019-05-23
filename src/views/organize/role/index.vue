@@ -22,7 +22,7 @@
           <el-button type="info" size="mini">
             操作<i class="el-icon-arrow-down el-icon--right"></i>
           </el-button>
-          <el-dropdown-menu slot="dropdown">
+          <el-dropdown-menu slot="dropdown" class="action-dropdown">
             <details-role class="el-dropdown-menu__item" :data="scope.row">
               <template v-slot:action-btn>
                 <el-button type="text" size="small">查看</el-button>
@@ -184,4 +184,11 @@ export default {
     margin-bottom: 10px;
   }
 }
+.action-dropdown {
+  .el-dropdown-menu__item {
+    text-align: center;
+  }
+}
+
 </style>
+

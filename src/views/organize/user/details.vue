@@ -57,7 +57,7 @@
           <el-col :span="3"><span>拥有角色：</span> </el-col>
           <el-col :span="9">
             <template v-if="user.roles.length">
-              <el-tag style="margin-right: 15px;" v-for="role in user.roles" size="small" :key="role.role_id">{{role.role_name}}</el-tag>
+              <el-tag style="margin-right: 15px; font-size: 12px;" v-for="role in user.roles" size="small" :key="role.role_id">{{role.role_name}}</el-tag>
             </template>
             <template v-else>
               <span>无</span>
@@ -96,16 +96,16 @@ export default {
   },
   methods: {
     handleDetails() {
-      if(this.user === null){
+      // if(this.user === null){
         let id = this.data.user_id
         getUserApi(id, this.corid).then((result) => {
           this.dialogFormVisible = true
           this.user = result.data
           // console.log(this.user)
         }).catch((err) => { })
-      }else{
-        this.dialogFormVisible = true
-      }
+      // }else{
+      //   this.dialogFormVisible = true
+      // }
     }
   }
 }

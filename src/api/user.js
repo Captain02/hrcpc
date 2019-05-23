@@ -190,3 +190,21 @@ export const deleteAvatar = (id, url) => {
     }
   })
 }
+
+/**
+ * 修改用户部门信息
+ * @param {*} user_id 
+ * @param {*} dept_id 
+ * @param {*} corid 
+ */
+export const updateUserDepart = (user_id, dept_id, corid) => {
+  return request({
+    method: 'POST',
+    url: '/user/updataUserDept',
+    params: {
+      user_id,
+      dept_id,
+      corid
+    }
+  })
+}

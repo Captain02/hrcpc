@@ -19,7 +19,7 @@
         <el-row class="details-row">
           <el-col :span="3"><span>拥有权限：</span> </el-col>
           <el-col :span="21">
-            <el-tag v-for="menu in role.menu_list" :key="menu.menu_id" size="mini" style="margin:0 10px 10px 0">{{menu.title}}</el-tag>
+            <el-tag v-for="menu in role.menu_list" :key="menu.menu_id" size="mini" style="margin:0 10px 10px 0;font-size: 12px;">{{menu.title}}</el-tag>
           </el-col>
         </el-row>
         <el-row class="details-row">

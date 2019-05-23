@@ -31,19 +31,29 @@
           <el-button type="info" size="mini">
             操作<i class="el-icon-arrow-down el-icon--right"></i>
           </el-button>
-          <el-dropdown-menu slot="dropdown">
+          <el-dropdown-menu slot="dropdown" class="action-dropdown">
             <details-user :data="scope.row" class="el-dropdown-menu__item">
               <template v-slot:action-btn>
                 <el-button type="text" size="small" >查看 </el-button>
               </template>
             </details-user>
               <!-- <el-button type="text" size="small" class="el-dropdown-menu__item" @click="handleEdit(scope.row.user_id)">编辑</el-button> -->
+            
             <edit-user-info :data="scope.row" class="el-dropdown-menu__item" @on-edit-success="getUserList">
-                <template v-slot:action-btn>
-                  <el-button type="text" size="small" >编辑 </el-button>
-                </template>
+              <template v-slot:action-btn>
+                <el-button type="text" size="small" >编辑 </el-button>
+              </template>
             </edit-user-info>
-
+            <edit-user-role :data="scope.row" class="el-dropdown-menu__item" @on-edit-success="getUserList">
+              <template v-slot:action-btn>
+                <el-button type="text" size="small" >分配角色 </el-button>
+              </template>
+            </edit-user-role>
+            <edit-user-depart :data="scope.row" class="el-dropdown-menu__item" @on-edit-success="getUserList">
+              <template v-slot:action-btn>
+                <el-button type="text" size="small" >分配部门 </el-button>
+              </template>
+            </edit-user-depart>
             <el-dropdown-item>
               <el-button type="text" size="small" @click="handleDelete([scope.row])">删除</el-button>
             </el-dropdown-item>
@@ -62,6 +72,8 @@ import STable from '_c/STable'
 import Pagination from '_c/Pagination'
 import detailsUser from './details'
 import editUserInfo from './edit-info'
+import editUserRole from './edit-role'
+import editUserDepart from './edit-depart'
 
 export default {
   name: 'user',
@@ -69,7 +81,9 @@ export default {
     STable,
     Pagination,
     detailsUser,
-    editUserInfo
+    editUserInfo,
+    editUserRole,
+    editUserDepart
   },
   data () {
     return {
@@ -144,3 +158,12 @@ export default {
   }
 }
 </script>
+<style lang="less" scoped>
+.action-dropdown {
+  .el-dropdown-menu__item {
+    text-align: center;
+  }
+}
+
+</style>
+

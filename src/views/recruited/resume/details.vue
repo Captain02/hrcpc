@@ -85,16 +85,16 @@ export default {
   },
   methods: {
     handleDetails() {
-      if(this.resume === null) {
+      // if(this.resume === null) {
         let id = this.data.user_id
         getResumeApi(id).then((result) => {
           this.dialogFormVisible = true
           console.log('根据id获取简历信息', result)
           this.resume = result.data[0]
         }).catch((err) => { })
-      }else{
-        this.dialogFormVisible = true
-      }
+      // }else{
+      //   this.dialogFormVisible = true
+      // }
     }
   }
 }
