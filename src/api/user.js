@@ -1,38 +1,6 @@
 import request from '@/utils/request'
 
 /**
- * 获取院系、系别信息，若想查询所有的院系 类型id为 1，要是想查询某个学院下的系，typeid=null(不填)，parentid等于学院id
- * @param {*} typeId 类型id   
- * @param {*} parentValue 父类id    
- */
-export const getCollegeInfo = (typeId, parentValue) => {
-  return request({
-    baseURL: 'http://140.143.201.244:8081/HBO/sys/comm/',
-    method: 'GET',
-    url: '/getselectes',
-    params: {
-      typeId,
-      parentValue
-    }
-  })
-}
-
-/**
- * 获取当前用户信息
- * @param {Number} 所在社团id
- * @description 将token放入请求头的Authorization字段
- */
-export const getUserInfo = (corid) => {
-  return request({
-    method: 'GET',
-    url: '/user/info',
-    params:{
-      corid
-    }
-  })
-}
-
-/**
  * 获取用户列表
  * @param {String} corid 社团id
  * @param {Number} pn 页码
@@ -72,22 +40,6 @@ export const getUser = (id, corid) => {
   })
 }
 
-
-/**
- * 修改密码
- * @param {String} password 
- * @param {String} newPassword 
- */
-export const changePwd = (password, newPassword) => {
-  return request({
-    url: '/user/password',
-    method: 'POST',
-    params: {
-      password,
-      newPassword
-    }
-  })
-}
 
 /**
  * 添加社团用户
@@ -163,39 +115,26 @@ export const updateUser = ( userId, name, gender, email, mobile, wechart, qq, de
 /**
  * 删除社团用户
  * @param {Array} userIds 
+ * @param {Number} corid
  */
-export const deleteUsers = (userIds) => {
+export const deleteUsers = (userIds, corid) => {
   userIds = userIds.join(',')
   return request({
     url: '/user/delete',
     method: 'POST',
     params: {
-      userIds
+      userIds,
+      corid
     }
   })
 }
 
-/**
- * 删除头像
- * @param {Number} id fileId
- * @param {*} url 头像的url
- */
-export const deleteAvatar = (id, url) => {
-  return request({
-    url: '',
-    method: 'POST',
-    params: {
-      id,
-      url
-    }
-  })
-}
 
 /**
  * 修改用户部门信息
- * @param {*} user_id 
- * @param {*} dept_id 
- * @param {*} corid 
+ * @param {Number} user_id 
+ * @param {Number} dept_id 
+ * @param {Number} corid 
  */
 export const updateUserDepart = (user_id, dept_id, corid) => {
   return request({

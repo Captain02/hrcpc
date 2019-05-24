@@ -28,6 +28,3 @@ export const getToken = () => {
     method: 'POST'
   })
 }
-// export const logout = () => {
-//   return 
-// }

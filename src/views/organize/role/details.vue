@@ -31,7 +31,7 @@
   </div>
 </template>
 <script>
-import { getRole as getRoleApi } from '@/api/role'
+import { getRole as getRoleApi, getRolePremit as getRolePremitApi } from '@/api/role'
 export default {
   name: 'details-role',
   props: {
@@ -49,8 +49,13 @@ export default {
   methods: {
     handleDetails() {
       let id = this.data.role_id
-      getRoleApi(id).then((result) => {
-        this.role = result.data 
+      Promise.all([getRoleApi(id), getRolePremitApi(id)]).then((result) => {
+        let [ roleInfo, rolePremit ] = result
+        this.role = {
+          ...roleInfo.data[0],
+          menu_list: rolePremit.data
+        }
+        // console.log(this.role)
         this.dialogFormVisible = true
       }).catch((err) => { })
     }

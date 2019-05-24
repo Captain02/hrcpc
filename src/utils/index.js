@@ -101,7 +101,7 @@ export function transferData2Tree(rootId, list, parentId, keyId, children) {
         const list = handle(item[keyId])
         if (item[children]) {
           item[children] = [].concat(item[children], list)
-        } else {
+        } else if(list.length){
           item[children] = list
         }
         arr.push(item)

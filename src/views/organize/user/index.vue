@@ -138,7 +138,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteUsersApi(ids).then((result) => {
+        deleteUsersApi(ids, this.corid).then((result) => {
           this.$message.success('删除成功')
           this.getUserList()
         }).catch((err) => {

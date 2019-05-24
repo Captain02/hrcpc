@@ -19,11 +19,11 @@
         size="small"
         :hide-required-asterisk="true"
       >
-        <el-form-item prop="roleName" label="角色名称：">
-          <el-input v-model="role.roleName" placeholder="请输入角色名称"></el-input>
+        <el-form-item prop="role_name" label="角色名称：">
+          <el-input v-model="role.role_name" placeholder="请输入角色名称"></el-input>
         </el-form-item>
         <el-form-item prop="remark" label="备注信息：">
-          <el-input v-model="role.roleName" type="textarea" placeholder=""></el-input>
+          <el-input v-model="role.remark" type="textarea" placeholder=""></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="editRole">保存</el-button> 
@@ -47,7 +47,7 @@ export default {
       dialogFormVisible: false,
       role: null,
       rules: {
-        roleName: [
+        role_name: [
           { required: true, message: '请输入角色名称！', trigger: 'blur' },
         ]
       }
@@ -57,14 +57,14 @@ export default {
     handleEdit() {
       let id = this.data.role_id
       getRoleApi(id).then((result) => {
-        this.role = result.data 
+        this.role = result.data[0]
         this.dialogFormVisible = true
       }).catch((err) => { })
     },
     editRole() {
       this.$refs['roleForm'].validate((valid) => {
         if(!valid){
-          this.$message.error('请添加相关项目！')
+          this.$message.error('请填写相关项目！')
           return 
         }
         updateRoleApi(this.role.role_id, this.role.role_name, this.role.remark).then((result) => {

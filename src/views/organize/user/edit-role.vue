@@ -18,10 +18,13 @@
           :hide-required-asterisk="true"
         >
           <el-form-item prop="roles" label="角色：">
-            <el-select v-model="user.roles" multiple placeholder="请选择角色">
+            <!-- <el-select v-model="user.roles" multiple placeholder="请选择角色" >
               <el-option v-for="role in roles" :key="role.role_id" :label="role.role_name"
       :value="role.role_id"></el-option>
-            </el-select>
+            </el-select> -->
+             <el-checkbox-group v-model="user.roles">
+               <el-checkbox v-for="role in roles" :key="role.role_id" :label="role.role_id" :true-label="role.role_id" @change="handleChange">{{role.role_name}}</el-checkbox>
+             </el-checkbox-group>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="editUser">保存</el-button> 
@@ -73,6 +76,9 @@ export default {
         this.dialogFormVisible = true
         console.log(this.user, this.roles)
       })
+    },
+    handleChange(val) {
+      console.log(val)
     },
     editUser() {
 

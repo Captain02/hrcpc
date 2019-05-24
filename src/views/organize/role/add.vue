@@ -22,7 +22,7 @@
           <el-input v-model="role.roleName" placeholder="请输入角色名称"></el-input>
         </el-form-item>
         <el-form-item prop="remark" label="备注信息：">
-          <el-input v-model="role.roleName" type="textarea" placeholder=""></el-input>
+          <el-input v-model="role.remark" type="textarea" placeholder=""></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="addRole">添加</el-button> 

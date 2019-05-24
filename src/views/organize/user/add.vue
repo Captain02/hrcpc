@@ -64,7 +64,8 @@
   </div>
 </template>
 <script>
-import { addUser as addUserApi, getCollegeInfo as getCollegeInfoApi } from '@/api/user'
+import { addUser as addUserApi } from '@/api/user'
+import { getCollegeInfo as getCollegeInfoApi } from '@/api/comm'
 import { mapState } from 'vuex'
 import MceEditor from '@/components/MceEditor'
 window.tinymce.baseURL = '/static/tinymce'

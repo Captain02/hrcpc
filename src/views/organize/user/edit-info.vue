@@ -60,7 +60,8 @@
   </div>
 </template>
 <script>
-import { getUser as getUserApi, updateUser as updateUserApi, getCollegeInfo as getCollegeInfoApi } from '@/api/user'
+import { getUser as getUserApi, updateUser as updateUserApi } from '@/api/user'
+import { getCollegeInfo as getCollegeInfoApi } from '@/api/comm'
 import { mapState } from 'vuex'
 import MceEditor from '@/components/MceEditor'
 window.tinymce.baseURL = '/static/tinymce'
@@ -148,47 +149,6 @@ export default {
           this.dialogFormVisible = true
         })
       })
-      // Promise.all([getCollegeInfoApi(this.typeId, this.parentValue), getUserApi(id, this.corid)])
-      // .then((result) => {
-      //   // console.log(result)
-      //   let [collegeResult, userResult] = result
-      //   let { data: list } = collegeResult
-      //   let user = Object.assign({}, userResult.data) 
-      //   this.options = list.map((item) => {
-      //     // 查找parentId，item.value是汉字
-      //     if(item.value === user.college){
-      //       // 将college对应的学院设置成id
-      //       user.college = item.id
-      //       this.parentValue = item.id
-      //     }
-      //     return {id: item.id, label: item.value, value: item.id, children: []}
-      //   })
-      //   // 查找院系所对应的专业
-      //   getCollegeInfoApi(null, this.parentValue).then((res => {
-      //     let { data } = res
-      //     this.options.some((item) => {
-      //       if(item.id === this.parentValue){
-      //         item.children = data.map((child) => {
-      //           if(child.value === user.collegetie){
-      //             // 将collegetie对应的系别设置成id
-      //             user.collegetie = child.id
-      //           }
-      //           return { id: child.id, label: child.value, value: child.id }
-      //         })
-      //         return true
-      //       }
-      //     })
-      //     this.user = user
-          
-      //     // 将院系专业信息设置为数组
-      //     this.$set(this.user, 'collegeInfo', [user.college, user.collegetie])
-      //     this.dialogFormVisible = true
-      //   }))
-        
-      // })
-      // .catch((err) => {
-      //   console.log(err)
-      // })
     },
     getIdByCollegeValue(name) {
       let id = null

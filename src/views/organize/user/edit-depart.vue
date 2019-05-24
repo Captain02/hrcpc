@@ -18,7 +18,7 @@
           :hide-required-asterisk="true"
         >
           <el-form-item prop="roles" label="部门：">
-            <tree-select v-model="user.depart" :options="departs" :normalizer="normalizer" placeholder="请选择部门" noChildrenText="无子部门"></tree-select>
+            <tree-select v-model="user.depart" :options="departs" :normalizer="normalizer" placeholder="请选择部门"></tree-select>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="editUser">保存</el-button> 

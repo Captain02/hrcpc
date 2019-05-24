@@ -1,5 +1,5 @@
 import { login as loginApi, getToken as getTokenApi } from '@/api/login'
-import { getUserInfo as getUserInfoApi } from '@/api/user'
+import { getUserInfo as getUserInfoApi } from '@/api/account'
 import { getToken, setToken, removeToken, getCorId, setCorId } from '@/utils/cookie'
 
 const user = {

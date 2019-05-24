@@ -151,7 +151,7 @@ export default {
       // 删除
       let ids = []
       items.forEach((item) => {
-        ids.push(item.user_id)
+        ids.push(item.role_id)
       })
       // console.log(ids)
       this.$confirm('确定要删除吗?', '提示', {

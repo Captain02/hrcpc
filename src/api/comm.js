@@ -1,106 +1,22 @@
 import request from '@/utils/request'
 
 /**
- * 获取社团的角色列表
- * @param {Number} corId 社团id
- * @param {String} roleName 角色名
- * @param {Number} currPage 当前页
- * @param {Number} pageSize 每页的大小
- * 
+ * 获取院系、系别信息，若想查询所有的院系 类型id为 1，要是想查询某个学院下的系，typeid=null(不填)，parentid等于学院id
+ * @param {*} typeId 类型id   
+ * @param {*} parentValue 父类id    
  */
-export function getRoles(corId, { roleName, currPage, pageSize } = {}){
+export const getCollegeInfo = (typeId, parentValue) => {
   return request({
-    url: '/role/list',
+    baseURL: 'http://140.143.201.244:8081/HBO/sys/comm/',
     method: 'GET',
+    url: '/getselectes',
     params: {
-      corId,
-      roleName,
-      currPage,
-      pageSize
+      typeId,
+      parentValue
     }
   })
 }
 
-/**
- * 根据id获取单个角色信息
- * @param {Number} roleId 
- */
-export const getRole = (roleId) => {
-  return request({
-    url: '/role/selectRoleById',
-    method: 'GET',
-    params: {
-      roleId
-    }
-  })
-}
-
-
-/**
- * 添加社团角色
- * @param {Number} corId 
- * @param {String} roleName 
- * @param {String} remark 备注信息
- */
-export const addRole = (corId, {roleName, remark}) => {
-  return request({
-    url: '/role/save',
-    method: 'POST',
-    params: {
-      corId,
-      roleName,
-      remark
-    }
-  })
-}
-
-/**
- * 更新角色基本信息
- * @param {Number} roleId 
- * @param {String} roleName 
- * @param {String} remark 
- */
-export const updateRole = (roleId, roleName, remark) => {
-  return request({
-    url: '/role/update',
-    method: 'POST',
-    params: {
-      roleId,
-      roleName,
-      remark
-    }
-  })
-}
-
-
-/**
- * 删除角色
- * @param {Array} roleIds 
- */
-export const deleteRoles = (roleIds) => {
-  roleIds = roleIds.join(',')
-  return request({
-    url: '/role/delete',
-    method: 'GET',
-    params: {
-      roleId: roleIds
-    }
-  })
-}
-
-/**
- * 根据角色id获取该角色所拥有的权限
- * @param {Number} roleid 
- */
-export const getRolePremit = (roleid) => {
-  return request({
-    url: '/user/getUserPermission',
-    method: 'GET',
-    params: {
-      roleid
-    }
-  })
-}
 
 /**
  * 获取社团的所有权限信息
