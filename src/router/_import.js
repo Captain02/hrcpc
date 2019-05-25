@@ -6,13 +6,13 @@ let map = {
   // organize: () => import('@/views/layout'),
   // 组织管理
   user: () => import('@/views/organize/user'),
-  'add-user': () => import('@/views/organize/user/add'),
+  'add-user': () => import('@/views/organize/user/modules/add'),
   // 'details-user': () => import('@/views/organize/user/details'),
   // 'edit-user': () => import('@/views/organize/user/edit'),
   depart: () => import('@/views/organize/depart'),
   // permit: () => import('@/views/organize/permit'),
   role: () => import('@/views/organize/role'),
-  'edit-role-premit': () => import('@/views/organize/role/edit-premit'),
+  'edit-role-premit': () => import('@/views/organize/role/modules/edit-premit'),
 
   // picture: () => import('@/views/layout'),
   // 社团相册

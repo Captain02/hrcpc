@@ -67,13 +67,13 @@
 <script>
 import {getUsers as getUsersApi, deleteUsers as deleteUsersApi } from '@/api/user'
 import { mapState } from 'vuex'
-import { columns } from './dada'
+import { columns } from './modules/dada'
 import STable from '_c/STable'
 import Pagination from '_c/Pagination'
-import detailsUser from './details'
-import editUserInfo from './edit-info'
-import editUserRole from './edit-role'
-import editUserDepart from './edit-depart'
+import detailsUser from './modules/details'
+import editUserInfo from './modules/edit-info'
+import editUserRole from './modules/edit-role'
+import editUserDepart from './modules/edit-depart'
 
 export default {
   name: 'user',

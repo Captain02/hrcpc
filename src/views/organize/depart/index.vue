@@ -29,8 +29,8 @@ import { getDeparts as getDepartsApi, deleteDeparts as deleteDepartsApi } from "
 import { transferData2Tree } from '@/utils'
 import { mapState } from 'vuex'
 import STable from '_c/STable'
-import addDepart from './add'
-import editDepart from './edit'
+import addDepart from './modules/add'
+import editDepart from './modules/edit'
 export default {
   name: "depart",
   components: {

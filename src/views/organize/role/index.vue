@@ -52,9 +52,9 @@ import { parseTime } from '@/utils'
 import { mapState } from 'vuex'
 import STable from '_c/STable'
 import Pagination from '_c/Pagination'
-import detailsRole from './details'
-import addRole from './add'
-import editRoleInfo from './edit-info'
+import detailsRole from './modules/details'
+import addRole from './modules/add'
+import editRoleInfo from './modules/edit-info'
 export default {
   name: 'role',
   components: {

@@ -59,12 +59,12 @@
 <script>
 import { getResumes as getResumesApi, deleteResume as deleteResumeApi } from '@/api/recruited/resume'
 import { mapState } from 'vuex'
-import { columns, options } from './data'
+import { columns, options } from './modules/data'
 import STable from '_c/STable'
 import Pagination from '_c/Pagination'
-import countPanel from './count-panel'
-import detailsResume from './details'
-import editResume from './edit'
+import countPanel from './modules/count-panel'
+import detailsResume from './modules/details'
+import editResume from './modules/edit'
 export default {
   name: 'resume-list',
   components: {
