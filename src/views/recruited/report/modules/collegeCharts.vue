@@ -84,6 +84,13 @@ export default {
             show: false
           }
         }],
+        toolbox: {
+          show : true,
+          feature : {
+            saveAsImage : {show: true}
+          }
+        },
+        calculable : true,
         series: [
           {
             name: '人数',

@@ -17,39 +17,39 @@
           <el-col :span="3"><span>头像：</span></el-col>
           <el-col :span="21">
             <div class="avatar-area">
-              <img :src="user.filepath ? user.filepath : ''">
+              <img :src="user.filepath || ''">
             </div>
           </el-col>
         </el-row>
         <el-row class="details-row">
           <el-col :span="3"><span>姓名：</span> </el-col>
-          <el-col :span="9">{{user.name ? user.name : ''}}</el-col>
+          <el-col :span="9">{{user.name || ''}}</el-col>
           <el-col :span="3"><span>性别：</span> </el-col>
-          <el-col :span="9">{{user.gender ? user.gender : ''}}</el-col>
+          <el-col :span="9">{{user.gender || ''}}</el-col>
         </el-row>
         <el-row class="details-row">
           <el-col :span="3"><span>用户名：</span> </el-col>
-          <el-col :span="9">{{user.username ? user.username : ''}}</el-col>
+          <el-col :span="9">{{user.username || ''}}</el-col>
           <el-col :span="3"><span>学号：</span> </el-col>
-          <el-col :span="9">{{user.persionnum ? user.persionnum : ''}}</el-col>
+          <el-col :span="9">{{user.persionnum || ''}}</el-col>
         </el-row>
         <el-row class="details-row">
           <el-col :span="3"><span>院系：</span> </el-col>
-          <el-col :span="9">{{user.college ? user.college : ''}}</el-col>
+          <el-col :span="9">{{user.college || ''}}</el-col>
           <el-col :span="3"><span>专业：</span> </el-col>
-          <el-col :span="9">{{user.collegetie ? user.collegetie : ''}}</el-col>
+          <el-col :span="9">{{user.collegetie || ''}}</el-col>
         </el-row>
         <el-row class="details-row">
           <el-col :span="3"><span>邮箱：</span> </el-col>
-          <el-col :span="9">{{user.email ? user.email : ''}}</el-col>
+          <el-col :span="9">{{user.email || ''}}</el-col>
           <el-col :span="3"><span>手机号：</span> </el-col>
-          <el-col :span="9">{{user.mobile ? user.mobile : ''}}</el-col>
+          <el-col :span="9">{{user.mobile || ''}}</el-col>
         </el-row>
         <el-row class="details-row">
           <el-col :span="3"><span>QQ：</span> </el-col>
-          <el-col :span="9">{{user.QQ ? user.QQ : ''}}</el-col>
+          <el-col :span="9">{{user.QQ || ''}}</el-col>
           <el-col :span="3"><span>微信：</span> </el-col>
-          <el-col :span="9">{{user.wechart ? user.wechart : ''}}</el-col>
+          <el-col :span="9">{{user.wechart || ''}}</el-col>
         </el-row>
         <el-row class="details-row">
           <el-col :span="3"><span>所属部门：</span> </el-col>
@@ -66,7 +66,7 @@
         </el-row>
         <el-row class="details-row">
           <el-col :span="3"><span>自我描述：</span></el-col>
-          <el-col :span="21" v-html="user.descs ? user.descs : ''"></el-col>
+          <el-col :span="21" v-html="user.descs || ''"></el-col>
         </el-row>
       </template>
     </el-dialog>

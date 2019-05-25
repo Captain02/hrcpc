@@ -68,6 +68,13 @@ export default {
           bottom: '10',
           data: keys
         },
+        toolbox: {
+          show : true,
+          feature : {
+            saveAsImage : {show: true}
+          }
+        },
+        calculable : true,
         series: [
           {
             name: '男女比例',

@@ -11,7 +11,7 @@ import request from '@/utils/request'
 export function getRoles(corId, { roleName, currPage, pageSize } = {}){
   return request({
     url: '/role/list',
-    method: 'GET',
+    method: 'POST',
     params: {
       corId,
       roleName,

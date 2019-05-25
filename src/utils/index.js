@@ -74,6 +74,8 @@ export function proxyProp(prop) {
       if (prop[key] !== value) {
         Vue.set(prop, key, value);
       }
+      // console.log(Reflect)
+      
       return Reflect.set(target, key, value)
     }
   })

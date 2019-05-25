@@ -25,7 +25,7 @@
           ></el-tree>
         </el-col>
         <el-col :span="16">
-          <el-form
+          <!-- <el-form
            :model="depart"
            label-width="100px"
            :rules="rules"
@@ -41,7 +41,23 @@
             <el-form-item>
               <el-button type="primary" @click="addDepart">添加</el-button> 
             </el-form-item>
-          </el-form>
+          </el-form> -->
+          <s-form
+          label-width="100px"
+          ref="addForm"
+          :hide-required-asterisk="true"
+          :api="addDepartApi"
+          :form-items="formItems"
+          submit-context="添加"
+          :merge-form="mergeForm"
+          size="small"
+          >
+            <template v-slot:parent-depart>
+              <el-form-item label="上级部门：">
+                <strong class="text-label">{{mergeForm.parentName}}</strong> 
+              </el-form-item>
+            </template>
+          </s-form>
         </el-col>
       </el-row>
     </el-dialog>
@@ -51,9 +67,13 @@
 import { addDepart as addDepartApi} from '@/api/depart'
 import cloneDeep from 'clonedeep'
 import { mapState } from 'vuex'
+import SForm from '_c/SForm'
 
 export default {
   name: 'add-depart',
+  components: {
+    SForm
+  },
   props: {
     departsTree: {
       type: Array,
@@ -76,6 +96,32 @@ export default {
         name: [
           { required: true, message: '请输入部门名称！', trigger: 'blur' },
         ]
+      },
+
+
+
+
+      formItems: [
+        {
+          tag: "input",
+          key: 'name',
+          itemAttrs: {
+            label: "部门名称：",
+            rules: [
+              { required: true, message: '请输入部门名称！', trigger: 'blur' }
+            ],
+          },
+          attrs: {
+            placeholder: "请输入部门名称",
+          },
+        },
+        {
+          slot: 'parent-depart'
+        }
+      ],
+      mergeForm: {
+        parentId: 0,
+        parentName: '无上级部门'
       }
     }
   },
@@ -91,18 +137,22 @@ export default {
     }
   },
   methods: {
+    addDepartApi,
     resetForm() {
-      this.depart = {
-        name: '',
+      this.mergeForm = {
         parentId: 0,
         parentName: '无上级部门'
       }
     },
     handleAdd() {
-      this.resetForm()
+      // this.resetForm()
+      this.mergeForm.parentId = 0
+      this.mergeForm.parentName = '无上级部门'
       this.dialogFormVisible = true
+      
       this.$nextTick(() => {
-        this.$refs['departForm'].clearValidate()
+        this.$refs['addForm'].handleReset()
+        // this.$refs['departForm'].clearValidate()
       })
     },
     addDepart() {
@@ -122,8 +172,11 @@ export default {
     },
     handleClick(data) {
       // console.log(data)
-      this.depart.parentId = data.dept_id
-      this.depart.parentName = data.name
+      // this.depart.parentId = data.dept_id
+      // this.depart.parentName = data.name
+      // 代理
+      this.mergeForm.parentId = data.dept_id
+      this.mergeForm.parentName = data.name
     }
   }
 }

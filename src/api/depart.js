@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import { getCorId } from '@/utils/cookie'
 
 /**
  * 社团部门列表
@@ -9,7 +10,7 @@ export const getDeparts = (corId) => {
     url: '/dept/list',
     method:'GET',
     params: {
-      corId
+      corId: getCorId()
     }
   })
 }
@@ -35,13 +36,13 @@ export const getDepart = (deptId) => {
  * @param {String} name 
  * @param {Number} parentId 
  */
-export const addDepart = (corId, {name, parentId}) => {
+export const addDepart = ({name, parentId}) => {
   return request({
     // baseURL:'http://192.168.137.182:8081/HBO/sys',
     url: '/dept/save',
     method: 'POST',
     params: {
-      corId,
+      corId: getCorId(),
       name,
       parentId
     }
