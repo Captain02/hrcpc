@@ -1,16 +1,16 @@
 import request from '@/utils/request'
+import { getCorId } from '@/utils/cookie'
 
 /**
  * 获取报表数据
- * @param {Number} corId 
  * @param {Number} status 
  */
-export const getCharts = (corId, status) => {
+export const getCharts = (status) => {
   return request({
     url: '/resume/chart',
     method: 'POST',
     params: {
-      corId,
+      corId: getCorId(),
       status
     }
   })

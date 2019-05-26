@@ -1,31 +1,36 @@
 import request from '@/utils/request'
+import { getCorId } from '@/utils/cookie'
 
 
 /**
  * 获取当前用户信息
- * @param {Number} 所在社团id
  * @description 将token放入请求头的Authorization字段
  */
-export const getUserInfo = (corid) => {
+export const getUserInfo = () => {
   return request({
     method: 'GET',
     url: '/user/info',
     params:{
-      corid
+      corid: getCorId()
     }
   })
 }
 
 /**
  * 修改密码
+ * @param {Number} id
+ * @param {String} username
  * @param {String} password 
  * @param {String} newPassword 
  */
-export const changePwd = (password, newPassword) => {
+export const changePwd = ( id, username, password, newPassword) => {
   return request({
     url: '/user/password',
     method: 'POST',
     params: {
+      corid: getCorId(),
+      id,
+      username,
       password,
       newPassword
     }

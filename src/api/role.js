@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import { getCorId } from '@/utils/cookie'
 
 /**
  * 获取社团的角色列表
@@ -8,12 +9,12 @@ import request from '@/utils/request'
  * @param {Number} pageSize 每页的大小
  * 
  */
-export function getRoles(corId, { roleName, currPage, pageSize } = {}){
+export function getRoles({ roleName, currPage, pageSize } = {}){
   return request({
     url: '/role/list',
     method: 'POST',
     params: {
-      corId,
+      corId: getCorId(),
       roleName,
       currPage,
       pageSize
@@ -42,12 +43,12 @@ export const getRole = (roleId) => {
  * @param {String} roleName 
  * @param {String} remark 备注信息
  */
-export const addRole = (corId, {roleName, remark}) => {
+export const addRole = ({roleName, remark}) => {
   return request({
     url: '/role/save',
     method: 'POST',
     params: {
-      corId,
+      corId: getCorId(),
       roleName,
       remark
     }
@@ -120,7 +121,8 @@ export const getPremits = () => {
       page: {
         totalCount: 4
       },
-      organize: [{
+      data: {
+        organize: [{
           "menuId": 1,
           "parentId": 0,
           "parentName": null,
@@ -388,6 +390,8 @@ export const getPremits = () => {
           useCache: null,
         }
       ]
+      }
+      
     }
     setTimeout(() => {
       resolve(data)

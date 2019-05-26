@@ -1,20 +1,21 @@
 import request from '@/utils/request'
+import { getCorId } from '@/utils/cookie'
 
 /**
  * 获取用户列表
- * @param {String} corid 社团id
+ * @param {String} corid 社团id  cookie获取
  * @param {Number} pn 页码
  * @param {Number} size 每页大小
  * @param {String} sidx 排序字段
  * @param {String} order 排序方式，如：asc、desc
  * @param {String} username 用户名
  */
-export const getUsers = (corid, {page, size, sidx , order , username}) => {
+export const getUsers = ({page, size, sidx , order , username}) => {
   return request({
     url: '/user/list',
     method: 'GET',
     params: {
-      corid,
+      corid: getCorId(),
       page,
       size,
       sidx,
@@ -27,15 +28,15 @@ export const getUsers = (corid, {page, size, sidx , order , username}) => {
 /**
  * 获取单个用户信息
  * @param {Number} id 
- * @param {Number} corid 
+ * @param {Number} corid cookie获取
  */
-export const getUser = (id, corid) => {
+export const getUser = (id) => {
   return request({
     url: `/user/infoById/`,
     method: 'GET',
     params: {
       id,
-      corid
+      corid: getCorId()
     }
   })
 }
@@ -43,7 +44,7 @@ export const getUser = (id, corid) => {
 
 /**
  * 添加社团用户
- * @param {Number} corid 
+ * @param {Number} corid   cookie获取
  * @param {String} name 姓名
  * @param {String} username 用户名
  * @param {String} gender 性别
@@ -58,12 +59,12 @@ export const getUser = (id, corid) => {
  * @param {String} collegetie 系别
  * 
  */
-export const addUser = (corid, name, username, gender, persionnum, password, email, mobile, wechart, QQ, descs, college, collegetie) => {
+export const addUser = (name, username, gender, persionnum, password, email, mobile, wechart, QQ, descs, college, collegetie) => {
   return request({
     url: '/user/save',
     method: 'POST',
     params: {
-      corid,
+      corid: getCorId(),
       name,
       username,
       gender,
@@ -115,16 +116,16 @@ export const updateUser = ( userId, name, gender, email, mobile, wechart, qq, de
 /**
  * 删除社团用户
  * @param {Array} userIds 
- * @param {Number} corid
+ * @param {Number} corid  cookie获取
  */
-export const deleteUsers = (userIds, corid) => {
+export const deleteUsers = (userIds) => {
   userIds = userIds.join(',')
   return request({
     url: '/user/delete',
     method: 'POST',
     params: {
       userIds,
-      corid
+      corid: getCorId()
     }
   })
 }
@@ -136,14 +137,28 @@ export const deleteUsers = (userIds, corid) => {
  * @param {Number} dept_id 
  * @param {Number} corid 
  */
-export const updateUserDepart = (user_id, dept_id, corid) => {
+export const updateUserDepart = (user_id, dept_id) => {
   return request({
     method: 'POST',
     url: '/user/updataUserDept',
     params: {
       user_id,
       dept_id,
-      corid
+      corid: getCorId()
+    }
+  })
+}
+
+export const updateUserRole = (isRole, user_id, role_id) => {
+  isRole = Number(isRole)
+  return request({
+    url: '/user/updateUserRole',
+    method: 'POST',
+    params: {
+      corid: getCorId(),
+      isRole,
+      user_id,
+      role_id
     }
   })
 }

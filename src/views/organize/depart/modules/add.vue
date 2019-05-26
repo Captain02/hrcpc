@@ -48,8 +48,9 @@
           :hide-required-asterisk="true"
           :api="addDepartApi"
           :form-items="formItems"
-          submit-context="添加"
           :merge-form="mergeForm"
+          :btn-area="btnArea"
+          @after-submit="addSuccess"
           size="small"
           >
             <template v-slot:parent-depart>
@@ -86,17 +87,16 @@ export default {
       defaultProps: {
         label: 'name'
       },
-      // departsData: this.departsTree,
-      depart: {
-        name: '',
-        parentId: 0,
-        parentName: '无上级部门'
-      },
-      rules: {
-        name: [
-          { required: true, message: '请输入部门名称！', trigger: 'blur' },
-        ]
-      },
+      // depart: {
+      //   name: '',
+      //   parentId: 0,
+      //   parentName: '无上级部门'
+      // },
+      // rules: {
+      //   name: [
+      //     { required: true, message: '请输入部门名称！', trigger: 'blur' },
+      //   ]
+      // },
 
 
 
@@ -119,6 +119,14 @@ export default {
           slot: 'parent-depart'
         }
       ],
+      btnArea: {
+        submitBtn: {
+          props: {
+            type: 'primary'
+          },
+          text: '添加'
+        }
+      },
       mergeForm: {
         parentId: 0,
         parentName: '无上级部门'
@@ -126,9 +134,9 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      corid: (state) => state.user.corid
-    }),
+    // ...mapState({
+    //   corid: (state) => state.user.corid
+    // }),
     computDeparts() {
       let tree = []
       tree = [{dept_id: 0, name: '无上级部门', parent_id: 0}].concat(cloneDeep(this.departsTree))
@@ -145,9 +153,9 @@ export default {
       }
     },
     handleAdd() {
-      // this.resetForm()
-      this.mergeForm.parentId = 0
-      this.mergeForm.parentName = '无上级部门'
+      this.resetForm()
+      // this.mergeForm.parentId = 0
+      // this.mergeForm.parentName = '无上级部门'
       this.dialogFormVisible = true
       
       this.$nextTick(() => {
@@ -155,20 +163,25 @@ export default {
         // this.$refs['departForm'].clearValidate()
       })
     },
-    addDepart() {
-      this.$refs['departForm'].validate((valid) => {
-        if(!valid){
-          this.$message.error('请添加相关项目！')
-          return 
-        }
-        addDepartApi(this.corid, this.depart).then((result) => {
-          // console.log(result)
-          this.$message.success('添加成功!')
-          this.dialogFormVisible = false
-          this.$emit('on-add-success')
-        }).catch((err) => { })
-      })
+    // addDepart() {
+    //   this.$refs['departForm'].validate((valid) => {
+    //     if(!valid){
+    //       this.$message.error('请添加相关项目！')
+    //       return 
+    //     }
+    //     addDepartApi(this.corid, this.depart).then((result) => {
+    //       // console.log(result)
+    //       this.$message.success('添加成功!')
+    //       this.dialogFormVisible = false
+    //       this.$emit('on-add-success')
+    //     }).catch((err) => { })
+    //   })
       
+    // },
+    addSuccess() {
+      this.$message.success('添加成功!')
+      this.dialogFormVisible = false
+      this.$emit('on-add-success')
     },
     handleClick(data) {
       // console.log(data)

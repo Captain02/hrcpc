@@ -74,7 +74,6 @@
 </template>
 <script>
 import { getUser as getUserApi } from '@/api/user'
-import { mapState } from 'vuex'
 export default {
   name: 'details-user',
   props: {
@@ -89,16 +88,11 @@ export default {
       user: null
     }
   },
-  computed: {
-    ...mapState({
-      corid: (state) => state.user.corid
-    })
-  },
   methods: {
     handleDetails() {
       // if(this.user === null){
         let id = this.data.user_id
-        getUserApi(id, this.corid).then((result) => {
+        getUserApi(id).then((result) => {
           this.dialogFormVisible = true
           this.user = result.data
           // console.log(this.user)

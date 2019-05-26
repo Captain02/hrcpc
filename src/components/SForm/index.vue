@@ -21,12 +21,12 @@
         ></component>
       </el-form-item>
     </template>
-    <el-form-item v-if="submit || reset">
-      <el-button @click="handleSubmit" type="primary" v-if="submit">{{
-        $attrs.submitContext || "搜索"
+    <el-form-item>
+      <el-button @click="handleSubmit" v-bind="btnArea.submitBtn.props" v-if="btnArea.submitBtn">{{
+        btnArea.submitBtn.text
       }}</el-button>
-      <el-button @click="handleReset" v-if="reset">{{
-        $attrs.resetContext || "重置"
+      <el-button @click="handleReset"  v-bind="btnArea.resetBtn.props" v-if="btnArea.resetBtn">{{
+       btnArea.resetBtn.text
       }}</el-button>
     </el-form-item>
   </el-form>
@@ -52,14 +52,14 @@ export default {
       type: Array,
       required: true
     },
-    submit: {
-      type: Boolean,
-      default: true
-    },
-    reset: {
-      type: Boolean,
-      default: false
-    },
+    // submit: {
+    //   type: Boolean,
+    //   default: true
+    // },
+    // reset: {
+    //   type: Boolean,
+    //   default: false
+    // },
     api: {
       type: Function,
       required: true
@@ -67,7 +67,30 @@ export default {
     //传入mergeForm允许父组件修改内部Model对象
     mergeForm: {
       type: Object,
-      default: () => {}
+      default: () => ({})
+    },
+    btnArea: {
+      type: Object,
+      default: () => ({
+        submitBtn: {
+          props: {
+            type: 'primary'
+          },
+          text: '搜索'
+        },
+        resetBtn: {
+          props: {
+            type: 'primary'
+          },
+          text: '重置'
+        }
+      })
+    },
+    beforeSubmit: {
+      type: Function,
+      default: () => {
+        return () => {}
+      }
     }
     // refName: {
     //   type: String,
@@ -102,7 +125,7 @@ export default {
           // console.log(item.key, value)
           this.$set(this.formModel, item.key ,value)
         })
-        console.log('formItems', this.formModel) 
+        // console.log('formItems', this.formModel) 
         this.originModel = JSON.parse(JSON.stringify(this.formModel))
       },
       deep: true,
@@ -139,7 +162,7 @@ export default {
     },
     mergeModel() {
       this.formModel = Object.assign({}, this.formModel, this.mergeForm)
-      console.log('form', this.formModel)
+      // console.log('form', this.formModel)
     },
     handleSubmit() {
       this.$refs[form].validate((valid) => {
@@ -147,6 +170,8 @@ export default {
           this.$message.error('请填写相关项目')
           return 
         }
+        this.beforeSubmit(this.formModel)
+        console.log(this.beforeSubmit)
         console.log('submit', this.formModel)
         this.api(this.formModel).then((result) => {
           let {data} = result
@@ -158,18 +183,22 @@ export default {
     },
     handleReset() {
       this.$refs[form].clearValidate()
-      // this.formModel = JSON.parse(JSON.stringify(this.originModel))
+      this.formModel = JSON.parse(JSON.stringify(this.originModel))
+      this.mergeModel()
     }
   },
   mounted() {
     //代理父组件的mergeForm属性
-    let parentComponent = findComponentByProp(this, "mergeForm")
-    if (parentComponent) {
-      parentComponent.mergeForm = proxyProp(parentComponent.mergeForm)
-    } else {
-      throw new Error("can not find parentComponent")
+    if(Object.keys(this.mergeForm).length){
+      let parentComponent = findComponentByProp(this, "mergeForm")
+      if (parentComponent) {
+        parentComponent.mergeForm = proxyProp(parentComponent.mergeForm)
+      } else {
+        throw new Error("can not find parentComponent")
+      }
+      //mounted钩子中formItems是空数组,所以不在mounted里面操作formItems
     }
-    //mounted钩子中formItems是空数组,所以不在mounted里面操作formItems
+    
   },
 }
 </script>

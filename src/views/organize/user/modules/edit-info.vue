@@ -62,7 +62,6 @@
 <script>
 import { getUser as getUserApi, updateUser as updateUserApi } from '@/api/user'
 import { getCollegeInfo as getCollegeInfoApi } from '@/api/comm'
-import { mapState } from 'vuex'
 import MceEditor from '@/components/MceEditor'
 window.tinymce.baseURL = '/static/tinymce'
 window.tinymce.suffix = '.min'
@@ -101,9 +100,6 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      corid: (state) => state.user.corid
-    }),
     computedCollege() {
       let collegeId = this.user.collegeInfo[0]
       let majorId = this.user.collegeInfo[1]
@@ -125,7 +121,7 @@ export default {
   methods: {
     handleEdit() {
       let id = this.data.user_id
-      getUserApi(id, this.corid).then((result) => {
+      getUserApi(id).then((result) => {
         let { data } = result
         // this.dialogFormVisible = true
         console.log('修改前成员信息', data)

@@ -1,10 +1,6 @@
 <template>
   <el-dropdown class="avatar-container user-menu-item" trigger="click">
     <div class="avatar-wrapper">
-      <!-- <img
-        :src="avatar"
-        class="user-avatar"
-      > -->
       <el-image :src="avatar" class="user-avatar">
         <div slot="error" class="image-slot">
           <icon-svg icon-class="img-load-fail"></icon-svg>
@@ -17,9 +13,10 @@
       <router-link to="/profile">
         <el-dropdown-item>个人中心</el-dropdown-item>
       </router-link>
-      <el-dropdown-item>密码设置</el-dropdown-item>
+      <change-pwd v-slot:action-btn class="el-dropdown-menu__item" @on-success="changePwdSuccess">
+        修改密码
+      </change-pwd>
       <el-dropdown-item>我的收藏</el-dropdown-item>
-      <el-dropdown-item>申请社团</el-dropdown-item>
       <el-dropdown-item divided>
         <span style="display:block;" @click="logout">退出登陆</span>
       </el-dropdown-item>
@@ -28,8 +25,12 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import changePwd from './modules/changePwd'
 export default {
   name: 'UserAvatar',
+  components: {
+    changePwd
+  },
   data() {
     return {
       
@@ -48,6 +49,9 @@ export default {
       })
       // this.$store.commit('SET_TAGS',[])
       // this.$router.push("/login")
+    },
+    changePwdSuccess() {
+      this.logout()
     }
   }
 }

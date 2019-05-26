@@ -31,7 +31,6 @@
 <script>
 import { getUser as getUserApi, updateUserDepart as updateUserDepartApi } from '@/api/user'
 import { getDeparts as getDepartsApi } from '@/api/depart'
-import { mapState } from 'vuex'
 import { transferData2Tree } from '@/utils'
 import TreeSelect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -57,27 +56,22 @@ export default {
       },
     }
   },
-  computed: {
-    ...mapState({
-      corid: (state) => state.user.corid
-    })
-  },
   methods: {
     handleEdit() {
       let userId = this.data.user_id
-      Promise.all([getDepartsApi(this.corid), getUserApi(userId, this.corid)]).then((result) => {
+      Promise.all([getDepartsApi(), getUserApi(userId)]).then((result) => {
         let [ departsData, userData ] = result
         this.departs = transferData2Tree(0, departsData.data, 'parent_id', 'dept_id', 'children')
         this.user = {
           userId: userData.data.user_id,
-          depart: userData.data.depts[0].dept_id
+          depart: userData.data.depts.length ? userData.data.depts[0].dept_id : null
         }
         this.dialogFormVisible = true
-        console.log(this.user, this.departs)
+        // console.log(this.user, this.departs)
       })
     },
     editUser() {
-      updateUserDepartApi(this.user.userId, this.user.depart, this.corid).then((result) => {
+      updateUserDepartApi(this.user.userId, this.user.depart).then((result) => {
         // console.log(result)
         this.$message.success('修改成功!')
         this.dialogFormVisible = false

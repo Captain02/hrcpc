@@ -38,7 +38,6 @@ import levelCharts from './modules/levelCharts'
 import collegeCharts from './modules/collegeCharts'
 import genderCharts from './modules/genderCharts'
 import collegetieCharts from './modules/collegetieCharts'
-import { mapState } from 'vuex'
 export default {
   name: 'report',
   components: {
@@ -64,14 +63,9 @@ export default {
       collegetieData: []
     }
   },
-  computed: {
-    ...mapState({
-      corid: (state) => state.user.corid
-    })
-  },
   methods: {
     getChartsData() {
-      getChartsApi(this.corid, this.status).then((result) => {
+      getChartsApi(this.status).then((result) => {
         this.levelData = result.persionnumData
         this.genderData = result.genderData
         this.collegeData = result.collegeData

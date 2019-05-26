@@ -73,7 +73,6 @@ export default {
       defaultProps: {
         label: 'name'
       },
-      // departsData: cloneDeep(this.departsTree),
       departsData: [],
       depart: null,
       rules: {
@@ -83,30 +82,10 @@ export default {
       }
     }
   },
-  // watch: {
-  //   departsTree:{
-  //     handle(newVal) {
-  //       console.log(newVal)
-  //       this.departsData = cloneDeep(newVal)
-  //     },
-  //     deep: true
-  //   }
-  // },
   computed: {
-    // ...mapState({
-    //   corid: (state) => state.user.corid
-    // }),
     computDepart() {
       return cloneDeep(this.departsTree)
     }
-    // computDepart: {
-    //   get() {
-    //     return this.departsData
-    //   },
-    //   set(val) {
-
-    //   }
-    // }
   },
   methods: {
     getDepartNameByParentId(id) {
@@ -148,7 +127,6 @@ export default {
       let id = this.data.dept_id
       getDepartApi(id).then((result) => {
         let { data } = result
-        // console.log(data[0])
         this.depart = {
           deptId: data[0].dept_id,
           name: data[0].name,

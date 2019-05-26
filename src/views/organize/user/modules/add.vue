@@ -66,7 +66,6 @@
 <script>
 import { addUser as addUserApi } from '@/api/user'
 import { getCollegeInfo as getCollegeInfoApi } from '@/api/comm'
-import { mapState } from 'vuex'
 import MceEditor from '@/components/MceEditor'
 window.tinymce.baseURL = '/static/tinymce'
 window.tinymce.suffix = '.min'
@@ -123,9 +122,6 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      corid: (state) => state.user.corid
-    }),
     computedCollege() {
       let collegeId = this.user.collegeInfo[0]
       let majorId = this.user.collegeInfo[1]
@@ -181,7 +177,7 @@ export default {
             descs = this.user.descs,
             password = this.user.password,
             [college, collegetie] = this.computedCollege
-        addUserApi( this.corid, name, username, gender, persionnum, password, email, mobile, wechart, QQ, descs, college, collegetie).then((result) => {
+        addUserApi( name, username, gender, persionnum, password, email, mobile, wechart, QQ, descs, college, collegetie).then((result) => {
           this.$message.success('添加成功')
           setTimeout(() => {
             this.$router.replace({name: 'user'})

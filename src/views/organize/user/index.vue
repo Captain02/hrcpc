@@ -44,12 +44,12 @@
                 <el-button type="text" size="small" >编辑 </el-button>
               </template>
             </edit-user-info>
-            <edit-user-role :data="scope.row" class="el-dropdown-menu__item" @on-edit-success="getUserList">
+            <edit-user-role :data="scope.row" class="el-dropdown-menu__item" >
               <template v-slot:action-btn>
                 <el-button type="text" size="small" >分配角色 </el-button>
               </template>
             </edit-user-role>
-            <edit-user-depart :data="scope.row" class="el-dropdown-menu__item" @on-edit-success="getUserList">
+            <edit-user-depart :data="scope.row" class="el-dropdown-menu__item" >
               <template v-slot:action-btn>
                 <el-button type="text" size="small" >分配部门 </el-button>
               </template>
@@ -66,7 +66,6 @@
 </template>
 <script>
 import {getUsers as getUsersApi, deleteUsers as deleteUsersApi } from '@/api/user'
-import { mapState } from 'vuex'
 import { columns } from './modules/dada'
 import STable from '_c/STable'
 import Pagination from '_c/Pagination'
@@ -99,16 +98,13 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      corid: (state) => state.user.corid
-    }),
     selectedItemsCount() {
       return this.selectedItems.length
     }
   },
   methods: {
     getUserList() {
-      getUsersApi(this.corid, this.listQuery).then((result) => {
+      getUsersApi(this.listQuery).then((result) => {
         // console.log(result)
         let { page, data } = result
         this.total = page.totalCount
@@ -138,7 +134,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteUsersApi(ids, this.corid).then((result) => {
+        deleteUsersApi(ids).then((result) => {
           this.$message.success('删除成功')
           this.getUserList()
         }).catch((err) => {

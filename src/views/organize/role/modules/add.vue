@@ -33,7 +33,6 @@
 </template>
 <script>
 import { addRole as addRoleApi } from '@/api/role'
-import { mapState } from 'vuex'
 export default {
   name: 'add-role',
   data() {
@@ -49,11 +48,6 @@ export default {
         ]
       }
     }
-  },
-  computed: {
-    ...mapState({
-      corid: (state) => state.user.corid
-    }),
   },
   methods: {
     resetForm() {
@@ -75,7 +69,7 @@ export default {
           this.$message.error('请添加相关项目！')
           return 
         }
-        addRoleApi(this.corid, this.role).then((result) => {
+        addRoleApi(this.role).then((result) => {
           this.$message.success('添加成功!')
           this.dialogFormVisible = false
           this.$emit('on-add-success')

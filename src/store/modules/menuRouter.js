@@ -19,9 +19,9 @@ const menuRouter = {
     }
   },
   actions: {
-    GetMenu({commit}, payload) {
+    GetMenu({commit}, userId) {
       return new Promise((resolve, reject) => {
-        getMenuApi(payload.userId, payload.corid).then((result) => {
+        getMenuApi(userId).then((result) => {
           // 后端返回的路由，然后进行处理
           console.log('后端路由：', result.menuList)
           let menuRouter = addRouter(result.menuList)

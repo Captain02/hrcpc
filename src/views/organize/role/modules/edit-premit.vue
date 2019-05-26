@@ -19,7 +19,6 @@
 </template>
 <script>
 import { getRolePremit as getRolePremitApi, getPremits as getPremitsApi} from '@/api/role'
-import { mapState } from 'vuex'
 export default {
   name: 'edit-role-premit',
   data() {
@@ -29,20 +28,12 @@ export default {
       premitList: {},               // 权限列表：分模块
     }
   },
-  computed: {
-    ...mapState({
-      corid: (state) => state.user.corid
-    })
-  },
   methods: {
     getPremitList() {
-      getPremitsApi(this.corid).then((result) => {
+      getPremitsApi().then((result) => {
         console.log('未理的权限列表', result)
-        let { organize, recruited } = result
-        this.premitList = {
-          organize,
-          recruited
-        }
+        let { data } = result
+        this.premitList = data
         console.log('处理后的权限列表', this.premitList)
       }).catch((err) => { })
     },

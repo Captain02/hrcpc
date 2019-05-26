@@ -77,16 +77,13 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      corid: (state) => state.user.corid
-    }),
     selectedItemsCount() {
       return this.selectedItems.length
     }
   },
   methods: {
     getDepartList() {
-      getDepartsApi(this.corid).then(result => {
+      getDepartsApi().then(result => {
         console.log('获取部门列表', result)
         let { data, page } = result
         this.total = page.totalCount

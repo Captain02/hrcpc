@@ -10,19 +10,19 @@ const user = {
     corid: getCorId(),    // 所在社团ID
     name: '',             // 姓名
     userName: '',         // 用户名
-    college: '',          // 所在学院
-    collegetie: '',       // 所在专业
-    persionnum: '',       // 学号
-    gender: '',           // 性别
-    createTime: null,     // 该用户的创建时间
-    QQ: '',               // qq
-    wechart: '',          // 微信
-    email: '',            // 邮箱
-    mobile: '',           // 手机号
-    depts:[],             // 所在部门
-    roles: [],            // 该用户所拥有的角色
-    descs: '',            // 自我描述
-    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80',
+    // college: '',          // 所在学院
+    // collegetie: '',       // 所在专业
+    // persionnum: '',       // 学号
+    // gender: '',           // 性别
+    // createTime: null,     // 该用户的创建时间
+    // QQ: '',               // qq
+    // wechart: '',          // 微信
+    // email: '',            // 邮箱
+    // mobile: '',           // 手机号
+    // depts:[],             // 所在部门
+    // roles: [],            // 该用户所拥有的角色
+    // descs: '',            // 自我描述
+    avatar: '',
     
   },
   mutations: {
@@ -41,24 +41,30 @@ const user = {
     SET_USERNAME(state, username) {
       state.userName = username
     },
-    SET_ROLES(state, roles) {
-      state.roles = roles
-    },
-    SET_OTHERS(state, {name, college, collegetie, persionnum, gender, create_time, QQ, wechart, email, mobile, depts, filepath, descs }) {
+    SET_NAME(state, name) {
       state.name = name
-      state.college = college
-      state.collegetie = collegetie
-      state.persionnum = persionnum
-      state.gender = gender
-      state.createTime = create_time
-      state.QQ = QQ
-      state.wechart = wechart
-      state.email = email
-      state.mobile = mobile
-      state.depts = depts
-      state.avatar = filepath
-      state.descs = descs
     },
+    SET_AVATAR(state, avatar) {
+      state.avatar = avatar
+    }
+    // SET_ROLES(state, roles) {
+    //   state.roles = roles
+    // },
+    // SET_OTHERS(state, {name, college, collegetie, persionnum, gender, create_time, QQ, wechart, email, mobile, depts, filepath, descs }) {
+    //   state.name = name
+    //   state.college = college
+    //   state.collegetie = collegetie
+    //   state.persionnum = persionnum
+    //   state.gender = gender
+    //   state.createTime = create_time
+    //   state.QQ = QQ
+    //   state.wechart = wechart
+    //   state.email = email
+    //   state.mobile = mobile
+    //   state.depts = depts
+    //   state.avatar = filepath
+    //   state.descs = descs
+    // },
 
   },
   actions: {
@@ -83,14 +89,16 @@ const user = {
         })
       })
     },
-    GetUserInfo({commit, state}) {
+    GetUserInfo({commit}) {
       return new Promise((resolve, reject) => {
-        getUserInfoApi(state.corid).then((result) => {
+        getUserInfoApi().then((result) => {
           let { user } = result
           commit('SET_USERID', user.user_id)
           commit('SET_USERNAME', user.username)
-          commit('SET_ROLES', user.roles)
-          commit('SET_OTHERS', user)
+          commit('SET_NAME', user.name)
+          // commit('SET_ROLES', user.roles)
+          // commit('SET_OTHERS', user)
+          commit('SET_AVATAR', user.filepath)
           resolve()
         }).catch((err) => {
           reject(err)

@@ -49,7 +49,6 @@
 <script>
 import { getRoles as getRolesApi, deleteRoles as deleteRolesApi } from '@/api/role'
 import { parseTime } from '@/utils'
-import { mapState } from 'vuex'
 import STable from '_c/STable'
 import Pagination from '_c/Pagination'
 import detailsRole from './modules/details'
@@ -120,16 +119,13 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      corid: (state) => state.user.corid
-    }),
     selectedItemsCount() {
       return this.selectedItems.length
     }
   },
   methods: {
     getRoleList() {
-      getRolesApi(this.corid, this.listQuery).then((result) => {
+      getRolesApi(this.listQuery).then((result) => {
         console.log('角色列表', result)
         let { page, data } = result
         this.total = page.totalCount

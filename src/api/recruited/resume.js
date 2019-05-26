@@ -1,20 +1,20 @@
 import request from '@/utils/request'
+import { getCorId } from '@/utils/cookie'
 
 /**
  * 获取简历列表
- * @param {Number} corId 
  * @param {String} name 
  * @param {String} persionNum 
  * @param {Number} status 
  * @param {Number} currPage 
  * @param {Number} pageSize 
  */
-export const getResumes = (corId, { name, persionNum, status, currPage, pageSize }) => {
+export const getResumes = ({ name, persionNum, status, currPage, pageSize }) => {
   return request({
     url: '/resume/manage',
     method: 'POST',
     params: {
-      corId,
+      corId: getCorId(),
       name,
       persionNum,
       status,

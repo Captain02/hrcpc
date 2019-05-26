@@ -22,7 +22,7 @@ router.beforeEach((to, from, next) => {
       // 没有获取可操作的路由菜单也没有获取用户信息
       store.dispatch('GetUserInfo')
       .then(() => {
-        return store.dispatch('GetMenu', {userId: store.state.user.userId, corid: store.state.user.corid})
+        return store.dispatch('GetMenu', store.state.user.userId)
       })
       .then(() => {
         next({ ...to, replace: true })
@@ -43,7 +43,7 @@ router.beforeEach((to, from, next) => {
       
     }else if(!store.state.menuRouter.isGain && store.state.user.userId){
       // 没有可操作的路由菜单,但获取了用户数据
-      store.dispatch('GetMenu', {userid: store.state.user.userId, corid: store.state.user.corid}).then(() => {
+      store.dispatch('GetMenu', store.state.user.userId).then(() => {
         next({ ...to, replace: true })
       }).catch((err) => {
         store.dispatch('LogOut').then(() => {

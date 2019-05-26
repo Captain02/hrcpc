@@ -107,7 +107,7 @@ export default {
       this.getResumeList()
     },
     getResumeList() {
-      getResumesApi(this.corid, this.listQuery).then((result) => {
+      getResumesApi(this.listQuery).then((result) => {
         console.log('简历列表', result)
         let { data, page, count } = result
         this.resumeList = data

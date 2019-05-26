@@ -6,6 +6,14 @@ export const baseItem = {
       clearable: true
     }
   },
+  password: {
+    component: 'el-input',
+    attrs: {
+      type: 'password',
+      placeholder: "请输入",
+      clearable: true
+    }
+  },
   select: {
     component: 'base-select',
     attrs: {

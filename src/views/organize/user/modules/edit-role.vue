@@ -5,7 +5,7 @@
       <el-dialog
         title="修改成员角色"
         :visible.sync="dialogFormVisible"
-        width="530px"
+        width="550px"
         :append-to-body="true"
       >
         <el-form
@@ -13,31 +13,25 @@
           :model="user"
           label-width="70px"
           class="form-wrapper"
-          ref="userForm" 
           size="small"
-          :hide-required-asterisk="true"
         >
-          <el-form-item prop="roles" label="角色：">
-            <!-- <el-select v-model="user.roles" multiple placeholder="请选择角色" >
-              <el-option v-for="role in roles" :key="role.role_id" :label="role.role_name"
-      :value="role.role_id"></el-option>
-            </el-select> -->
+          <el-form-item label="角色：">
              <el-checkbox-group v-model="user.roles">
-               <el-checkbox v-for="role in roles" :key="role.role_id" :label="role.role_id" :true-label="role.role_id" @change="handleChange">{{role.role_name}}</el-checkbox>
+               <template v-for="(role, index) in roleList" >
+                 <el-checkbox :key="role.role_id" :label="role.role_id"  @change="handleChange($event, role)">{{role.role_name}}</el-checkbox>
+                <el-divider v-if="(index + 1) % 3 === 0" :key="index"></el-divider>
+               </template>
              </el-checkbox-group>
           </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="editUser">保存</el-button> 
-          </el-form-item>
         </el-form>
+
       </el-dialog>
     </div>
   </div>
 </template>
 <script>
-import { getUser as getUserApi } from '@/api/user'
+import { getUser as getUserApi, updateUserRole as updateUserRoleApi } from '@/api/user'
 import { getRoles as getRolesApi } from '@/api/role'
-import { mapState } from 'vuex'
 export default {
   name: 'edit-user-role',
   props: {
@@ -50,20 +44,15 @@ export default {
     return {
       dialogFormVisible: false,
       user: null,
-      roles: []             // 全部角色列表
+      roleList: []             // 全部角色列表
     }
-  },
-  computed: {
-    ...mapState({
-      corid: (state) => state.user.corid
-    })
   },
   methods: {
     handleEdit() {
       let userId = this.data.user_id
-      Promise.all([getRolesApi(this.corid), getUserApi(userId, this.corid)]).then((result) => {
+      Promise.all([getRolesApi(), getUserApi(userId)]).then((result) => {
         let [ rolesData, userData ] = result
-        this.roles = rolesData.data.map((role) => {
+        this.roleList = rolesData.data.map((role) => {
           return { role_id: role.role_id, role_name: role.role_name }
         })
         let userRoles = userData.data.roles.map((role) => {
@@ -74,14 +63,15 @@ export default {
           roles: userRoles
         }
         this.dialogFormVisible = true
-        console.log(this.user, this.roles)
+        console.log(this.user, this.roleList)
       })
     },
-    handleChange(val) {
-      console.log(val)
-    },
-    editUser() {
-
+    handleChange(status, role) {
+      console.log(status, role)
+      updateUserRoleApi(status, this.user.userId, role.role_id).then((result) => {
+        console.log(result)
+         this.$message.success('设置成功!')
+      }).catch((err) => {})
     }
   }
 }
@@ -91,6 +81,9 @@ export default {
   padding: 0 40px 0 20px;
   .el-select {
     width: 100%;
+  }
+  .el-divider--horizontal {
+    margin: 3px 0;
   }
 }
 </style>

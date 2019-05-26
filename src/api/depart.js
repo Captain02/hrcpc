@@ -3,9 +3,9 @@ import { getCorId } from '@/utils/cookie'
 
 /**
  * 社团部门列表
- * @param {Number} corid 
+ * @param {Number} corid cookie获取
  */
-export const getDeparts = (corId) => {
+export const getDeparts = () => {
   return request({
     url: '/dept/list',
     method:'GET',
@@ -32,7 +32,7 @@ export const getDepart = (deptId) => {
 }
 /**
  * 添加社团部门
- * @param {Number} corId 
+ * @param {Number} corId cookie获取
  * @param {String} name 
  * @param {Number} parentId 
  */
@@ -70,7 +70,7 @@ export const editDepart = ({ deptId, name, parentId}) => {
 
 /**
  * 删除社团部门
- * @param {Array} ids 
+ * @param {Array} deptId 
  */
 export const deleteDeparts = (deptId) => {
   deptId = deptId.join(',')
