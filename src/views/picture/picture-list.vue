@@ -35,10 +35,10 @@
     </viewer>
     <div class="block">
       <el-pagination
-        :page-size="20"
-        :pager-count="11"
+        :page-size="10"
+        :pager-count="5"
         layout="prev, pager, next"
-        :total="300">
+        :total="30">
       </el-pagination>
     </div>
   </div>
@@ -46,6 +46,7 @@
 <script>
 import 'viewerjs/dist/viewer.css';
 import Viewer from "v-viewer/src/component.vue";
+import { getImgList, delPicture } from "@/api/photomodule";
 export default {
   name: "picture-list",
   components: {
@@ -74,6 +75,11 @@ export default {
     };
   },
   mounted: function() {
+    // 加载图片列表
+    getImgList(1, 10).then(res => {
+      console.log(res);
+    })
+
     // animated infinite bounce 
   },
   methods: {
@@ -90,6 +96,10 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        // 删除图片
+        delPicture(id, 'asadsad').then(res => {
+          console.log(res)
+        })
         this.$message({
           type: 'success',
           message: '删除成功!'
