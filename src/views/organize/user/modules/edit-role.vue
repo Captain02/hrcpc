@@ -7,6 +7,7 @@
         :visible.sync="dialogFormVisible"
         width="550px"
         :append-to-body="true"
+        :close-on-click-modal="false"
       >
         <el-form
           v-if="user"
@@ -18,7 +19,7 @@
           <el-form-item label="角色：">
              <el-checkbox-group v-model="user.roles">
                <template v-for="(role, index) in roleList" >
-                 <el-checkbox :key="role.role_id" :label="role.role_id"  @change="handleChange($event, role)">{{role.role_name}}</el-checkbox>
+                 <el-checkbox :key="role.role_id" :label="role.role_id"  @change="handleChange($event, role.role_id)">{{role.role_name}}</el-checkbox>
                 <el-divider v-if="(index + 1) % 3 === 0" :key="index"></el-divider>
                </template>
              </el-checkbox-group>
@@ -63,14 +64,14 @@ export default {
           roles: userRoles
         }
         this.dialogFormVisible = true
-        console.log(this.user, this.roleList)
+        // console.log(this.user, this.roleList)
       })
     },
-    handleChange(status, role) {
-      console.log(status, role)
-      updateUserRoleApi(status, this.user.userId, role.role_id).then((result) => {
-        console.log(result)
-         this.$message.success('设置成功!')
+    handleChange(status, roleId) {
+      // console.log(status, roleId)
+      updateUserRoleApi(status, this.user.userId, roleId).then((result) => {
+        // console.log(result)
+        this.$message.success('设置成功!')
       }).catch((err) => {})
     }
   }

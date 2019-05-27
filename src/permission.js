@@ -33,13 +33,6 @@ router.beforeEach((to, from, next) => {
           next({ path: '/' })
         })
       })
-      // store.dispatch('GetMenu', {userId: store.state.user.userId, corid: store.state.user.corid})
-      // .then(() => {
-      //   return store.dispatch('GetUserInfo')
-      // })
-      // .then(() => {
-      //   next({ ...to, replace: true })
-      // })
       
     }else if(!store.state.menuRouter.isGain && store.state.user.userId){
       // 没有可操作的路由菜单,但获取了用户数据
@@ -64,9 +57,6 @@ router.beforeEach((to, from, next) => {
     }else{
       // 都获取了
       if(to.path === '/login'){
-        // //如果获取了token也获取了菜单也获取了用户信息，但跳转到登录页则将userId置位null将isGain置位false，防止低权限用户次登录后不再获取菜单栏和用户信息
-        // store.commit('SET_USERID', null)
-        // store.commit('SET_ISGAIN', false)
         
         // 登陆后不让其再次进入登录页
         Message('您已登录')

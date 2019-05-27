@@ -11,6 +11,7 @@
       :visible.sync="dialogFormVisible"
       width="700px"
       :append-to-body="true"
+      :close-on-click-modal="false"
     >
       <el-row>
         <el-col :span="8">

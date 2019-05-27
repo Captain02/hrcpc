@@ -7,6 +7,7 @@
         :visible.sync="dialogFormVisible"
         width="530px"
         :append-to-body="true"
+        :close-on-click-modal="false"
       >
         <el-form
           v-if="user"

@@ -8,6 +8,7 @@
       :visible.sync="dialogFormVisible"
       width="900px"
       :append-to-body="true"
+      :close-on-click-modal="false"
     >
       <div class="form-wrapper">
         <el-form v-if="user" :model="user" label-width="100px" :rules="rules" ref="userForm" :hide-required-asterisk="true">

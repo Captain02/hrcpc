@@ -8,6 +8,7 @@
       :visible.sync="dialogFormVisible"
       width="700px"
       :append-to-body="true"
+      :close-on-click-modal="false"
     >
       <template v-if="role">
         <el-row class="details-row">

@@ -11,6 +11,7 @@
       :visible.sync="dialogFormVisible"
       width="800px"
       :append-to-body="true"
+      :close-on-click-modal="false"
     >
       <template v-if="user">
         <el-row class="details-row">

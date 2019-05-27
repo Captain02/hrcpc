@@ -8,6 +8,7 @@
       :visible.sync="dialogFormVisible"
       :append-to-body="true"
       width="400px"
+      :close-on-click-modal="false"
     >
       <el-form label-width="100px" :model="userPwd" ref="passwordForm" size="small" :hide-required-asterisk="true" :rules="rules">
         <el-form-item label="旧密码" prop="password">
