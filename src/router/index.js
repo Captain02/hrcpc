@@ -41,7 +41,16 @@ export const routes = [
           title: '首页',
           icon: 'dashboard' 
         }
-      }
+      },
+      {
+        path: 'code-map',
+        name: 'code-map',
+        hidden: true,
+        component: () => import('@/views/dashboard/modules/code-map'),
+        meta: {
+          title: '测试'
+        }
+      },
     ]
   },
   {

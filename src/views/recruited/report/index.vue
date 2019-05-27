@@ -7,24 +7,26 @@
       </el-select>
     </div>
     <el-row class="charts-row" :gutter="25">
-      <el-col :span="10">
+      <el-col :span="12">
         <el-card >
           <level-charts :chart-data="levelData" width="100%" height="300px"></level-charts>
         </el-card>
       </el-col>
-      <el-col :span="14">
+      <el-col :span="12">
+        <el-card >
+        <gender-charts :chart-data="genderData" width="100%" height="300px"></gender-charts>
+        </el-card>
+      </el-col>
+    </el-row>
+    <el-row class="charts-row" :gutter="25">
+      <el-col :span="24">
         <el-card >
         <college-charts :chart-data="collegeData" width="100%" height="300px"></college-charts>
         </el-card>
       </el-col>
     </el-row>
     <el-row class="charts-row" :gutter="25">
-      <el-col :span="8">
-        <el-card >
-          <gender-charts :chart-data="genderData" width="100%" height="300px"></gender-charts>
-        </el-card>
-      </el-col>
-      <el-col :span="16">
+      <el-col :span="24">
         <el-card >
         <collegetie-charts :chart-data="collegetieData" width="100%" height="300px"></collegetie-charts>
         </el-card>
