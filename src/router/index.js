@@ -45,18 +45,10 @@ export const routes = [
     ]
   },
   {
-    path: '/page',
-    component: layout,
+    path: '/code-map',
+    name: 'code-map',
     hidden: true,
-    children: [{
-      path: 'code-map',
-      name: 'code-map',
-      hidden: true,
-      component: () => import('@/views/page/code-map'),
-      meta: {
-        title: '测试'
-      }
-    }],
+    component: () => import('@/views/page/code-map')
   },
   {
     path: '/login',
