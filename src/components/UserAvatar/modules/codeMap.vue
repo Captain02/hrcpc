@@ -17,6 +17,7 @@
   </div>
 </template>
 <script>
+import { getCorInfo as getCorInfoApi } from '@/api/comm'
 export default {
   name: 'code-map',
   data() {
@@ -27,7 +28,15 @@ export default {
   },
   methods: {
     showCodeMap() {
-      this.dialogFormVisible = true
+      if(this.src === null){
+        getCorInfoApi().then((result) => {
+          let data = result.data[0]
+          this.dialogFormVisible = true
+          this.src = data.filefile
+        }).catch((err) => {  })
+      }else{
+        this.dialogFormVisible = true
+      }
     }
   }
 }
