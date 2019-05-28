@@ -13,6 +13,9 @@
       <router-link to="/profile">
         <el-dropdown-item>个人中心</el-dropdown-item>
       </router-link>
+      <code-map v-slot:action-btn class="el-dropdown-menu__item">
+        社团二维码
+      </code-map>
       <change-pwd v-slot:action-btn class="el-dropdown-menu__item" @on-success="changePwdSuccess">
         修改密码
       </change-pwd>
@@ -26,10 +29,12 @@
 <script>
 import { mapState } from 'vuex'
 import changePwd from './modules/changePwd'
+import codeMap from './modules/codeMap'
 export default {
   name: 'UserAvatar',
   components: {
-    changePwd
+    changePwd,
+    codeMap
   },
   data() {
     return {
@@ -52,7 +57,8 @@ export default {
     },
     changePwdSuccess() {
       this.logout()
-    }
+    },
+
   }
 }
 </script>

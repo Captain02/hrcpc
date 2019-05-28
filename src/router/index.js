@@ -13,7 +13,7 @@ Vue.use(Router)
  * 当设置 noredirect 的时候该路由在面包屑导航中不可被点击
  * redirect: 'noredirect'
  * 当你一个路由下面的 children 声明的路由大于1个时，自动会变成嵌套的模式--如组件页面
- * 只有一个时，会将那个子路由当做根路由显示在侧边栏--如引导页面
+ * 只有一个时，会将那个子路由当做根路由显示在侧边栏
  * 若你想不管路由下面的 children 声明的个数都显示你的根路由
  * 你可以设置 alwaysShow: true，这样它就会忽略之前定义的规则，一直显示根路由
  * alwaysShow: true
@@ -43,6 +43,20 @@ export const routes = [
         }
       }
     ]
+  },
+  {
+    path: '/page',
+    component: layout,
+    hidden: true,
+    children: [{
+      path: 'code-map',
+      name: 'code-map',
+      hidden: true,
+      component: () => import('@/views/page/code-map'),
+      meta: {
+        title: '测试'
+      }
+    }],
   },
   {
     path: '/login',
