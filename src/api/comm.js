@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import { getCorId } from '@/utils/cookie'
 
 /**
  * 获取院系、系别信息，若想查询所有的院系 类型id为 1，要是想查询某个学院下的系，typeid=null(不填)，parentid等于学院id
@@ -28,9 +29,21 @@ export const getPremits = () => {
   })
 }
 
+/**
+ * 根据社团id获取社团的信息
+ */
+export const getCorInfo = () => {
+  return request({
+    url: '/corporation/selectByCorId',
+    method: 'GET',
+    params: {
+      corid: getCorId()
+    }
+  })
+}
+
 export const codeMap = (Id) => {
   return request({
     url: `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2a89e726a1bf0142&redirect_uri=http%3A%2F%2Fwww.yuezhonghao.cn%2FHBO%2Fwechart%2FOAuth&response_type=code&scope=snsapi_base&state=${Id}#wechat_redirect`,
-    method: 'POST'
   })
 }
