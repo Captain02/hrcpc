@@ -51,6 +51,12 @@ export const routes = [
     component: () => import('@/views/page/code-map')
   },
   {
+    path: '/result',
+    name: 'result',
+    hidden: true,
+    component: () => import('@/views/page/result')
+  },
+  {
     path: '/login',
     name: 'login',
     hidden: true,
