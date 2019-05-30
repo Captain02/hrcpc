@@ -57,6 +57,12 @@ export const routes = [
     component: () => import('@/views/page/result')
   },
   {
+    path: '/join',
+    name: 'join',
+    hidden: true,
+    component: () => import('@/views/page/join')
+  },
+  {
     path: '/login',
     name: 'login',
     hidden: true,

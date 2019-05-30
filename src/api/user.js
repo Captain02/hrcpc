@@ -8,9 +8,10 @@ import { getCorId } from '@/utils/cookie'
  * @param {Number} size 每页大小
  * @param {String} sidx 排序字段
  * @param {String} order 排序方式，如：asc、desc
- * @param {String} username 用户名
+ * @param {String} name 用户姓名
+ * @param {String} username 学号
  */
-export const getUsers = ({page, size, sidx , order , username}) => {
+export const getUsers = ({page, size, sidx , order , name, username}) => {
   return request({
     url: '/user/list',
     method: 'GET',
@@ -20,6 +21,7 @@ export const getUsers = ({page, size, sidx , order , username}) => {
       size,
       sidx,
       order,
+      name,
       username
     }
   })

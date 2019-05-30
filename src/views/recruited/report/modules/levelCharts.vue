@@ -56,7 +56,7 @@ export default {
     setOptions({keys, values}) {
       this.chart.setOption({
     title : {
-        text: '纳新年级比例',
+        text: '年级比例',
         x:'center'
     },
     tooltip : {
