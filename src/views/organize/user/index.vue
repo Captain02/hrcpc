@@ -2,7 +2,8 @@
   <div class="app-container">
     <h1 class="page-title"> 社团成员 </h1>
     <div class="filter-container">
-      <el-input class="filter-item" v-model="listQuery.username" placeholder="请输入成员名字" style="width: 200px;" size="small"></el-input>
+      <el-input class="filter-item" v-model="listQuery.name" placeholder="请输入姓名" style="width: 200px;" size="small"></el-input>
+      <el-input class="filter-item" v-model="listQuery.username" placeholder="请输入学号" style="width: 200px;" size="small"></el-input>
       <el-button class="filter-item" type="primary" size="small" icon="el-icon-search" @click="handleSearch">搜索</el-button>
       <el-button class="filter-item" type="primary" size="small" icon="el-icon-circle-plus-outline" @click="() => this.$router.push({name: 'add-user'})">添加新成员</el-button>
       <el-button class="filter-item filter-right-btn" type="danger" size="small" icon="el-icon-delete" :disabled="!selectedItemsCount" @click="deleteSelectedItems">删除</el-button>
@@ -87,6 +88,7 @@ export default {
   data () {
     return {
       listQuery: {
+        name: '',
         username: '',
         page: 1,
         size: 10,

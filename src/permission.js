@@ -7,7 +7,7 @@ import { getToken } from '@/utils/cookie'
 NProgress.configure({ showSpinner: false })
 
 
-const whiteList = ['/login', '/code-map', '/result']      // 路由白名单 /code-map社团二维码路由
+const whiteList = ['/login', '/code-map', '/result', '/join']      // 路由白名单 /code-map社团二维码路由
 router.beforeEach((to, from, next) => {
   NProgress.start()
   // 从cookie中获取token
