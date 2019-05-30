@@ -17,16 +17,13 @@
       <div class="components-container board">
         <ul style="display:flex;flex-wrap:wrap">
           <li v-for="(item, index, key) in pic_list" :key="key" class="list-item-con ">
-            <i class="el-icon-error del-img" @click="delImg(item.id)"></i>
+            <i class="el-icon-error del-img" @click="delImg(item.id, item.url)"></i>
             <div class="list-item">
               <div class="list-item-img">
-                <img :src="item.img" alt="">
+                <img :src="item.url" alt="">
               </div>
               <div class="list-img-text">
-                <p>{{item.text}}</p>
-                <p>JACK <span style="float:right">   
-                  <i class="el-icon-star-on"></i> 1</span>
-                </p>
+                <p>{{item.imagename}}</p>
               </div>
             </div>
           </li>
@@ -47,6 +44,7 @@
 import 'viewerjs/dist/viewer.css';
 import Viewer from "v-viewer/src/component.vue";
 import { getImgList, delPicture } from "@/api/photomodule";
+// const BaseUrl = "http://140.143.201.244:82";
 export default {
   name: "picture-list",
   components: {
@@ -55,29 +53,24 @@ export default {
   data() {
     return {
       movable: false,
-      pic_list: [
-        { 
-          id: "1",
-          text: "最美风景",
-          img: "http://img1.cache.netease.com/catchpic/1/19/19906B6772099C376B7AED148727964E.jpg"
-        },
-        { 
-          id: "2",
-          text: "最美图片",
-          img: "http://img1.cache.netease.com/catchpic/1/19/19906B6772099C376B7AED148727964E.jpg"
-        },
-        { 
-          id: "3",
-          text: "年度最佳",
-          img: "http://img1.cache.netease.com/catchpic/1/19/19906B6772099C376B7AED148727964E.jpg"
-        },
-      ]
+      pic_list: []
     };
   },
   mounted: function() {
+    const that = this;
     // 加载图片列表
     getImgList(1, 10).then(res => {
-      console.log(res);
+      console.log(res.data);
+      if (res.date) {
+        for (let i in res.date) {
+          // 处理图片地址(线上不需要处理)
+          // res.date[i].url = BaseUrl + res.date[i].url;
+          // 处理文件名称
+          res.date[i].imagename = res.date[i].imagename.substring(0, res.date[i].imagename.indexOf("."));
+        }
+        that.pic_list = res.date;
+      }
+      console.log(that.pic_list);
     })
 
     // animated infinite bounce 
@@ -90,20 +83,28 @@ export default {
       this.$viewer = viewer;
     },
     // 删除图片
-    delImg(id) {
+    delImg(id, url) {
+      // 线上不需要处理
+      let urlImg = url.substring(25);
       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         // 删除图片
-        delPicture(id, 'asadsad').then(res => {
-          console.log(res)
+        delPicture(id, urlImg).then(res => {
+          let arr = this.pic_list;
+          for (let i in arr) {
+            if (id == arr[i].id) {
+              this.pic_list.splice(i,1);
+            }
+          }
+          this.$message({
+            type: 'success',
+            message: res.msg
+          });
         })
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        });
+
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -124,7 +125,7 @@ export default {
 }
 .list-item-con {
   float: left;
-  height: 230px;
+  height: 200px;
   display: table;
   position: relative;
   background: rgb(243, 245, 246);
@@ -166,7 +167,7 @@ export default {
   left: 0;
   line-height: 20px;
   background: rgb(243, 245, 246);
-  text-align: left;
+  text-align: center;
 }
 .list-img-text p:nth-child(1) {
   color: #535351;

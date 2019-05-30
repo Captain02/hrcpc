@@ -10,7 +10,7 @@ import { getCorId } from '@/utils/cookie'
 export function getImgList(currPage, pageSize) {
   return request({
     url: '/img/list',
-    method: 'POST',
+    method: 'get',
     params: {
       corId: getCorId(),
       currPage,
@@ -26,7 +26,7 @@ export function pushImgs(picture){
   return request({
     url: '/img/batch',
     method: 'POST',
-    params: {
+    data: {
       corId: getCorId(),
       picture
     }
@@ -55,7 +55,7 @@ export function saveImg(picture){
   return request({
     url: '/img/save',
     method: 'POST',
-    params: {
+    data: {
       corid: getCorId(),
       picture
     }
