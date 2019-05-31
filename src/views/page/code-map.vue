@@ -20,7 +20,8 @@ export default {
   methods: {
     handleClick() {
       let id = this.$route.query.Id
-      window.open(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2a89e726a1bf0142&redirect_uri=http%3A%2F%2Fwww.yuezhonghao.cn%2FHBO%2Fwechart%2FOAuth&response_type=code&scope=snsapi_base&state=${id}#wechat_redirect`)
+      let type = this.$route.query.type
+      window.open(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2a89e726a1bf0142&redirect_uri=http%3A%2F%2Fwww.yuezhonghao.cn%2FHBO%2Fwechart%2FOAuth&response_type=code&scope=snsapi_base&state=${type},${id}#wechat_redirect`)
     }
   }
 }
