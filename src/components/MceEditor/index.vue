@@ -255,10 +255,10 @@ export default {
     }
   },
   mounted() {
-    // console.log('mount', this.value)
     this.init()
   },
   beforeDestroy() {
+    // console.log('beforeDestroy', this.Id)
     // 销毁tinymce
     this.$emit("on-destroy")
     window.tinymce.remove(`#${this.Id}`)

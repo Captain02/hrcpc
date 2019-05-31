@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 import { getCorId } from '@/utils/cookie'
+import qs from 'querystring'
 
 /**
  * 获取简历列表
@@ -13,7 +14,10 @@ export const getResumes = ({ name, persionNum, status, currPage, pageSize }) => 
   return request({
     url: '/resume/manage',
     method: 'POST',
-    params: {
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }],
+    data: {
       corId: getCorId(),
       name,
       persionNum,
@@ -45,7 +49,10 @@ export const editResume = (resumeId, status) => {
   return request({
     url: '/resume/edit',
     method: 'POST',
-    params: {
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }],
+    data: {
       resumeId,
       status
     }
@@ -60,7 +67,10 @@ export const deleteResume = (resumeId) => {
   return request({
     url: '/resume/delete',
     method: 'POST',
-    params: {
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }],
+    data: {
       resumeId
     }
   })

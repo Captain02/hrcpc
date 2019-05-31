@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 import { getCorId } from '@/utils/cookie'
+import qs from 'querystring'
 
 /**
  * 获取社团的角色列表
@@ -13,7 +14,13 @@ export function getRoles({ roleName, currPage, pageSize } = {}){
   return request({
     url: '/role/list',
     method: 'POST',
-    params: {
+    transformRequest: [function (data) {
+      // console.log(data)
+      // console.log(qs.stringify(data))
+      // return 
+      return qs.stringify(JSON.parse(JSON.stringify(data)))
+    }],
+    data: {
       corId: getCorId(),
       roleName,
       currPage,
@@ -47,7 +54,11 @@ export const addRole = ({roleName, remark}) => {
   return request({
     url: '/role/save',
     method: 'POST',
-    params: {
+    transformRequest: [function (data) {
+      // 对 data 进行任意转换处理
+      return qs.stringify(data)
+    }],
+    data: {
       corId: getCorId(),
       roleName,
       remark
@@ -65,7 +76,11 @@ export const updateRole = (roleId, roleName, remark) => {
   return request({
     url: '/role/update',
     method: 'POST',
-    params: {
+    transformRequest: [function (data) {
+      // 对 data 进行任意转换处理
+      return qs.stringify(data)
+    }],
+    data: {
       roleId,
       roleName,
       remark
@@ -114,7 +129,11 @@ export const updateRolePremit = (isRolePermission, role_id, menu_id) => {
   return request({
     url: '/role/updateRolePermission',
     method: 'POST',
-    params: {
+    transformRequest: [function (data) {
+      // 对 data 进行任意转换处理
+      return qs.stringify(data)
+    }],
+    data: {
       isRolePermission,
       role_id,
       menu_id

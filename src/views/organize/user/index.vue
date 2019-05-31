@@ -38,8 +38,7 @@
                 <el-button type="text" size="small" >查看 </el-button>
               </template>
             </details-user>
-              <!-- <el-button type="text" size="small" class="el-dropdown-menu__item" @click="handleEdit(scope.row.user_id)">编辑</el-button> -->
-            
+                        
             <edit-user-info :data="scope.row" class="el-dropdown-menu__item" @on-edit-success="getUserList">
               <template v-slot:action-btn>
                 <el-button type="text" size="small" >编辑 </el-button>
@@ -143,9 +142,6 @@ export default {
           console.log(err)
         })
       }).catch(() => {})
-    },
-    handleEdit(id) {
-      this.$router.push({name: 'edit-user', params: { id }})
     },
     handleChange(value, column) {
       column.hidden = !value
