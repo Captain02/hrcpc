@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 import { getCorId } from '@/utils/cookie'
+import qs from 'querystring'
 
 /**
  * 获取用户列表
@@ -61,11 +62,15 @@ export const getUser = (id) => {
  * @param {String} collegetie 系别
  * 
  */
-export const addUser = (name, username, gender, persionnum, password, email, mobile, wechart, QQ, descs, college, collegetie) => {
+export const addUser = (name, username, gender, persionnum, password, email, mobile, wechart, qq, descs, college, collegetie) => {
   return request({
     url: '/user/save',
     method: 'POST',
-    params: {
+    transformRequest: [function (data) {
+      // 对 data 进行任意转换处理
+      return qs.stringify(data)
+    }],
+    data: {
       corid: getCorId(),
       name,
       username,
@@ -75,7 +80,7 @@ export const addUser = (name, username, gender, persionnum, password, email, mob
       email,
       mobile,
       wechart,
-      QQ,
+      qq,
       descs,
       college,
       collegetie
@@ -100,7 +105,10 @@ export const updateUser = ( userId, name, gender, email, mobile, wechart, qq, de
   return request({
     url: '/user/update',
     method: 'POST',
-    params: {
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }],
+    data: {
       userId,
       name,
       gender,
@@ -125,7 +133,11 @@ export const deleteUsers = (userIds) => {
   return request({
     url: '/user/delete',
     method: 'POST',
-    params: {
+    transformRequest: [function (data) {
+      // 对 data 进行任意转换处理
+      return qs.stringify(data)
+    }],
+    data: {
       userIds,
       corid: getCorId()
     }
@@ -143,7 +155,11 @@ export const updateUserDepart = (user_id, dept_id) => {
   return request({
     method: 'POST',
     url: '/user/updataUserDept',
-    params: {
+    transformRequest: [function (data) {
+      // 对 data 进行任意转换处理
+      return qs.stringify(data)
+    }],
+    data: {
       user_id,
       dept_id,
       corid: getCorId()
@@ -156,7 +172,11 @@ export const updateUserRole = (isRole, user_id, role_id) => {
   return request({
     url: '/user/updateUserRole',
     method: 'POST',
-    params: {
+    transformRequest: [function (data) {
+      // 对 data 进行任意转换处理
+      return qs.stringify(data)
+    }],
+    data: {
       corid: getCorId(),
       isRole,
       user_id,

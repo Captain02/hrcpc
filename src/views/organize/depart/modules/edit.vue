@@ -123,8 +123,8 @@ export default {
       this.depart.parentName = this.getDepartNameByParentId(this.depart.parentId)
     },
     handleEdit() {
+      console.log('data', this.data)
       
-      this.dialogFormVisible = true
       let id = this.data.dept_id
       getDepartApi(id).then((result) => {
         let { data } = result
@@ -134,6 +134,8 @@ export default {
           parentId: data[0].parent_id,
           parentName: this.getDepartNameByParentId(data[0].parent_id)
         }
+        this.dialogFormVisible = true
+        console.log('after api', this.depart)
       //  console.log(this.depart)
       }).catch((err) => {})
     },

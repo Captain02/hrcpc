@@ -27,7 +27,11 @@ export const changePwd = ( id, username, password, newPassword) => {
   return request({
     url: '/user/password',
     method: 'POST',
-    params: {
+    transformRequest: [function (data) {
+      // 对 data 进行任意转换处理
+      return qs.stringify(data)
+    }],
+    data: {
       corid: getCorId(),
       id,
       username,
@@ -46,7 +50,10 @@ export const deleteAvatar = (id, url) => {
   return request({
     url: '',
     method: 'POST',
-    params: {
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }],
+    data: {
       id,
       url
     }

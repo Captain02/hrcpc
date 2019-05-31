@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import qs from 'querystring'
 /**
  * 登录
  * @param {String} username 
@@ -9,7 +10,11 @@ export const login = (username, password, corid) => {
   return request({
     method: 'POST',
     url: '/login',
-    params: {
+    transformRequest: [function (data) {
+      // 对 data 进行任意转换处理
+      return qs.stringify(data)
+    }],
+    data: {
       username,
       password,
       corid,

@@ -35,6 +35,7 @@
 </template>
 <script>
 import { getRole as getRoleApi, updateRole as updateRoleApi } from '@/api/role'
+import cloneDeep from 'clonedeep'
 export default {
   name: 'edit-role-info',
   props: {
@@ -56,11 +57,7 @@ export default {
   },
   methods: {
     handleEdit() {
-      let id = this.data.role_id
-      getRoleApi(id).then((result) => {
-        this.role = result.data[0]
-        this.dialogFormVisible = true
-      }).catch((err) => { })
+      this.role = cloneDeep(this.data)
     },
     editRole() {
       this.$refs['roleForm'].validate((valid) => {

@@ -6,12 +6,12 @@
     <el-dialog
       title="修改成员信息"
       :visible.sync="dialogFormVisible"
-      width="900px"
+      width="800px"
       :append-to-body="true"
       :close-on-click-modal="false"
     >
       <div class="form-wrapper">
-        <el-form v-if="user" :model="user" label-width="100px" :rules="rules" ref="userForm" :hide-required-asterisk="true">
+        <el-form v-if="user" :model="user" label-width="100px" :rules="rules" size="small" ref="userForm" :hide-required-asterisk="true">
           <el-form-item prop="name" label="姓名：">
             <el-input v-model="user.name" placeholder="请输入姓名"></el-input>
           </el-form-item>
@@ -21,18 +21,15 @@
               <el-radio label="女"></el-radio>
             </el-radio-group>
           </el-form-item>
-          <!-- <el-form-item prop="studentId" label="学号：">
-            <el-input v-model="user.studentId" placeholder="请输入学号"></el-input>
-          </el-form-item> -->
-          <el-form-item prop="collegeInfo" label="院系：">
-            <el-cascader
-              v-model="user.collegeInfo"
-              class="college-cascader"
-              placeholder="请选择院系信息"
-              @active-item-change="handleItemChange"
-              clearable
-              :options="options"
-            ></el-cascader>
+          <el-form-item prop="college" label="院系：">
+            <el-select v-model="user.college" placeholder="请选择院系" class="full-width" @change="handleChange">
+              <el-option v-for="item in collegeOptions" :key="item.id" :value="item.id" :label="item.label"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item prop="collegetie" label="专业：">
+            <el-select v-model="user.collegetie" placeholder="请选择专业" class="full-width">
+              <el-option v-for="item in collegetieOptions" :key="item.id" :value="item.id" :label="item.label"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item prop="email" label="邮箱：">
             <el-input v-model="user.email" type="email" placeholder="请输入邮箱"></el-input>
@@ -47,7 +44,7 @@
             <el-input v-model="user.QQ" type="number" placeholder="请输入QQ"></el-input>
           </el-form-item>
           <el-form-item prop="descs" label="自我描述：">
-            <mce-editor v-model="user.descs" ></mce-editor>
+            <mce-editor v-model="user.descs" v-if="dialogFormVisible" ></mce-editor>
           </el-form-item>
           
           <el-form-item class="">
@@ -63,6 +60,7 @@
 <script>
 import { getUser as getUserApi, updateUser as updateUserApi } from '@/api/user'
 import { getCollegeInfo as getCollegeInfoApi } from '@/api/comm'
+import cloneDeep from 'clonedeep'
 import MceEditor from '@/components/MceEditor'
 window.tinymce.baseURL = '/static/tinymce'
 window.tinymce.suffix = '.min'
@@ -78,120 +76,96 @@ export default {
     }
   },
   data() {
-    const validateCollegeInfo = (rule, value, callback) => {
-      if(value.length < 2) {
-        return callback(new Error('请选择完整的院系信息！'))
-      }
-      callback()
-    }
     return {
-      dialogFormVisible: false,
+      dialogFormVisible: false,                    // 并控制是否渲染富文本编辑器
       user: null,
       rules: {
         name: [
           { required: true, message: '请输入姓名！', trigger: 'blur' },
         ],
-        collegeInfo: [
-          { validator: validateCollegeInfo, trigger: 'change' }
-        ]
       },
-      typeId: 1,                // 为1查询所有的院系
-      parentValue: null,        // 查询系别 类型为数字
-      options: []
+      collegeOptions: [],
+      collegetieOptions: []
     }
   },
-  computed: {
-    computedCollege() {
-      let collegeId = this.user.collegeInfo[0]
-      let majorId = this.user.collegeInfo[1]
+  methods: {
+    handleChange(checkId) {
+      this.user.collegetie = ''
+      this.getCollegetieOptions(checkId)
+    },
+    getCollegetieOptions(id) {
+      getCollegeInfoApi(null, id).then((result) => {
+        let { data: list } = result
+        this.collegetieOptions = list.map((item) => {
+          return { id: item.id, value: item.id, label: item.value }
+        })
+      })
+    },
+    handleEdit() {
+      this.user = cloneDeep(this.data)
+      // 将院系名称转换成相应的id
+      this.user.college = this.findCollegeId(this.collegeOptions, this.user.college)
+      getCollegeInfoApi(null, this.user.college).then((result) => {
+        let { data: list } = result
+        this.collegetieOptions = list.map((item) => {
+          return { id: item.id, value: item.id, label: item.value }
+        })
+        // 将专业名称转换为相应的id
+        this.user.collegetie = this.findCollegeId(this.collegetieOptions, this.user.collegetie)
+        this.dialogFormVisible = true
+        // console.log(this.user)
+      })
+    },
+    // handleEdit() {
+    //   let id = this.data.user_id
+    //   console.log(this.data)
+    //   let collegeId = this.findCollegeId(this.collegeOptions, this.data.college)
+    //   Promise.all([getUserApi(id), getCollegeInfoApi(null, collegeId)]).then((result) => {
+    //     this.dialogFormVisible = true
+    //     let [userData, collegetieData] = result
+    //     // 构造专业选项
+    //     this.collegetieOptions = collegetieData.data.map((item) => {
+    //       return { id: item.id, value: item.id, label: item.value }
+    //     })
+    //     console.log('修改前成员信息', userData.data)
+    //     this.user = userData.data
+    //     // 将后台传来的院系名称转换成对应的id
+    //     this.user.college = collegeId
+    //     // 将后台传来的专业名称转换成对应的id
+    //     this.user.collegetie = this.findCollegeId(this.collegetieOptions, this.user.collegetie)
+
+    //   })
+    // },
+    findCollegeId(list, name) {
       let res = []
-      this.options.some((item) => {
-        if(item.id === collegeId){
-          item.children.some((child) => {
-            if(child.id === majorId){
-              res.push(item.label, child.label)
-              return true
-            }
-          })
+      list.some((item) => {
+        if(item.label === name){
+          res = item.id
           return true
         }
       })
       return res
-    }
-  },
-  methods: {
-    handleEdit() {
-      let id = this.data.user_id
-      getUserApi(id).then((result) => {
-        let { data } = result
-        // this.dialogFormVisible = true
-        console.log('修改前成员信息', data)
-        this.user = data
-        // 设置parentId
-        let collegeId = this.getIdByCollegeValue(data.college)
-        getCollegeInfoApi(null, collegeId).then((result) => {
-          console.log('获取专业信息', result)
-          let { data: list } = result
-          this.options.some((item) => {
-            if(item.id === collegeId){
-              item.children = list.map((child) => {
-                return { id: child.id, label: child.value, value: child.id }
-              })
-              return true
-            }
-          })
-          // 获取专业所对应的id
-          let collegetieId = this.getIdByCollegeValue(data.collegetie) 
-          this.$set(this.user, 'collegeInfo', [collegeId, collegetieId])
-          this.dialogFormVisible = true
-        })
-      })
     },
-    getIdByCollegeValue(name) {
-      let id = null
-      this.options.some((item) => {
-        if(item.label === name){
-          id = item.value
+    findCollegeName(list, id) {
+      let res = ''
+      list.some((item) => {
+        if(item.id === id){
+          res = item.label
           return true
-        }else if(item.children.length){
-          item.children.some((child) => {
-            if(child.label === name){
-              id = child.value
-              return true
-            }
-          })
         }
       })
-      return id
-    },
-    handleItemChange(val) {
-      this.typeId = null
-      this.parentValue = val[0]
-      // 判断如果有children说明已经获取了，就不用再次获取
-      if(!this.options.find((item) => item.id === this.parentValue && item.children.length)){
-         getCollegeInfoApi(this.typeId, this.parentValue).then((result) => {
-          // console.log(result)
-          let { data: list } = result
-          this.options.some((item) => {
-            if(item.id === this.parentValue){
-              item.children = list.map((child) => {
-                return { id: child.id, label: child.value, value: child.id }
-              })
-              return true
-            }
-          })
-        })
-      }
+      return res
     },
     updateUser() {
-      // 添加成员
+      // 更新成员
       this.$refs['userForm'].validate((valid) => {
          if (!valid) {
           this.$message.error('请填写相关项目!')
           return
         }
-        let [college, collegetie] = this.computedCollege
-        updateUserApi(this.user.user_id, this.user.name, this.user.gender, this.user.email, this.user.mobile, this.user.wechart, this.user.QQ, this.user.descs, college, collegetie).then((result) => {
+        let collegeName = this.findCollegeName(this.collegeOptions, this.user.college)
+        let collegetieName = this.findCollegeName(this.collegetieOptions, this.user.collegetie)
+        updateUserApi(this.user.user_id, this.user.name, this.user.gender, this.user.email, this.user.mobile, this.user.wechart, this.user.QQ, this.user.descs, collegeName, collegetieName).then((result) => {
           this.$message.success('修改成功!')
           this.dialogFormVisible = false
           this.$emit('on-edit-success')
@@ -203,23 +177,18 @@ export default {
     },
   },
   mounted() {
-    getCollegeInfoApi(this.typeId, this.parentValue).then((result) => {
-      // console.log(result)
+    getCollegeInfoApi(1, null).then((result) => {
       let { data: list } = result
-      this.options = list.map((item) => {
-        return { id: item.id, label: item.value, value: item.id, children: [] }
+      this.collegeOptions = list.map((item) => {
+        return { id: item.id, value: item.id, label: item.value }
       })
-      // console.log(this.options)
     })
-  }
+  },
+  
 }
 </script>
 <style lang="less" scoped>
 .form-wrapper {
-  // width: 800px;
   padding: 0 30px 0 0;
-}
-.college-cascader {
-  width: 100%;
 }
 </style>

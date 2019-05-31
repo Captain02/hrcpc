@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 import { getCorId } from '@/utils/cookie'
+import qs from 'querystring'
 
 /**
  * 社团部门列表
@@ -41,7 +42,11 @@ export const addDepart = ({name, parentId}) => {
     // baseURL:'http://192.168.137.182:8081/HBO/sys',
     url: '/dept/save',
     method: 'POST',
-    params: {
+    transformRequest: [function (data) {
+      // 对 data 进行任意转换处理
+      return qs.stringify(data)
+    }],
+    data: {
       corId: getCorId(),
       name,
       parentId
@@ -60,7 +65,11 @@ export const editDepart = ({ deptId, name, parentId}) => {
     // baseURL:'http://192.168.137.182:8081/HBO/sys',
     url: '/dept/update',
     method: 'POST',
-    params: {
+    transformRequest: [function (data) {
+      // 对 data 进行任意转换处理
+      return qs.stringify(data)
+    }],
+    data: {
       deptId,
       name,
       parentId

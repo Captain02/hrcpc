@@ -69,18 +69,6 @@
             <el-button type="primary" size="small" @click="editResume">保存</el-button>
           </el-col>
         </el-row>
-        <!-- <el-form :model="resume" ref="resumeForm" style="padding-left: 15px;">
-          <el-form-item label="状态：">
-            <el-radio-group v-model="resume.status">
-              <template v-for="item in options">
-                <el-radio v-if="item.value" :label="item.value" :key="item.id">{{item.text}}</el-radio>
-              </template>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item >
-            <el-button type="primary"  @click="editResume">保存</el-button>
-          </el-form-item>
-        </el-form> -->
         
       </template>
     </el-dialog>
@@ -88,6 +76,7 @@
 </template>
 <script>
 import { getResume as getResumeApi, editResume as editResumeApi } from '@/api/recruited/resume'
+import cloneDeep from 'clonedeep'
 import { options } from './data'
 export default {
   name: 'edit-resume',
@@ -106,12 +95,9 @@ export default {
   },
   methods: {
     handleEdit() {
-      let id = this.data.user_id
-      getResumeApi(id).then((result) => {
-        this.dialogFormVisible = true
-        console.log('修改前获取简历信息', result)
-        this.resume = result.data[0]
-      }).catch((err) => { })
+      this.resume = cloneDeep(this.data)
+      this.dialogFormVisible = true
+
     },
     editResume() {
       editResumeApi(this.resume.user_id, this.resume.status).then((result) => {
