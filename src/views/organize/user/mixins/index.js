@@ -9,6 +9,10 @@ export default {
         password: [
           { required: true, message: '请输入密码！', trigger: 'blur' },
         ],
+        username: [
+          { required: true, message: '请填写学号', trigger: 'blur' },
+          { pattern: /^\d{12}$/,  message: '请输入正确的学号', trigger: ['blur', 'change'] }
+        ],
         persionnum: [
           { required: true, message: '请填写学号', trigger: 'blur' },
           { pattern: /^\d{12}$/,  message: '请输入正确的学号', trigger: ['blur', 'change'] }

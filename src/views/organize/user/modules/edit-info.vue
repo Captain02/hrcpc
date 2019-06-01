@@ -35,13 +35,13 @@
             <el-input v-model="user.email" type="email" placeholder="请输入邮箱"></el-input>
           </el-form-item>
           <el-form-item prop="mobile" label="手机号：">
-            <el-input v-model="user.mobile" type="number" placeholder="请输入手机号"></el-input>
+            <el-input v-model="user.mobile" placeholder="请输入手机号"></el-input>
           </el-form-item>
           <el-form-item prop="wechart" label="微信：">
             <el-input v-model="user.wechart" placeholder="请输入微信"></el-input>
           </el-form-item>
           <el-form-item prop="QQ" label="QQ：">
-            <el-input v-model="user.QQ" type="number" placeholder="请输入QQ"></el-input>
+            <el-input v-model="user.QQ" placeholder="请输入QQ"></el-input>
           </el-form-item>
           <el-form-item prop="descs" label="自我描述：">
             <mce-editor v-model="user.descs" v-if="dialogFormVisible" ></mce-editor>

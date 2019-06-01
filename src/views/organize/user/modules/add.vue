@@ -5,7 +5,7 @@
       <el-form :model="user" label-width="100px" :rules="rules" ref="userForm" :hide-required-asterisk="true">
         <el-form-item label="默认头像：">
           <div class="avatar-area">
-            <img src="/file/persionDefaultHeadPicture/20190517155219man.png" alt="默认头像男" v-if="user.sex === '男'">
+            <img src="/file/persionDefaultHeadPicture/20190517155219man.png" alt="默认头像男" v-if="user.gender === '男'">
             <img src="/file/persionDefaultHeadPicture/20190517155056woman.png" alt="默认头像女" v-else>
           </div>
         </el-form-item>
@@ -18,11 +18,11 @@
             <el-radio label="女"></el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item prop="persionnum" label="学号：">
-          <el-input v-model="user.persionnum" placeholder="请输入学号"></el-input>
+        <el-form-item prop="username" label="学号：">
+          <el-input v-model="user.username" placeholder="请输入学号"></el-input>
         </el-form-item>
         <el-form-item label="用户名：">
-          <el-input v-model="user.persionnum" disabled placeholder="学号即用户名"></el-input>
+          <el-input v-model="user.username" disabled placeholder="学号即用户名"></el-input>
         </el-form-item>
         <el-form-item prop="password" label="密码：">
           <el-input v-model="user.password" placeholder="请输入密码" type="password"></el-input>
@@ -41,13 +41,13 @@
           <el-input v-model="user.email" type="email" placeholder="请输入邮箱地址"></el-input>
         </el-form-item>
         <el-form-item prop="mobile" label="手机号：">
-          <el-input v-model="user.mobile" type="number" placeholder="请输入手机号"></el-input>
+          <el-input v-model="user.mobile" placeholder="请输入手机号"></el-input>
         </el-form-item>
         <el-form-item prop="wechart" label="微信：">
           <el-input v-model="user.wechart" placeholder="请输入微信号"></el-input>
         </el-form-item>
         <el-form-item prop="qq" label="QQ：">
-          <el-input v-model="user.qq" type="number" placeholder="请输入QQ号"></el-input>
+          <el-input v-model="user.qq" placeholder="请输入QQ号"></el-input>
         </el-form-item>
         <el-form-item prop="descs" label="自我描述：">
           <mce-editor v-model="user.descs" ></mce-editor>
@@ -81,7 +81,7 @@ export default {
         name: '',               // 成员姓名
         username: '',           // 用户名
         gender: '男',              // 性别
-        persionnum: '',          // 学号
+        // persionnum: '',          // 学号
         password: '',
         college: '',            // 所在学院
         collegetie: '',         // 所在专业
@@ -103,8 +103,8 @@ export default {
         }
         let collegeName = this.findCollegeName(this.collegeOptions, this.user.college)
         let collegetieName = this.findCollegeName(this.collegetieOptions, this.user.collegetie)
-        // 第一个学号对应接口地址的用户名
-        addUserApi( this.user.name, this.user.persionnum, this.user.gender, this.user.persionnum, this.user.password, this.user.email, this.user.mobile, this.user.wechart, this.user.qq, this.user.descs, collegeName, collegetieName).then((result) => {
+        // 第学号即用户名
+        addUserApi( this.user.name, this.user.username, this.user.gender, this.user.username, this.user.password, this.user.email, this.user.mobile, this.user.wechart, this.user.qq, this.user.descs, collegeName, collegetieName).then((result) => {
           this.$message.success('添加成功')
           setTimeout(() => {
             this.$router.replace({name: 'user'})

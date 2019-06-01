@@ -49,7 +49,7 @@ export const getUser = (id) => {
  * 添加社团用户
  * @param {Number} corid   cookie获取
  * @param {String} name 姓名
- * @param {String} username 用户名
+ * @param {String} username 学号
  * @param {String} gender 性别
  * @param {String} persionnum 学号
  * @param {String} password 密码

@@ -2,14 +2,14 @@
   <div class="site-wrapper">
     <div class="site-content">
       <div class="brand-info">
-        <h2 class="brand-title">renren-fast-vue</h2>
+        <h2 class="brand-title">德州学院社团管理系统</h2>
         <p class="brand-desc">renren-fast-vue基于vue、element-ui构建开发，实现renren-fast后台管理前端功能，提供一套更优的前端解决方案。</p>
       </div>
       <div class="login-wrapper">
         <h3 class="login-title">管理员登录</h3>
         <el-form :model="loginForm" :rules="dataRule" ref="loginForm" @keyup.enter.native="handleSubmit()" status-icon>
           <el-form-item prop="userName">
-            <el-input v-model="loginForm.userName" placeholder="帐号"></el-input>
+            <el-input v-model="loginForm.userName" placeholder="学号"></el-input>
           </el-form-item>
           <el-form-item prop="password">
             <el-input v-model="loginForm.password" type="password" placeholder="密码"></el-input>
@@ -42,7 +42,7 @@ export default {
       },
       dataRule: {
         userName: [
-          { required: true, message: '帐号不能为空', trigger: 'blur' }
+          { required: true, message: '学号不能为空', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '密码不能为空', trigger: 'blur' }
@@ -62,7 +62,7 @@ export default {
           return
         }
         this.$store.dispatch('Login', this.loginForm).then((result) => {
-          this.$message.success(result.msg)
+          this.$message.success('登录成功!')
           setTimeout(() => {
             this.$router.push({
               path: '/dashboard'

@@ -10,8 +10,8 @@
             <el-radio label="女"></el-radio>
           </el-radio-group>
       </el-form-item>
-      <el-form-item prop="persionnum">
-        <el-input v-model.trim="user.persionnum" placeholder="请输入学号"></el-input>
+      <el-form-item prop="username">
+        <el-input v-model.trim="user.username" placeholder="请输入学号"></el-input>
       </el-form-item>
       <el-form-item prop="password">
         <el-input v-model="user.password" type="password" placeholder="请输入密码" ></el-input>
@@ -35,7 +35,7 @@
       <el-form-item prop="wechart">
         <el-input v-model.trim="user.wechart" placeholder="请输入微信号"></el-input>
       </el-form-item>
-      <el-form-item prop="QQ">
+      <el-form-item prop="qq">
         <el-input v-model.trim="user.qq" placeholder="请输入QQ号"></el-input>
       </el-form-item>
       <el-form-item prop="descs">
@@ -45,10 +45,11 @@
         <el-button class="full-width" type="primary" @click="handleClick" >提交</el-button>
       </el-form-item>
     </el-form> 
+    {{user}}
   </div>
 </template>
 <script>
-import { getCollegeInfo as getCollegeInfoApi } from '@/api/comm'
+import { getCollegeInfo as getCollegeInfoApi, register as registerApi } from '@/api/comm'
 import mixins from '@/views/organize/user/mixins'
 export default {
   name: 'join',
@@ -57,10 +58,10 @@ export default {
     return {
       user: {
         corid: this.$route.query.corid,
-        openid: this.$route.query.corid,
+        openid: this.$route.query.openid,
         name: '',
         gender: '男',
-        persionnum: '',
+        username: '',
         college: '',
         collegetie: '',
         email: '',
@@ -82,7 +83,10 @@ export default {
 
         let collegeName = this.findCollegeName(this.collegeOptions, this.user.college)
         let collegetieName = this.findCollegeName(this.collegetieOptions, this.user.collegetie)
-
+        registerApi(this.user.corid, this.user.openid, this.user.username, this.user.name, this.user.gender, this.user.password, collegeName, collegetieName, this.user.email, this.user.mobile, this.user.wechart, this.user.qq, this.user.descs).then((result) => {
+          console.log(result)
+          this.$message.success('注册成功')
+        }).catch((err) => { console.log(err) })
       })
     },
   }
