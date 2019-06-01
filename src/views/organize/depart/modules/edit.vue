@@ -3,13 +3,10 @@
     <div @click="handleEdit">
       <slot name="action-btn"></slot>
     </div>
-    <!-- <el-button type="text" size="small">
-      <slot name="btn-label"></slot>
-    </el-button> -->
     <el-dialog
       title="修改社团信息"
       :visible.sync="dialogFormVisible"
-      width="700px"
+      width="650px"
       :append-to-body="true"
       :close-on-click-modal="false"
     >
@@ -33,6 +30,7 @@
            :model="depart"
            label-width="100px"
            :rules="rules"
+           size="small"
            ref="departForm" 
            :hide-required-asterisk="true"
           >
@@ -54,7 +52,7 @@
 <script>
 import { getDepart as getDepartApi, editDepart as editDepartApi } from "@/api/depart"
 import cloneDeep from 'clonedeep'
-import { mapState } from 'vuex'
+import mixins from '../mixins'
 
 export default {
   name: 'edit-depart',
@@ -68,19 +66,11 @@ export default {
       required: true
     }
   },
+  mixins: [mixins],
   data() {
     return {
-      dialogFormVisible: false,
-      defaultProps: {
-        label: 'name'
-      },
       departsData: [],
       depart: null,
-      rules: {
-        name: [
-          { required: true, message: '请输入部门名称！', trigger: 'blur' },
-        ]
-      }
     }
   },
   computed: {
@@ -91,14 +81,16 @@ export default {
   methods: {
     getDepartNameByParentId(id) {
       let name = '无上级部门'
+      if(id === 0){
+        return name
+      }
       function handle(list, id){
-        // console.log(list)
         list.some((item) => {
           if(item.dept_id === id){
             name = item.name
             return true
           }
-          if(item.children.length){
+          if(item.children){
             handle(item.children, id)
           }
         })
@@ -135,9 +127,8 @@ export default {
           parentName: this.getDepartNameByParentId(data[0].parent_id)
         }
         this.dialogFormVisible = true
-        console.log('after api', this.depart)
-      //  console.log(this.depart)
-      }).catch((err) => {})
+        // console.log('after api', this.depart)
+      }).catch((err) => { console.log('err', err) })
     },
     editDepart() {
       editDepartApi(this.depart).then((result) => {
