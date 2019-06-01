@@ -42,16 +42,17 @@
         <el-input v-model.trim="user.descs" type="textarea" placeholder="自我描述"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button class="full-width" type="primary" >提交</el-button>
+        <el-button class="full-width" type="primary" @click="handleClick" >提交</el-button>
       </el-form-item>
-      <!-- {{user}} -->
     </el-form> 
   </div>
 </template>
 <script>
 import { getCollegeInfo as getCollegeInfoApi } from '@/api/comm'
+import mixins from '@/views/organize/user/mixins'
 export default {
   name: 'join',
+  mixins: [mixins],
   data() {
     return {
       user: {
@@ -69,61 +70,21 @@ export default {
         password: '',
         descs: ''
       },
-      collegeOptions: [],
-      collegetieOptions: [],
-      rules: {
-        name: [
-          { required: true, message: '请填写姓名', trigger: 'blur' }
-        ],
-        persionnum: [
-          { required: true, message: '请填写学号', trigger: 'blur' },
-          { pattern: /^\d{12}$/,  message: '请输入正确的学号', trigger: ['blur', 'change'] }
-        ],
-        email: [
-          { required: true, message: '请填写邮箱地址', trigger: 'blur' },
-          { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
-        ],
-        mobile: [
-          { required: true, message: '请填写手机号', trigger: 'blur' },
-          { pattern: /^[1][3,4,5,6,7,8][0-9]{9}$/, message: '请输入正确的手机号', trigger: ['blur', 'change'] }
-        ],
-        wechart: [
-          { pattern: /^[a-zA-Z]([-_a-zA-Z0-9]{5,19})+$/,  message: '请输入正确的微信号', trigger: ['blur', 'change'] }
-        ],
-        qq: [
-          { pattern: /^[1-9][0-9]{4,10}$/, message: '请输入正确的QQ号', trigger: ['blur', 'change'] }
-        ],
-        college: [
-          { required: true, message: '请选择院系', trigger: 'change' }
-        ],
-        collegetie: [
-          { required: true, message: '请选择专业', trigger: 'change' }
-        ]
-      }
     }
   },
   methods: {
-    handleChange(checkId) {
-      this.user.collegetie = ''
-      this.getCollegetieOptions(checkId)
+    handleClick() {
+      this.$refs['userForm'].validate((valid) => {
+         if (!valid) {
+          this.$message.error('请填写相关项目!')
+          return
+        }
+
+        let collegeName = this.findCollegeName(this.collegeOptions, this.user.college)
+        let collegetieName = this.findCollegeName(this.collegetieOptions, this.user.collegetie)
+
+      })
     },
-    getCollegetieOptions(id) {
-      getCollegeInfoApi(null, id).then((result) => {
-        let { data: list } = result
-        this.collegetieOptions = list.map((item) => {
-          return { id: item.id, value: item.id, label: item.value }
-        })
-      })
-    }
-  },
-  mounted() {
-    getCollegeInfoApi(1, null).then((result) => {
-      // console.log(result)
-      let { data: list } = result
-      this.collegeOptions = list.map((item) => {
-        return { id: item.id, value: item.id, label: item.value }
-      })
-    })
   }
 }
 </script>

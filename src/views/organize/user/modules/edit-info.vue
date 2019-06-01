@@ -47,7 +47,7 @@
             <mce-editor v-model="user.descs" v-if="dialogFormVisible" ></mce-editor>
           </el-form-item>
           
-          <el-form-item class="">
+          <el-form-item>
             <el-col :offset="5">
               <el-button type="primary" @click="updateUser">保存</el-button>
             </el-col>
@@ -59,6 +59,7 @@
 </template>
 <script>
 import { getUser as getUserApi, updateUser as updateUserApi } from '@/api/user'
+import mixins from '../mixins'
 import { getCollegeInfo as getCollegeInfoApi } from '@/api/comm'
 import cloneDeep from 'clonedeep'
 import MceEditor from '@/components/MceEditor'
@@ -75,32 +76,14 @@ export default {
       required: true
     }
   },
+  mixins: [mixins],
   data() {
     return {
       dialogFormVisible: false,                    // 并控制是否渲染富文本编辑器
       user: null,
-      rules: {
-        name: [
-          { required: true, message: '请输入姓名！', trigger: 'blur' },
-        ],
-      },
-      collegeOptions: [],
-      collegetieOptions: []
     }
   },
   methods: {
-    handleChange(checkId) {
-      this.user.collegetie = ''
-      this.getCollegetieOptions(checkId)
-    },
-    getCollegetieOptions(id) {
-      getCollegeInfoApi(null, id).then((result) => {
-        let { data: list } = result
-        this.collegetieOptions = list.map((item) => {
-          return { id: item.id, value: item.id, label: item.value }
-        })
-      })
-    },
     handleEdit() {
       this.user = cloneDeep(this.data)
       // 将院系名称转换成相应的id
@@ -116,41 +99,11 @@ export default {
         // console.log(this.user)
       })
     },
-    // handleEdit() {
-    //   let id = this.data.user_id
-    //   console.log(this.data)
-    //   let collegeId = this.findCollegeId(this.collegeOptions, this.data.college)
-    //   Promise.all([getUserApi(id), getCollegeInfoApi(null, collegeId)]).then((result) => {
-    //     this.dialogFormVisible = true
-    //     let [userData, collegetieData] = result
-    //     // 构造专业选项
-    //     this.collegetieOptions = collegetieData.data.map((item) => {
-    //       return { id: item.id, value: item.id, label: item.value }
-    //     })
-    //     console.log('修改前成员信息', userData.data)
-    //     this.user = userData.data
-    //     // 将后台传来的院系名称转换成对应的id
-    //     this.user.college = collegeId
-    //     // 将后台传来的专业名称转换成对应的id
-    //     this.user.collegetie = this.findCollegeId(this.collegetieOptions, this.user.collegetie)
-
-    //   })
-    // },
     findCollegeId(list, name) {
       let res = []
       list.some((item) => {
         if(item.label === name){
           res = item.id
-          return true
-        }
-      })
-      return res
-    },
-    findCollegeName(list, id) {
-      let res = ''
-      list.some((item) => {
-        if(item.id === id){
-          res = item.label
           return true
         }
       })
@@ -175,16 +128,7 @@ export default {
       })
       
     },
-  },
-  mounted() {
-    getCollegeInfoApi(1, null).then((result) => {
-      let { data: list } = result
-      this.collegeOptions = list.map((item) => {
-        return { id: item.id, value: item.id, label: item.value }
-      })
-    })
-  },
-  
+  }
 }
 </script>
 <style lang="less" scoped>
