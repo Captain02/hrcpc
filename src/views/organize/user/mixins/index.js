@@ -28,6 +28,9 @@ export default {
         qq: [
           { pattern: /^[1-9][0-9]{4,10}$/, message: '请输入正确的QQ号', trigger: ['blur', 'change'] }
         ],
+        QQ: [
+          { pattern: /^[1-9][0-9]{4,10}$/, message: '请输入正确的QQ号', trigger: ['blur', 'change'] }
+        ],
         wechart: [
           { pattern: /^[a-zA-Z]([-_a-zA-Z0-9]{5,19})+$/,  message: '请输入正确的微信号', trigger: ['blur', 'change'] }
         ],

@@ -1,5 +1,6 @@
 <template>
   <div class="mobile-container">
+    <h1 class="join-title">您尚未注册百团争鸣，请填写相关信息进行注册</h1>
     <el-form class="join-form" :model="user" :rules="rules" ref="userForm" size="small">
       <el-form-item prop="name">
         <el-input v-model.trim="user.name" placeholder="请输入姓名"></el-input>
@@ -49,16 +50,18 @@
   </div>
 </template>
 <script>
-import { getCollegeInfo as getCollegeInfoApi, register as registerApi } from '@/api/comm'
+import { getCollegeInfo as getCollegeInfoApi, join as joinApi } from '@/api/comm'
 import mixins from '@/views/organize/user/mixins'
 export default {
   name: 'join',
   mixins: [mixins],
   data() {
     return {
+      code: this.$route.query.code,
+      corid: this.$route.query.corid,
+      openid: this.$route.query.openid,
+      type: this.$route.query.type,
       user: {
-        corid: this.$route.query.corid,
-        openid: this.$route.query.openid,
         name: '',
         gender: '男',
         username: '',
@@ -76,25 +79,35 @@ export default {
   methods: {
     handleClick() {
       this.$refs['userForm'].validate((valid) => {
-         if (!valid) {
-          this.$message.error('请填写相关项目!')
-          return
-        }
-
-        let collegeName = this.findCollegeName(this.collegeOptions, this.user.college)
-        let collegetieName = this.findCollegeName(this.collegetieOptions, this.user.collegetie)
-        registerApi(this.user.corid, this.user.openid, this.user.username, this.user.name, this.user.gender, this.user.password, collegeName, collegetieName, this.user.email, this.user.mobile, this.user.wechart, this.user.qq, this.user.descs).then((result) => {
-          console.log(result)
-          this.$message.success('注册成功')
-        }).catch((err) => { console.log(err) })
+         if (valid) {
+          let collegeName = this.findCollegeName(this.collegeOptions, this.user.college)
+          let collegetieName = this.findCollegeName(this.collegetieOptions, this.user.collegetie)
+          joinApi(this.corid, this.openid, this.user.username, this.user.name, this.user.gender, this.user.password, collegeName, collegetieName, this.user.email, this.user.mobile, this.user.wechart, this.user.qq, this.user.descs).then((result) => {
+            console.log(result)
+            this.$router.replace({
+              path: '/result',
+              query: {
+                code: this.code,
+                corid: this.corid,
+                openid: this.openid,
+                type: this.type
+              }
+            })
+          }).catch((err) => { console.log(err) })
+        }        
       })
     },
   }
 }
 </script>
 <style lang="less" scoped>
-.join-form {
+.join-title {
   margin-top: 3em;
+  // text-align: center;
+  line-height: 25px;
+}
+.join-form {
+  margin-top: 1em;
   .el-form-item--small {
     margin-bottom: 1em;
   }

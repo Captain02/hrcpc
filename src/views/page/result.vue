@@ -12,19 +12,23 @@
         {{description}}
       </div>
       <div class="result-action" v-if="isSuccess">
-        <el-button type="success">加入QQ群</el-button>
+        <el-image :src="qqqun"></el-image>
+        <el-button type="success" @click="handleClick">加入QQ群</el-button>
       </div>
     </div>
   </div>
 </template>
 <script>
+import qqqun from '@/assets/img/qqqun.png'
 export default {
   name: 'result',
   data() {
     return {
+      qqqun,
       code: this.$route.query.code,
       corid: this.$route.query.corid,
-      openid: this.$route.query.openid
+      openid: this.$route.query.openid,
+      type: this.$route.query.type
     }
   },
   computed: {
@@ -32,21 +36,30 @@ export default {
       return +this.code === 0
     },
     message() {
-      return +this.code === 0 ? '参与成功' : '参与失败'
+      return +this.code === 0 ? '加入成功' : '加入失败'
     },
     description() {
-      return +this.code === 0 ? '您已参与成功，点击下方按钮可加入相关QQ群进行交流。' : '参与失败，稍后将跳转至相关页面'
+      return +this.code === 0 ? '您已加入成功，点击下方按钮可加入相关QQ群进行交流。' : '加入失败，稍后将跳转至相关页面。'
     }
   },
   methods: {
+    handleClick() {
+      window.open('//shang.qq.com/wpa/qunwpa?idkey=ddf0ed4da650e44d68d69d0b1f4d0050e2a049b2ab952bb482f05b811ab9eb41')
+    }
   },
   mounted() {
     if(!this.isSuccess){
-      // setTimeout(() => {
-      //   this.$router.replace({
-      //     path: 'login'
-      //   })
-      // }, 3000)
+      setTimeout(() => {
+        this.$router.replace({
+          path: '/join',
+          query: {
+            code: this.code,
+            corid: this.corid,
+            openid: this.openid,
+            type: this.type
+          }
+        })
+      }, 3000)
     }
   }
 }
