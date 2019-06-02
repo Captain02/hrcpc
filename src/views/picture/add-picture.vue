@@ -3,23 +3,23 @@
     <h1 class="page-title">
       <span style="font-size:18px;" >上传相片</span>  
     </h1>
+    <input type="file" @change="fileChange" id="upload_file" accept="image/png,image/gif,image/jpeg" multiple style="display: none" />
     <el-row class="uploadBtn">
-      <el-button type="success" plain @click="compile">开始上传</el-button>
-    </el-row>
-    <div class="hello">
+      <el-button type="success" :disabled="!flag" plain @click="compile">开始上传</el-button>
+      <div class="hello">
       <div class="upload">
         <div class="upload_warp">
           <div class="upload_warp_left" @click="fileClick">
             <img src="@/assets/img/upload.png">
           </div>
-          <div class="upload_warp_right" @drop="drop($event)" @dragenter="dragenter($event)" @dragover="dragover($event)">
+          <!-- <div class="upload_warp_right" @drop="drop($event)" @dragenter="dragenter($event)" @dragover="dragover($event)">
             或者将文件拖到此处
-          </div>
+          </div> -->
         </div>
         <div class="upload_warp_text">
           选中{{imgList.length}}张文件，共{{bytesToSize(this.size)}}
         </div>
-        <input @change="fileChange($event)" type="file" ref="files" id="upload_file" multiple style="display: none"/>
+        <!-- <input @change="fileChange($event)" type="file" ref="files" id="upload_file" accept="image/png,image/gif,image/jpeg" multiple style="display: none"/> -->
         <div class="upload_warp_img" v-show="imgList.length!=0">
           <div class="upload_warp_img_div" v-for="(item,index) of imgList" :key="index">
             <div class="upload_warp_img_div_top">
@@ -33,13 +33,15 @@
         </div>
       </div>
     </div>
+    </el-row>
+
   </div>
 </template>
 <script>
 import axios from 'axios';
 import { getCorId } from '@/utils/cookie'
 const baseURL = process.env.BASE_API;
-let formData = new FormData();
+let formData;
 export default {
   name: 'add-picture',
   data() {
@@ -49,27 +51,26 @@ export default {
       imgList: [],
       size: 0,
       filesArr: "",
+      flag: false
     }
   },
   mounted: function() {
+    formData = new FormData();
   },
   methods: {
     fileClick() {
       document.getElementById('upload_file').click()
     },
     fileChange(el) {
-      console.log(el)
-      // if (!el.target.files[0].size) return;
-      // this.fileList(el.target);
-      // el.target.value = '';
-      this.filesArr = this.$refs.files.files;
-      //console.log(this.filesArr)
-      for( let i = 0; i < this.filesArr.length; i++ ){
-        formData.append('picture',this.filesArr[i]);
+      this.filesArr = el.target.files;
+      console.log(this.filesArr.length);
+      if (this.filesArr.length > 0) {
+        this.flag = true;
+        for( let i = 0; i < this.filesArr.length; i++ ){
+          formData.append('picture',this.filesArr[i]);
+        }
+        this.fileList(el.target);
       }
-      if (!el.target.files[0].size) return;
-      console.log(formData)
-      this.fileList(el.target);
     },
     fileList(fileList) {
         let files = fileList.files;
@@ -109,23 +110,15 @@ export default {
     fileAdd(file) {
         //总大小
         this.size = this.size + file.size;
-        //判断是否为图片文件
-        if (file.type.indexOf('image') == -1) {
-            file.src = 'wenjian.png';
-            this.imgList.push({
-                file
-            });
-        } else {
-            let reader = new FileReader();
-            reader.vue = this;
-            reader.readAsDataURL(file);
-            reader.onload = function () {
-              file.src = this.result;
-              this.vue.imgList.push({
-                  file
-              });
-            }
-        }
+        let reader = new FileReader();
+        reader.vue = this;
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+          file.src = this.result;
+          this.vue.imgList.push({
+              file
+          });
+      }
     },
     fileDel(index) {
         this.size = this.size - this.imgList[index].file.size;//总大小
@@ -138,32 +131,36 @@ export default {
             i = Math.floor(Math.log(bytes) / Math.log(k));
         return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
     },
-    dragenter(el) {
-        el.stopPropagation();
-        el.preventDefault();
-    },
-    dragover(el) {
-        el.stopPropagation();
-        el.preventDefault();
-    },
-    drop(el) {
-        el.stopPropagation();
-        el.preventDefault();
-        this.fileList(el.dataTransfer);
-    },
     //在确定上传调用函数发送ajax请求
     compile() {
-      let _this=this;
+      let _this = this;
       let url= baseURL + '/img/batch';
-      formData.append("corid", getCorId());
-      console.log(formData);
-      axios.post(url,formData, {
-        headers: {"content-typ": "multipart/form-data"}
+      formData.append("corId", getCorId());
+      console.log(formData.get('picture'));
+      let config = {
+        headers: {
+          'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'
+        }
       }
+      axios.post(url,formData,config
       ).then(function(rest) {
-        console.log(rest);
+        if (rest.data.code === 0) {
+        _this.$alert('', '您已上传成功', {
+          confirmButtonText: '确定',
+          callback: action => {
+            _this.$router.push({
+              path: '/picture/list'
+            })
+          }
+         })
+        } else {
+          _this.$message({
+            type: 'info',
+            message: '上传失败!'
+          });
+        }
       }).catch(function(er){
-        console.log(er);      
+        console.log(er);
       })
     }
   }
@@ -282,8 +279,7 @@ export default {
 
 .hello {
   width: 650px;
-  margin-left: 2%;
   text-align: center;
-  margin-top: 5%;
+  margin-top: 2%;
 }
 </style> 
