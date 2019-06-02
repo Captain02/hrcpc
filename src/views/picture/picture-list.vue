@@ -32,10 +32,13 @@
     </viewer>
     <div class="block">
       <el-pagination
-        :page-size="10"
-        :pager-count="5"
-        layout="prev, pager, next"
-        :total="30">
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="listQuery.currPage"
+        :page-sizes="[100, 200, 300, 400]"
+        :page-size="listQuery.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="400">
       </el-pagination>
     </div>
   </div>
@@ -44,7 +47,7 @@
 import 'viewerjs/dist/viewer.css';
 import Viewer from "v-viewer/src/component.vue";
 import { getImgList, delPicture } from "@/api/photomodule";
-// const BaseUrl = "http://140.143.201.244:82";
+const BaseUrl = "http://140.143.201.244:82";
 export default {
   name: "picture-list",
   components: {
@@ -53,27 +56,17 @@ export default {
   data() {
     return {
       movable: false,
-      pic_list: []
+      pic_list: [],
+      listQuery: {
+        currPage: 1,
+        pageSize: 10
+      },
     };
   },
   mounted: function() {
     const that = this;
     // 加载图片列表
-    getImgList(1, 10).then(res => {
-      console.log(res.data);
-      if (res.date) {
-        for (let i in res.date) {
-          // 处理图片地址(线上不需要处理)
-          // res.date[i].url = BaseUrl + res.date[i].url;
-          // 处理文件名称
-          res.date[i].imagename = res.date[i].imagename.substring(0, res.date[i].imagename.indexOf("."));
-        }
-        that.pic_list = res.date;
-      }
-      console.log(that.pic_list);
-    })
-
-    // animated infinite bounce 
+    that.loadImages(1, 10);
   },
   methods: {
     F_Open_dialog() {
@@ -82,10 +75,37 @@ export default {
     inited (viewer) {
       this.$viewer = viewer;
     },
+    getImgLists(page){
+      this.loadImages();
+    },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
+    //加载图片
+    loadImages() {
+      const that = this;
+      // 加载图片列表
+      getImgList(this.listQuery.currPage, this.listQuery.pageSize).then(res => {
+        console.log(res.data);
+        if (res.date) {
+          for (let i in res.date) {
+            // 处理图片地址(线上不需要处理)
+            // res.date[i].url = BaseUrl + res.date[i].url;
+            // 处理文件名称
+            res.date[i].imagename = res.date[i].imagename.substring(0, res.date[i].imagename.indexOf("."));
+          }
+          that.pic_list = res.date;
+        }
+        console.log(that.pic_list);
+      })
+    },
     // 删除图片
     delImg(id, url) {
       // 线上不需要处理
-      let urlImg = url.substring(25);
+      // let urlImg = url.substring(25);
       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -131,7 +151,7 @@ export default {
   background: rgb(243, 245, 246);
   text-align: center;
   list-style: none;
-  margin: 10px 15px;
+  margin: 10px 6px;
 }
 
 .del-img {
@@ -198,5 +218,7 @@ export default {
   -webkit-animation-name: pulse;
   animation-name: list-item-con;
 }
-
+.block {
+  margin-top: 40px;
+}
 </style>
