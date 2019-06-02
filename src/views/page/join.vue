@@ -57,7 +57,7 @@ export default {
   mixins: [mixins],
   data() {
     return {
-      code: this.$route.query.code,
+      // code: this.$route.query.code,
       corid: this.$route.query.corid,
       openid: this.$route.query.openid,
       type: this.$route.query.type,
@@ -87,7 +87,7 @@ export default {
             this.$router.replace({
               path: '/result',
               query: {
-                code: this.code,
+                code: 0,
                 corid: this.corid,
                 openid: this.openid,
                 type: this.type
