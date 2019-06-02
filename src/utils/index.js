@@ -114,6 +114,27 @@ export function transferData2Tree(rootId, list, parentId, keyId, children) {
   return handle(rootId)
 }
 
+/**
+ * 防抖
+ * @param {Function} func 触发函数
+ * @param {Number} delay 延迟触发时间
+ * @param {*} immediate 是否立即执行
+ */
+export function debounce(func, delay = 300, immediate) {
+  let timer = null
+  return function (...args) {
+    if(immediate){
+      func.apply(this, args)
+    }
+    if(timer){
+      clearTimeout(timer)
+    }
+    timer = setTimeout(() => {
+      func.apply(this, args)
+    }, delay)
+  }
+}
+
 // /**
 //  * 将部门数据转换为树状数据
 //  * @param {Array} list 

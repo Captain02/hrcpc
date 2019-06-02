@@ -9,8 +9,14 @@
             <img src="/file/persionDefaultHeadPicture/20190517155056woman.png" alt="默认头像女" v-else>
           </div>
         </el-form-item>
+        <el-form-item prop="username" label="学号：">
+          <el-input :value="user.username" @input="handleInput" placeholder="请输入学号"></el-input>
+        </el-form-item>
+        <el-form-item label="用户名：">
+          <el-input :value="user.username" disabled placeholder="学号即用户名"></el-input>
+        </el-form-item>
         <el-form-item prop="name" label="姓名：">
-          <el-input v-model="user.name" placeholder="请输入姓名"></el-input>
+          <el-input v-model.trim="user.name" placeholder="请输入姓名"></el-input>
         </el-form-item>
         <el-form-item prop="gender" label="性别：">
           <el-radio-group v-model="user.gender">
@@ -18,12 +24,7 @@
             <el-radio label="女"></el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item prop="username" label="学号：">
-          <el-input v-model="user.username" placeholder="请输入学号"></el-input>
-        </el-form-item>
-        <el-form-item label="用户名：">
-          <el-input v-model="user.username" disabled placeholder="学号即用户名"></el-input>
-        </el-form-item>
+        
         <el-form-item prop="password" label="密码：">
           <el-input v-model="user.password" placeholder="请输入密码" type="password"></el-input>
         </el-form-item>
@@ -64,7 +65,8 @@
   </div>
 </template>
 <script>
-import { addUser as addUserApi } from '@/api/user'
+import { addUser as addUserApi, hasUserInCor as hasUserInCorApi } from '@/api/user'
+import { debounce } from '@/utils'
 import mixins from '../mixins'
 import MceEditor from '@/components/MceEditor'
 window.tinymce.baseURL = '/static/tinymce'
@@ -114,7 +116,16 @@ export default {
         })
       })
       
-    }
+    },
+    handleInput(val) {
+      this.user.username = val
+      this.handleSearch(val)
+    },
+    handleSearch: debounce(function(username) {
+      hasUserInCorApi(username).then((result) => {
+        console.log(result)
+      }).catch((err) => {})
+    }, 1000)
   },
 }
 </script>

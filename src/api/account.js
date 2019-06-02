@@ -17,6 +17,21 @@ export const getUserInfo = () => {
 }
 
 /**
+ * 获取当前登录用户的权限
+ * @param {Number} userId 
+ */
+export const getUserPermits = (userId) => {
+  return request({
+    url: '/user/getLoginUserPermission',
+    method: 'GET',
+    params: {
+      corid: getCorId(),
+      userId
+    }
+  })
+}
+
+/**
  * 修改密码
  * @param {Number} id
  * @param {String} username

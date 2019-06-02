@@ -13,7 +13,6 @@
       </div>
       <div class="result-action" v-if="isSuccess">
         <el-image :src="qqqun"></el-image>
-        <el-button type="success" @click="handleClick">加入QQ群</el-button>
       </div>
     </div>
   </div>
@@ -32,6 +31,9 @@ export default {
     }
   },
   computed: {
+    isJioned() {
+      return +this.code === 505
+    },
     isSuccess() {
       return +this.code === 0
     },
@@ -39,27 +41,23 @@ export default {
       return +this.code === 0 ? '加入成功' : '加入失败'
     },
     description() {
-      return +this.code === 0 ? '您已加入成功，点击下方按钮可加入相关QQ群进行交流。' : '加入失败，稍后将跳转至相关页面。'
+      return +this.code === 0 ? '您已加入成功，长按下方二维码可加入相关QQ群进行交流。' : '加入失败，您已加入无需再次加入。'
     }
   },
   methods: {
-    handleClick() {
-      window.open('//shang.qq.com/wpa/qunwpa?idkey=ddf0ed4da650e44d68d69d0b1f4d0050e2a049b2ab952bb482f05b811ab9eb41')
-    }
   },
   mounted() {
-    if(!this.isSuccess){
-      setTimeout(() => {
-        this.$router.replace({
-          path: '/join',
-          query: {
-            code: this.code,
-            corid: this.corid,
-            openid: this.openid,
-            type: this.type
-          }
-        })
-      }, 3000)
+    // 如果没有加入成功并且没有重复加入
+    if(!this.isSuccess && !this.isJioned){
+      this.$router.replace({
+        path: '/join',
+        query: {
+          code: this.code,
+          corid: this.corid,
+          openid: this.openid,
+          type: this.type
+        }
+      })
     }
   }
 }
@@ -67,7 +65,7 @@ export default {
 
 <style scoped lang="less">
 .result-view {
-  margin-top: 6rem;
+  margin-top: 2rem;
   text-align: center;
   .result-icon {
     font-size: 6rem;
@@ -80,7 +78,7 @@ export default {
   }
   .result-text {
     font-size: 2.3rem;
-    margin: 2rem 0 1.3rem;
+    margin: 1rem 0;
   }
   .result-desc {
     font-size: 14px;
@@ -88,10 +86,7 @@ export default {
     line-height: 22px;
   }
   .result-action {
-    margin-top: 3rem;
-    .el-button--success {
-      width: 100%;
-    }
+    margin-top: 2rem;
   }
 }
 

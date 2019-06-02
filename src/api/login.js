@@ -24,6 +24,21 @@ export const login = (username, password, corid) => {
 }
 
 /**
+ * 登陆的时候查询输入学号所在的社团
+ * @param {String} username 学号
+ */
+export const getUserInCors = (username) => {
+  return request({
+    url: '/user/getUserCors',
+    method: 'GET',
+    params: {
+      username
+    }
+  })
+}
+
+
+/**
  * 获取token
  * @description 通过将之前没有过期的token放入请求头来获取新的token
  */

@@ -9,15 +9,14 @@
         <h3 class="login-title">管理员登录</h3>
         <el-form :model="loginForm" :rules="dataRule" ref="loginForm" @keyup.enter.native="handleSubmit()" status-icon>
           <el-form-item prop="userName">
-            <el-input v-model="loginForm.userName" placeholder="学号"></el-input>
+            <el-input :value="loginForm.userName" @input="handleInput" placeholder="学号"></el-input>
           </el-form-item>
           <el-form-item prop="password">
             <el-input v-model="loginForm.password" type="password" placeholder="密码"></el-input>
           </el-form-item>
           <el-form-item prop="team">
-            <el-select v-model="loginForm.team" placeholder="请选择所属社团" clearable>
-              <el-option label="区域一" :value="1"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
+            <el-select v-model="loginForm.team" placeholder="请选择所属社团" clearable no-data-text="未检测到您所加入的社团">
+              <el-option v-for="team in teamOptions" :label="team.corname" :key="team.id" :value="team.id"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -30,7 +29,8 @@
 </template>
 
 <script>
-
+import { getUserInCors as getUserInCorsApi } from '@/api/login'
+import { debounce } from '@/utils'
 export default {
   name: 'login',
   data () {
@@ -40,6 +40,7 @@ export default {
         password: '',
         team: ''
       },
+      teamOptions: [],
       dataRule: {
         userName: [
           { required: true, message: '学号不能为空', trigger: 'blur' }
@@ -73,6 +74,17 @@ export default {
         })
       })
     },
+    handleSearch: debounce(function (username) {
+      getUserInCorsApi(username).then((result) => {
+        console.log(result)
+        let { data } = result
+        this.teamOptions = data
+      }).catch((err) => {})
+    }, 1000),
+    handleInput(val) {
+      this.loginForm.userName = val
+      this.handleSearch(val)
+    }
   }
 }
 </script>

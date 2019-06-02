@@ -1,5 +1,5 @@
 import { login as loginApi, getToken as getTokenApi } from '@/api/login'
-import { getUserInfo as getUserInfoApi } from '@/api/account'
+import { getUserInfo as getUserInfoApi, getUserPermits as getUserPermitsApi } from '@/api/account'
 import { getToken, setToken, removeToken, getCorId, setCorId } from '@/utils/cookie'
 
 const user = {
@@ -10,18 +10,7 @@ const user = {
     corid: getCorId(),    // 所在社团ID
     name: '',             // 姓名
     userName: '',         // 用户名
-    // college: '',          // 所在学院
-    // collegetie: '',       // 所在专业
-    // persionnum: '',       // 学号
-    // gender: '',           // 性别
-    // createTime: null,     // 该用户的创建时间
-    // QQ: '',               // qq
-    // wechart: '',          // 微信
-    // email: '',            // 邮箱
-    // mobile: '',           // 手机号
-    // depts:[],             // 所在部门
-    // roles: [],            // 该用户所拥有的角色
-    // descs: '',            // 自我描述
+    permits: [],          // 用户所拥有的权限
     avatar: '',
     
   },
@@ -44,27 +33,12 @@ const user = {
     SET_NAME(state, name) {
       state.name = name
     },
+    SET_USERPERMITS(state, permits) {
+      state.permits = permits
+    },
     SET_AVATAR(state, avatar) {
       state.avatar = avatar
     }
-    // SET_ROLES(state, roles) {
-    //   state.roles = roles
-    // },
-    // SET_OTHERS(state, {name, college, collegetie, persionnum, gender, create_time, QQ, wechart, email, mobile, depts, filepath, descs }) {
-    //   state.name = name
-    //   state.college = college
-    //   state.collegetie = collegetie
-    //   state.persionnum = persionnum
-    //   state.gender = gender
-    //   state.createTime = create_time
-    //   state.QQ = QQ
-    //   state.wechart = wechart
-    //   state.email = email
-    //   state.mobile = mobile
-    //   state.depts = depts
-    //   state.avatar = filepath
-    //   state.descs = descs
-    // },
 
   },
   actions: {
@@ -91,16 +65,23 @@ const user = {
     },
     GetUserInfo({commit}) {
       return new Promise((resolve, reject) => {
-        getUserInfoApi().then((result) => {
+        getUserInfoApi()
+        .then((result) => {
           let { user } = result
           commit('SET_USERID', user.user_id)
           commit('SET_USERNAME', user.username)
           commit('SET_NAME', user.name)
-          // commit('SET_ROLES', user.roles)
-          // commit('SET_OTHERS', user)
           commit('SET_AVATAR', user.filepath)
+
+          // 获取用户权限
+          return getUserPermitsApi(user.user_id)  
+        })
+        .then((result) => {
+          let { data } = result
+          commit('SET_USERPERMITS', data)
           resolve()
-        }).catch((err) => {
+        })
+        .catch((err) => {
           reject(err)
         })
       })

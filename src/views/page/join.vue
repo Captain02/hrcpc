@@ -1,7 +1,10 @@
 <template>
   <div class="mobile-container">
-    <h1 class="join-title">您尚未注册百团争鸣，请填写相关信息进行注册</h1>
+    <h1 class="join-message">加入失败，您尚未注册，请填写相关信息进行注册，注册成功后可在百团争鸣小程序中查看更多详情</h1>
     <el-form class="join-form" :model="user" :rules="rules" ref="userForm" size="small">
+      <el-form-item prop="username">
+        <el-input :value="user.username" @input="handleInput" placeholder="请输入学号"></el-input>
+      </el-form-item>
       <el-form-item prop="name">
         <el-input v-model.trim="user.name" placeholder="请输入姓名"></el-input>
       </el-form-item>
@@ -11,9 +14,7 @@
             <el-radio label="女"></el-radio>
           </el-radio-group>
       </el-form-item>
-      <el-form-item prop="username">
-        <el-input v-model.trim="user.username" placeholder="请输入学号"></el-input>
-      </el-form-item>
+      
       <el-form-item prop="password">
         <el-input v-model="user.password" type="password" placeholder="请输入密码" ></el-input>
       </el-form-item>
@@ -50,7 +51,8 @@
   </div>
 </template>
 <script>
-import { getCollegeInfo as getCollegeInfoApi, join as joinApi } from '@/api/comm'
+import { getCollegeInfo as getCollegeInfoApi, join as joinApi, hasRegister as hasRegisterApi } from '@/api/comm'
+import { debounce } from '@/utils'
 import mixins from '@/views/organize/user/mixins'
 export default {
   name: 'join',
@@ -77,13 +79,22 @@ export default {
     }
   },
   methods: {
+    handleInput(val) {
+      this.user.username = val
+      this.handleSearch(val)
+    },
+    handleSearch: debounce(function (username) {
+      hasRegisterApi(username).then((result) => {
+        console.log(result)
+      }).catch((err) => {})
+    }, 1000),
     handleClick() {
       this.$refs['userForm'].validate((valid) => {
          if (valid) {
           let collegeName = this.findCollegeName(this.collegeOptions, this.user.college)
           let collegetieName = this.findCollegeName(this.collegetieOptions, this.user.collegetie)
           joinApi(this.corid, this.openid, this.user.username, this.user.name, this.user.gender, this.user.password, collegeName, collegetieName, this.user.email, this.user.mobile, this.user.wechart, this.user.qq, this.user.descs).then((result) => {
-            console.log(result)
+            // console.log(result)
             this.$router.replace({
               path: '/result',
               query: {
@@ -100,16 +111,23 @@ export default {
   }
 }
 </script>
+
 <style lang="less" scoped>
-.join-title {
+.join-message {
   margin-top: 3em;
   // text-align: center;
   line-height: 25px;
+  color: #ff4d4f;
 }
 .join-form {
   margin-top: 1em;
   .el-form-item--small {
     margin-bottom: 1em;
   }
+}
+</style>
+<style lang="less">
+.err504-message {
+  min-width: 300px;
 }
 </style>

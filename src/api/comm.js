@@ -84,3 +84,16 @@ export const join = (corid, openid, username, name, gender, password, college, c
     }
   })
 }
+
+export const hasRegister = (username) => {
+  return request({
+    url: '/user/selectCountByUserName',
+    method: 'POST',
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }],
+    data: {
+      username
+    }
+  })
+}

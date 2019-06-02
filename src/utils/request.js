@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Message } from 'element-ui'
+import { Message, Notification } from 'element-ui'
 import router from "@/router"
 import store from '@/store'
 import { removeToken, removeCorId } from '@/utils/cookie'
@@ -51,6 +51,22 @@ const failHandle = (code, msg) => {
         message: msg,
         type: 'error',
         duration: 5 * 1000
+      })
+      break
+    case 504:
+      Message({
+        message: msg,
+        type: 'error',
+        customClass: 'err504-message',
+        duration: 6000
+      })
+      break
+    case 505:
+      Notification({
+        title: '提示',
+        message: msg,
+        type: 'error',
+        duration: 6 * 1000
       })
       break
     default:

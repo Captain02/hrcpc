@@ -44,6 +44,23 @@ export const getUser = (id) => {
   })
 }
 
+/**
+ * 查询成员是否已经加入该社团
+ * @param {String} username 
+ */
+export const hasUserInCor = (username) => {
+  return request({
+    url: '/user/getCheckUserCor',
+    method: 'POST',
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }],
+    data: {
+      corid: getCorId(),
+      username
+    }
+  })
+}
 
 /**
  * 添加社团用户
