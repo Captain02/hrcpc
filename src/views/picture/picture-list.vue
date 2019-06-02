@@ -35,10 +35,10 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="listQuery.currPage"
-        :page-sizes="[100, 200, 300, 400]"
+        :page-sizes="listQuery.cxPageSize"
         :page-size="listQuery.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="400">
+        :total="listQuery.totalCount">
       </el-pagination>
     </div>
   </div>
@@ -59,7 +59,9 @@ export default {
       pic_list: [],
       listQuery: {
         currPage: 1,
-        pageSize: 10
+        pageSize: 5,
+        totalCount: 100,
+        cxPageSize: [5]
       },
     };
   },
@@ -79,18 +81,40 @@ export default {
       this.loadImages();
     },
     handleSizeChange(val) {
+      this.listQuery.pageSize = val;
+      this.loadImages();
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      this.listQuery.currPage = val;
+      this.loadImages();
+    },
+    // 数组去重
+    delCFImg(arr) {
+      var hash=[];
+      for (var i = 0; i < arr.length; i++) {
+        if(hash.indexOf(arr[i])==-1){
+          hash.push(arr[i]);
+        }
+      }
+      return hash;
     },
     //加载图片
     loadImages() {
       const that = this;
       // 加载图片列表
       getImgList(this.listQuery.currPage, this.listQuery.pageSize).then(res => {
-        console.log(res.data);
         if (res.date) {
+          // 总记录数
+          that.listQuery.totalCount = res.page.totalCount;
+          // 每页数量 cxPageSize
+          for (let i = 1; i <= res.page.totalCount; i++) {
+            if (i %  5 === 0) {
+              that.listQuery.cxPageSize.push(i);
+            }
+          }
+          // 去重
+          that.listQuery.cxPageSize = that.delCFImg(that.listQuery.cxPageSize);
           for (let i in res.date) {
             // 处理图片地址(线上不需要处理)
             // res.date[i].url = BaseUrl + res.date[i].url;
@@ -99,7 +123,6 @@ export default {
           }
           that.pic_list = res.date;
         }
-        console.log(that.pic_list);
       })
     },
     // 删除图片
