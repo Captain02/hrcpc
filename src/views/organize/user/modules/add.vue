@@ -2,11 +2,11 @@
   <div class="app-container">
     <h1 class="page-title"> 添加新成员 </h1>
     <el-card class="form-wrapper" shadow="never">
-      <el-form :model="user" label-width="100px" :rules="rules" ref="userForm" :hide-required-asterisk="true">
+      <el-form :model="user" label-width="100px" :rules="rules" size="small" ref="userForm" :hide-required-asterisk="true">
         <el-form-item label="默认头像：">
           <div class="avatar-area">
-            <img src="/file/persionDefaultHeadPicture/20190517155219man.png" alt="默认头像男" v-if="user.gender === '男'">
-            <img src="/file/persionDefaultHeadPicture/20190517155056woman.png" alt="默认头像女" v-else>
+            <img src="/file/persionDefaultHeadPicture/20190517155219man.png" alt="默认头像男" v-show="user.gender === '男'">
+            <img src="/file/persionDefaultHeadPicture/20190517155056woman.png" alt="默认头像女" v-show="user.gender === '女'">
           </div>
         </el-form-item>
         <el-form-item prop="username" label="学号：">
