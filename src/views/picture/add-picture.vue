@@ -5,34 +5,36 @@
     </h1>
     <input type="file" @change="fileChange" id="upload_file" accept="image/png,image/gif,image/jpeg" multiple style="display: none" />
     <el-row class="uploadBtn">
-      <el-button type="success" :disabled="!flag" plain @click="compile">开始上传</el-button>
       <div class="hello">
-      <div class="upload">
-        <div class="upload_warp">
-          <div class="upload_warp_left" @click="fileClick">
-            <img src="@/assets/img/upload.png">
-          </div>
-          <!-- <div class="upload_warp_right" @drop="drop($event)" @dragenter="dragenter($event)" @dragover="dragover($event)">
-            或者将文件拖到此处
-          </div> -->
-        </div>
-        <div class="upload_warp_text">
-          选中{{imgList.length}}张文件，共{{bytesToSize(this.size)}}
-        </div>
-        <!-- <input @change="fileChange($event)" type="file" ref="files" id="upload_file" accept="image/png,image/gif,image/jpeg" multiple style="display: none"/> -->
-        <div class="upload_warp_img" v-show="imgList.length!=0">
-          <div class="upload_warp_img_div" v-for="(item,index) of imgList" :key="index">
-            <div class="upload_warp_img_div_top">
-              <div class="upload_warp_img_div_text">
-                {{item.file.name}}
-              </div>
-              <img src="@/assets/img/del.png" class="upload_warp_img_div_del" @click="fileDel(index)">
+        <div class="upload">
+          <div class="upload_warp">
+            <div class="upload_warp_left" @click="fileClick">
+              <img  style="width: 100px;" src="@/assets/img/upload.png">
             </div>
-            <img :src="item.file.src">
+            <!-- <div class="upload_warp_right" @drop="drop($event)" @dragenter="dragenter($event)" @dragover="dragover($event)">
+              或者将文件拖到此处
+            </div> -->
           </div>
+          <div class="upload_warp_text">
+            选中{{imgList.length}}张文件，共{{bytesToSize(this.size)}}
+          </div>
+          <!-- <input @change="fileChange($event)" type="file" ref="files" id="upload_file" accept="image/png,image/gif,image/jpeg" multiple style="display: none"/> -->
+          <div class="upload_warp_img" v-show="imgList.length!=0">
+            <div class="upload_warp_img_div" v-for="(item,index) of imgList" :key="index">
+              <div class="upload_warp_img_div_top">
+                <div class="upload_warp_img_div_text">
+                  {{item.file.name}}
+                </div>
+                <img src="@/assets/img/del.png" class="upload_warp_img_div_del" @click="fileDel(index)">
+              </div>
+              <img :src="item.file.src">
+            </div>
+          </div>
+        </div>
+        <div class="upimgBtn">
+          <el-button  type="success" :disabled="!flag" plain @click="compile">开始上传</el-button>
         </div>
       </div>
-    </div>
     </el-row>
 
   </div>
@@ -167,6 +169,9 @@ export default {
 }
 </script>
 <style lang="">
+.app-container {
+  min-height: 700px;
+}
 .uploadBtn {
   margin-top: 20px;
   margin-left: 20px;
@@ -204,7 +209,10 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
+.upimgBtn {
+  position: absolute;
+  bottom: -90px;
+}
 .upload_warp_img_div img {
   max-width: 100%;
   max-height: 100%;
@@ -236,7 +244,7 @@ export default {
   margin-bottom: 10px;
   padding-top: 10px;
   text-indent: 14px;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid #ebebeb;
   font-size: 14px;
 }
 
@@ -251,34 +259,37 @@ export default {
   color: #999;
 }
 
-.upload_warp_left img {
-  margin-top: 32px;
-}
 
 .upload_warp_left {
   float: left;
-  width: 40%;
+  width: 32%;
   height: 100%;
-  border: 1px dashed #999;
+  border: 1px dashed #d9d9d9;
   border-radius: 4px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: .2s;
 }
-
+.upload_warp_left:hover {
+  box-shadow: 0 0 8px 0 rgba(232, 237, 250, .6), 0 2px 4px 0 rgba(232, 237, 250, .5)
+}
 .upload_warp {
   margin: 14px;
-  height: 130px;
+  height: 228px;
 }
 
 .upload {
-  border: 1px solid #ccc;
   background-color: #fff;
-  width: 650px;
+  width: 90%;
   box-shadow: 0px 1px 0px #ccc;
   border-radius: 4px;
+  border: 1px solid #ebebeb;
 }
 
 .hello {
-  width: 650px;
+  width: 100%;
   text-align: center;
   margin-top: 2%;
 }

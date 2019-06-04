@@ -4,12 +4,16 @@
       <span style="font-size:18px;">精彩相片</span>
       <span style=" float:right;margin-top:-14px">
         <el-button type="primary" size="medium">全部相册</el-button>
-        <el-button
-          type="primary"
-          size="medium"
-          icon="el-icon-circle-plus-outline"
-          @click="F_Open_dialog()"
-        >上传相片</el-button>
+        <router-link to="/picture/add">
+          <el-button
+            type="primary"
+            size="medium"
+            icon="el-icon-circle-plus-outline"
+          >
+          上传相片
+          </el-button>
+        </router-link>
+
         <input type="file" id="btn_file" style="display:none">
       </span>
     </h1>
@@ -61,7 +65,7 @@ export default {
         currPage: 1,
         pageSize: 5,
         totalCount: 100,
-        cxPageSize: [5]
+        cxPageSize: [10]
       },
     };
   },
@@ -71,9 +75,6 @@ export default {
     that.loadImages(1, 10);
   },
   methods: {
-    F_Open_dialog() {
-      document.getElementById("btn_file").click();
-    },
     inited (viewer) {
       this.$viewer = viewer;
     },
@@ -109,7 +110,7 @@ export default {
           that.listQuery.totalCount = res.page.totalCount;
           // 每页数量 cxPageSize
           for (let i = 1; i <= res.page.totalCount; i++) {
-            if (i %  5 === 0) {
+            if (i %  10 === 0) {
               that.listQuery.cxPageSize.push(i);
             }
           }
