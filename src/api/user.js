@@ -12,7 +12,7 @@ import qs from 'querystring'
  * @param {String} name 用户姓名
  * @param {String} username 学号
  */
-export const getUsers = ({page, size, sidx , order , name, username}) => {
+export const getUsers = ({page, size, name, username} = {}) => {
   return request({
     url: '/user/list',
     method: 'GET',
@@ -20,8 +20,6 @@ export const getUsers = ({page, size, sidx , order , name, username}) => {
       corid: getCorId(),
       page,
       size,
-      sidx,
-      order,
       name,
       username
     }
