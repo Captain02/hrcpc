@@ -63,7 +63,7 @@ export default {
       pic_list: [],
       listQuery: {
         currPage: 1,
-        pageSize: 5,
+        pageSize: 10,
         totalCount: 100,
         cxPageSize: [10]
       },
