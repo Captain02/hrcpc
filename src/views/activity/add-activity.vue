@@ -100,9 +100,13 @@
             :on-success="handleVideoSuccess"
             :before-upload="beforeVideoUpload"
           >
-          <el-button type="primary">上传视频</el-button>
+          <el-button slot="trigger" type="primary" :disabled="!!this.videoFile">上传视频</el-button>
+          <el-button type="danger" :disabled="!this.videoFile" @click="deleteVideo">删除视频</el-button>
           <div slot="tip" class="el-upload__tip">请上传MP4、MPEG、WMV格式或AVI格式文件，且不超过200M</div>
           </el-upload>
+          <div class="video-view" v-if="videoFile">
+            <video-player :video-source="videoFile.filePath" :video-type="videoFile.type"></video-player>
+          </div>
         </el-form-item>
         <el-form-item label="附件上传：">
           <el-upload
@@ -133,13 +137,15 @@
 import { getUsers as getUsersApi } from '@/api/user'
 import { getCollegeInfo as getCollegeInfoApi } from '@/api/comm'
 import { deleteFile as deleteFileApi } from '@/api/activity'
-import MceEditor from '@/components/MceEditor'
+import MceEditor from '_c/MceEditor'
 window.tinymce.baseURL = '/static/tinymce'
 window.tinymce.suffix = '.min'
+import VideoPlayer from '_c/VideoPlayer'
 export default {
   name: 'add-activity',
   components: {
-    MceEditor
+    MceEditor,
+    VideoPlayer
   },
   data() {
     return {
@@ -150,6 +156,7 @@ export default {
         actStartTime: '',         // 活动开始时间
         actEndTime: '',           // 活动结束时间
         images: '',               // 上传图片后获取的id
+        videoid: '',              // 上传视频后获取的id
         croWdPeople: [],          // 活动面向人群
         profile: '',              // 活动简介
         desc: '',                 // 活动详情
@@ -159,7 +166,7 @@ export default {
       enclosureList: [],               // 附件文件
       processState: '',              // 输入的流程信息
       imageFile: null,                 // 上传的图片海报
-      videoFile: null,
+      videoFile: null,                // 上传的视频文件
       usersOptions: [],             // 活动负责人选项
       collegeOptinos: [],           // 面向人群选项
       rules: {}
@@ -187,10 +194,9 @@ export default {
       return isJPG && isLt2M
     },
     beforeVideoUpload(file) {
-      console.log(file)
       let typeWhiteList = ['video/mp4', 'video/avi', 'video/mpeg', 'video/x-ms-wmv', '']
       const isType = typeWhiteList.includes(file.type)
-      const isSize = file.size / 1024 < 200
+      const isSize = file.size / 1024 / 1024 < 200
 
       if (!isType) {
         this.$message.error('上传视频只能是 MP4、MPEG、WMV格式或AVI格式!')
@@ -215,7 +221,18 @@ export default {
       this.activity.images = data.id
     },
     handleVideoSuccess(res, file) {
-      
+      if(res.code !== 0){
+        this.$message.error('上传失败，请重新上传!')
+        return
+      }
+      let { data } = res
+      this.videoFile = {
+        fileName: data.fileName, 
+        filePath: data.filePath, 
+        id: data.id,
+        type: file.raw.type
+      }
+      this.activity.videoid = data.id
     },
     deleteImage(event) {
       let tag = event.target || event.srcElement
@@ -226,6 +243,12 @@ export default {
           this.activity.images = ''
         })
       }
+    },
+    deleteVideo() {
+      deleteFileApi(this.videoFile.id, this.videoFile.filePath).then((result) => {
+        this.videoFile = null
+        this.activity.videoid = ''
+      })
     },
     handleSearch(val) {
       getUsersApi({name: val, page: 1, size: 9999, username: ''}).then((result) => {
@@ -298,6 +321,8 @@ export default {
       }
     }
   }
- 
+  .video-view {
+    width: 500px;
+  }
 }
 </style>
