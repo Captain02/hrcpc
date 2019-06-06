@@ -67,7 +67,7 @@
         <el-form-item label="图片上传：" >
           <!-- {type: 0}上传图片、{type: 1}上传视频 -->
           <el-upload
-            :disabled="!!this.imageFile"
+            :limit="1"
             action="http://140.143.201.244:8081/HBO/sys/activity/uploudActivitiBananer"
             :data="{type: 0}"
             name="file"
@@ -92,16 +92,15 @@
         <el-form-item label="视频上传：" >
           <!-- {type: 0}上传图片、{type: 1}上传视频 -->
           <el-upload
-            :disabled="!!this.videoFile"
+            :limit="1"
             action="http://140.143.201.244:8081/HBO/sys/activity/uploudActivitiBananer"
             :data="{type: 1}"
             name="file"
-            :show-file-list="false"
+            :on-remove="deleteVideo"
             :on-success="handleVideoSuccess"
             :before-upload="beforeVideoUpload"
           >
-          <el-button slot="trigger" type="primary" :disabled="!!this.videoFile">上传视频</el-button>
-          <el-button type="danger" :disabled="!this.videoFile" @click="deleteVideo">删除视频</el-button>
+          <el-button type="primary" >上传视频</el-button>
           <div slot="tip" class="el-upload__tip">请上传MP4、MPEG、WMV格式或AVI格式文件，且不超过200M</div>
           </el-upload>
           <div class="video-view" v-if="videoFile">
@@ -322,6 +321,7 @@ export default {
     }
   }
   .video-view {
+    margin-top: 10px;
     width: 500px;
   }
 }
