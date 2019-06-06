@@ -72,7 +72,7 @@
             :data="{type: 0}"
             name="file"
             :show-file-list="false"
-            :on-success="handleImageSuccess"
+            :on-success="(res, file) => {this.handleUpdateSuccess(res, file, 'image')}"
             :before-upload="beforeImageUpload"
           >
           <el-button type="primary">上传图片</el-button>
@@ -97,7 +97,7 @@
             :data="{type: 1}"
             name="file"
             :on-remove="deleteVideo"
-            :on-success="handleVideoSuccess"
+            :on-success="(res, file) => {this.handleUpdateSuccess(res, file, 'video')}"
             :before-upload="beforeVideoUpload"
           >
           <el-button type="primary" >上传视频</el-button>
@@ -206,32 +206,29 @@ export default {
       return isType && isSize
       return false
     },
-    handleImageSuccess(res, file) {
+    handleUpdateSuccess(res, file, type) {
       if(res.code !== 0){
         this.$message.error('上传失败，请重新上传!')
         return
       }
       let { data } = res
-      this.imageFile = {
-        fileName: data.fileName, 
-        filePath: data.filePath, 
-        id: data.id
+      if(type === 'image'){
+        this.imageFile = {
+          fileName: data.fileName, 
+          filePath: data.filePath, 
+          id: data.id
+        }
+        this.activity.images = data.id
+      }else if(type === 'video'){
+        this.videoFile = {
+          fileName: data.fileName, 
+          filePath: data.filePath, 
+          id: data.id,
+          type: file.raw.type
+        }
+        this.activity.videoid = data.id
       }
-      this.activity.images = data.id
-    },
-    handleVideoSuccess(res, file) {
-      if(res.code !== 0){
-        this.$message.error('上传失败，请重新上传!')
-        return
-      }
-      let { data } = res
-      this.videoFile = {
-        fileName: data.fileName, 
-        filePath: data.filePath, 
-        id: data.id,
-        type: file.raw.type
-      }
-      this.activity.videoid = data.id
+      
     },
     deleteImage(event) {
       let tag = event.target || event.srcElement
