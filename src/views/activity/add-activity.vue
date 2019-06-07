@@ -3,8 +3,8 @@
     <h1 class="page-title">添加社团活动</h1>
     <el-card class="form-wrapper" shadow="never">
       <el-form :model="activity" label-width="100px" :rules="rules" size="small" ref="activityForm" :hide-required-asterisk="true">
-        <el-form-item prop="name" label="活动名称：">
-          <el-input v-model="activity.name" placeholder="活动名称"></el-input>
+        <el-form-item prop="actName" label="活动名称：">
+          <el-input v-model="activity.actName" placeholder="活动名称"></el-input>
         </el-form-item>
         <el-form-item label="活动简介：">
           <el-input v-model="activity.profile" type="textarea"  maxlength="200" :rows="6"
@@ -111,20 +111,18 @@
           <el-upload
             ref="upload"
             action="https://jsonplaceholder.typicode.com/posts/"
-    
-            :file-list="enclosureList"
             :auto-upload="false">
             <el-button slot="trigger" type="primary">选取文件</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2M</div>
           </el-upload>
         </el-form-item>
         
         <el-form-item prop="desc" label="活动详情：">
-          <mce-editor v-model="activity.descs" ></mce-editor>
+          <mce-editor v-model="activity.actdetails" ></mce-editor>
         </el-form-item>
         <el-form-item class="">
           <el-col :offset="5">
-            <el-button type="primary">添加</el-button>
+            <el-button type="primary" @click="handleAdd">添加</el-button>
           </el-col>
         </el-form-item>
       </el-form>
@@ -133,9 +131,8 @@
   </div>
 </template>
 <script>
-import { getUsers as getUsersApi } from '@/api/user'
 import { getCollegeInfo as getCollegeInfoApi } from '@/api/comm'
-import { deleteFile as deleteFileApi } from '@/api/activity'
+import { getUsersByName as getUsersByNameApi, deleteFile as deleteFileApi, addActivity as addActivityApi } from '@/api/activity'
 import MceEditor from '_c/MceEditor'
 window.tinymce.baseURL = '/static/tinymce'
 window.tinymce.suffix = '.min'
@@ -158,11 +155,10 @@ export default {
         videoid: '',              // 上传视频后获取的id
         croWdPeople: [],          // 活动面向人群
         profile: '',              // 活动简介
-        desc: '',                 // 活动详情
+        enclosure: '',              // 附件数据
+        actdetails: '',                 // 活动详情
         processNodes: [],         // 活动流程
-
       },
-      enclosureList: [],               // 附件文件
       processState: '',              // 输入的流程信息
       imageFile: null,                 // 上传的图片海报
       videoFile: null,                // 上传的视频文件
@@ -182,7 +178,7 @@ export default {
     beforeImageUpload(file) {
       let typeWhiteList = ['image/jpeg', 'image/png']
       const isJPG = typeWhiteList.includes(file.type)
-      const isLt2M = file.size / 1024 / 1024 < 5
+      const isLt2M = file.size / 1024 / 1024 < 2
 
       if (!isJPG) {
         this.$message.error('上传图片只能是 JPG 格式或PNG格式!')
@@ -193,7 +189,7 @@ export default {
       return isJPG && isLt2M
     },
     beforeVideoUpload(file) {
-      let typeWhiteList = ['video/mp4', 'video/avi', 'video/mpeg', 'video/x-ms-wmv', '']
+      let typeWhiteList = ['video/mp4', 'video/avi', 'video/mpeg', 'video/x-ms-wmv']
       const isType = typeWhiteList.includes(file.type)
       const isSize = file.size / 1024 / 1024 < 200
 
@@ -247,11 +243,17 @@ export default {
       })
     },
     handleSearch(val) {
-      getUsersApi({name: val, page: 1, size: 9999, username: ''}).then((result) => {
+      getUsersByNameApi(val).then((result) => {
         let { data } = result
         this.usersOptions = data.map((item) => {
           return { user_id: item.user_id, name: item.name, username: item.username }
         })
+      })
+    },
+    handleAdd() {
+      let [startTime, endTime] = this.activity.timer 
+      addActivityApi(this.activity.actName, this.activity.actLeader, startTime, endTime, this.activity.images, this.activity.videoid, this.activity.croWdPeople, this.activity.profile, this.activity.enclosure, this.activity.actdetails, this.activity.processNodes).then((result) => {
+        console.log(result)
       })
     },
     getCollegeList() {

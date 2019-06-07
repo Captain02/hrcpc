@@ -13,7 +13,7 @@ export default {
       required: true
     },
     className: {
-      type: String,
+      type: [String, Object],
       default: ''
     }
   },
