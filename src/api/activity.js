@@ -35,10 +35,12 @@ export const addActivity = (actName, actLeader, actStartTime, actEndTime, images
  * @param {Number} corid 社团id，不能从cookie里取，因为可能会搜索所有社团的活动信息
  * @param {String} actName 活动名称
  * @param {Number} isAct 是否有效
+ * @param {Array} crowdids 面向人群数组
  * @param {Number} pageSize 每页大小
  * @param {Number} currPage 当前页
  */
-export const getActivitys = (corid, actName, isAct, currPage, pageSize) => {
+export const getActivitys = (corid, actName, isAct, crowdids, currPage, pageSize) => {
+  crowdids = crowdids.join(',')
   return request({
     url: '/activity/list',
     method: 'GET',
@@ -46,6 +48,7 @@ export const getActivitys = (corid, actName, isAct, currPage, pageSize) => {
       corid,
       actName,
       isAct,
+      crowdids,
       currPage,
       pageSize
     }
@@ -66,6 +69,26 @@ export const getUsersByName = (name) => {
     }
   })
 }
+
+/**
+ * 更改活动流程状态
+ * @param {Number} type 新的状态值
+ * @param {Number} proid 单步流程id
+ */
+export const changeProcessState = (type, proid) => {
+  return request({
+    url: '/activity/changeProcess',
+    method: 'POST',
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }],
+    data: {
+      type,
+      proid
+    }
+  })
+}
+
 
 /**
  * 删除文件
