@@ -60,7 +60,7 @@
     </div>
     <collapse-transition>
       <div class="list-item-body" v-show="isShow">
-        就哈萨克计划好时看时
+        <p>就哈萨克计划好时看时</p>         <p>就哈萨克计划好时看时</p>         <p>就哈萨克计划好时看时</p>         <p>就哈萨克计划好时看时</p>         <p>就哈萨克计划好时看时</p>         <p>就哈萨克计划好时看时</p>         <p>就哈萨克计划好时看时</p>         <p>就哈萨克计划好时看时</p>         <p>就哈萨克计划好时看时</p>         <p>就哈萨克计划好时看时</p>         <p>就哈萨克计划好时看时</p>         <p>就哈萨克计划好时看时</p>         <p>就哈萨克计划好时看时</p>         <p>就哈萨克计划好时看时</p>         <p>就哈萨克计划好时看时</p>         <p>就哈萨克计划好时看时</p>         <p>就哈萨克计划好时看时</p>         <p>就哈萨克计划好时看时</p>         <p>就哈萨克计划好时看时</p> 
       </div>
     </collapse-transition>
   </div>
@@ -144,7 +144,7 @@ export default {
     .list-item-action {
       display: flex;
       .slot-action {
-        margin: 0 5px 0 auto;
+        margin-left: auto;
       }
     }
     .list-item-info {
@@ -220,7 +220,7 @@ export default {
     .trigger {
       width: 30px;
       height: 30px;
-      // margin: 0 8px 0 auto;
+      margin-left: 10px;
       background: #EBEEF5;
       text-align: center;
       border-radius: 5px;
@@ -234,6 +234,11 @@ export default {
     .isActive {
       transform: rotate(180deg)
     }
+  }
+  .list-item-body {
+    padding: 25px;
+    background-color: #EBEEF5;
+    // height: 300px;
   }
 }
 </style>

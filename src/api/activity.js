@@ -80,9 +80,7 @@ export const changeProcessState = (actState) => {
   return request({
     url: '/activity/changeProcess',
     method: 'POST',
-    data: {
-      actState: JSON.stringify(actState)
-    }
+    data: actState
   })
 }
 
