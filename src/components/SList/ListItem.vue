@@ -1,5 +1,5 @@
 <template>
-  <div class="list-item">
+  <div class="s-list-item">
     <div class="list-item-header">
       <div class="list-item-action">
         <div class="slot-action">
@@ -145,7 +145,7 @@ export default {
 </style>
 
 <style lang="less" scoped>
-.list-item {
+.s-list-item {
   border-bottom: 1px solid #e8e8e8;
   padding: 10px 0;
   .list-item-header {
