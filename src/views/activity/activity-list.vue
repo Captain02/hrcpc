@@ -70,9 +70,9 @@ export default {
     handleEdit(data) {
       console.log(data)
     },
-    processStateChnage(status, proid) {
-      status = status ? 0 : 1         // 将status取反，如果状态是1就发送0，如果是0就发送1
-      changeProcessStateApi(status, proid).then((result) => {
+    /** @param {Array} proceNodes */
+    processStateChnage(proceNodes) {  // param{Array}
+      changeProcessStateApi(proceNodes).then((result) => {
         this.$message.success('更新状态成功!')
         this.getActivityList()
       }).catch((err) => {})
@@ -89,39 +89,8 @@ export default {
   }
 }
 </script>
-<style lang="less">
-.list-wrapper {
-  .el-collapse-item__header {
-    display: block;
-    line-height: 25px;
-    height: auto;
-    position: relative;
-  }
-  .el-collapse-item__arrow {
-    position: absolute;
-  }
-}
-
-</style>
-
 <style lang="less" scoped>
-.list-wrapper {
-  .el-collapse-item__header {
-    height: 100%;
-    line-height: 20px;
-  }
-  .list-item-info {
-    display: flex;
-    // align-items: center;
-    .list-item-meta {
-      flex: 3;
-    }
-    .list-item-content {
-      flex: 2;
-    }
-    .list-item-action {
-      flex: 1;
-    }
-  }
+.activity-list {
+  border-top: 1px solid #e8e8e8;
 }
 </style>

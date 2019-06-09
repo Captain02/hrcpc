@@ -64,15 +64,14 @@ export default {
     }
   },
   methods: {
-    processStateChnage(status, proid) {
-      this.$emit('on-process-state-chnage', status, proid)
+    processStateChnage(proceNodes) {
+      this.$emit('on-process-state-chnage', proceNodes)
     }
   }
 }
 </script>
 <style lang="less" scoped>
 .list-wrapper {
-  border-top: 1px solid #e8e8e8;
   .list-empty {
     min-height: 60px;
     line-height: 60px;

@@ -75,20 +75,13 @@ export const getUsersByName = (name) => {
  * @param {Number} type 新的状态值
  * @param {Number} proid 单步流程id
  */
-export const changeProcessState = (type, proid) => {
+export const changeProcessState = (actState) => {
+  // console.log(JSON.stringify(actState))
   return request({
     url: '/activity/changeProcess',
     method: 'POST',
-    // transformRequest: [function (data) {
-    //   return qs.stringify(data)
-    // }],
     data: {
-      actState: [
-        { proid: 1, type: 1 },
-        { proid: 2, type: 1 },
-        { proid: 3, type: 1 },
-        { proid: 4, type: 0 }
-      ]
+      actState: JSON.stringify(actState)
     }
   })
 }

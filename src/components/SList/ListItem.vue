@@ -30,8 +30,8 @@
         </div>
         <div class="list-item-content">
           <el-steps space="20%" :active="computeActive" finish-status="success">
-            <el-step v-for="proces in item.processnodes" :key="proces.proid" >
-              <el-button type="text" class="process-text" slot="title" @click="handleChangeProcessState(proces.states, proces.proid)">{{proces.processnode}}</el-button>
+            <el-step v-for="(proces, index) in item.processnodes" :key="proces.proid" >
+              <el-button type="text" class="process-text" slot="title" @click="handleChangeProcessState(index)">{{proces.processnode}}</el-button>
             </el-step>
           </el-steps>
         </div>
@@ -67,6 +67,7 @@
 </template>
 <script>
 import { parseTime } from '@/utils'
+import cloneDeep from 'clonedeep'
 import CollapseTransition from './CollapseTransition'
 export default {
   name: 'ListItem',
@@ -99,20 +100,16 @@ export default {
       return count
     },
     hasLike() {
-      let iconClass = 'like'
       let flag = this.item.likePeople.some((item) => {
         item === this.userId
       })
-      iconClass = flag ?  'full-like' : 'like'
-      return iconClass
+      return flag ?  'full-like' : 'like'
     },
     hasCollect() {
-      let iconClass = 'collect'
       let flag = this.item.collectionPeople.some((item) => {
         item === this.userId
       })
-      iconClass = flag ?  'full-collect' : 'collect'
-      return iconClass
+      return flag ?  'full-collect' : 'collect'
     }
   },
   methods: {
@@ -121,16 +118,12 @@ export default {
       event.preventDefault()
       this.isShow = !this.isShow
     },
-    handleChangeProcessState(status, proid) {
-      console.log('listItem', status, proid)
-      this.$emit('on-process-state-chnage', status, proid)
-      // console.log(status, proid)
-      // if(status === 1) {
-      //   return
-      // }
-      // changeProcessStateApi(1, proid).then((result) => {
-      //   console.log(result)
-      // }).catch((err) => {  })
+    handleChangeProcessState(index) {
+      let proceNodes = this.item.processnodes.map((item, i) => {
+        return i <= index ? { proid: item.proid, type: 1 } :{ proid: item.proid, type: 0 }
+      })
+      console.log('listItem', proceNodes)
+      this.$emit('on-process-state-chnage', proceNodes)
     }
   }
 }
@@ -143,11 +136,10 @@ export default {
   }
 }
 </style>
-
 <style lang="less" scoped>
 .s-list-item {
   border-bottom: 1px solid #e8e8e8;
-  padding: 10px 0;
+  padding: 10px;
   .list-item-header {
     .list-item-action {
       display: flex;
