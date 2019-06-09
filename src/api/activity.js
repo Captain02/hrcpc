@@ -79,12 +79,16 @@ export const changeProcessState = (type, proid) => {
   return request({
     url: '/activity/changeProcess',
     method: 'POST',
-    transformRequest: [function (data) {
-      return qs.stringify(data)
-    }],
+    // transformRequest: [function (data) {
+    //   return qs.stringify(data)
+    // }],
     data: {
-      type,
-      proid
+      actState: [
+        { proid: 1, type: 1 },
+        { proid: 2, type: 1 },
+        { proid: 3, type: 1 },
+        { proid: 4, type: 0 }
+      ]
     }
   })
 }

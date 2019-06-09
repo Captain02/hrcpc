@@ -17,7 +17,7 @@
        <el-button class="filter-item" type="primary" size="small" icon="el-icon-search" @click="handleSearch">搜索</el-button>
      </div>
      <div class="activity-list">
-        <s-list :data="listData" :user-id="userId">
+        <s-list :data="listData" :user-id="userId" @on-process-state-chnage="processStateChnage">
           <template v-slot:actions="{scope}">
             <el-button size="small" type="primary" @click="handleEdit(scope)">修改</el-button>
             <el-button size="small">统计信息</el-button>
@@ -28,7 +28,7 @@
 </template>
 <script>
 import { getCollegeInfo as getCollegeInfoApi } from '@/api/comm'
-import { getActivitys as getActivitysApi } from '@/api/activity'
+import { getActivitys as getActivitysApi, changeProcessState as changeProcessStateApi } from '@/api/activity'
 import { mapState } from 'vuex'
 import SList from '_c/SList'
 export default {
@@ -69,6 +69,13 @@ export default {
     },
     handleEdit(data) {
       console.log(data)
+    },
+    processStateChnage(status, proid) {
+      status = status ? 0 : 1         // 将status取反，如果状态是1就发送0，如果是0就发送1
+      changeProcessStateApi(status, proid).then((result) => {
+        this.$message.success('更新状态成功!')
+        this.getActivityList()
+      }).catch((err) => {})
     }
   },
   mounted() {

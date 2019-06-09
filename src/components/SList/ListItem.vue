@@ -66,7 +66,6 @@
   </div>
 </template>
 <script>
-import { changeProcessState as changeProcessStateApi } from '@/api/activity'
 import { parseTime } from '@/utils'
 import CollapseTransition from './CollapseTransition'
 export default {
@@ -123,13 +122,15 @@ export default {
       this.isShow = !this.isShow
     },
     handleChangeProcessState(status, proid) {
-      console.log(status, proid)
-      if(status === 1) {
-        return
-      }
-      changeProcessStateApi(1, proid).then((result) => {
-        console.log(result)
-      }).catch((err) => {  })
+      console.log('listItem', status, proid)
+      this.$emit('on-process-state-chnage', status, proid)
+      // console.log(status, proid)
+      // if(status === 1) {
+      //   return
+      // }
+      // changeProcessStateApi(1, proid).then((result) => {
+      //   console.log(result)
+      // }).catch((err) => {  })
     }
   }
 }
@@ -188,6 +189,12 @@ export default {
         .process-text {
           padding: 5px 0 0 0;
           font-size: 13px;
+          color: #2c3e50;
+          font-weight: bold;
+          transition: color .4s;
+          &:hover {
+            color: #409eff;
+          }
         }
       }
       .list-item-message {
