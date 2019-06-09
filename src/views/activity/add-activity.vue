@@ -101,7 +101,7 @@
             :before-upload="beforeVideoUpload"
           >
           <el-button type="primary" >上传视频</el-button>
-          <div slot="tip" class="el-upload__tip">请上传MP4、MPEG、WMV格式或AVI格式文件，且不超过200M</div>
+          <div slot="tip" class="el-upload__tip">请上传MP4格式文件，且不超过200M</div>
           </el-upload>
           <div class="video-view" v-if="videoFile">
             <video-player :video-source="videoFile.filePath" :video-type="videoFile.type"></video-player>
@@ -189,12 +189,12 @@ export default {
       return isJPG && isLt2M
     },
     beforeVideoUpload(file) {
-      let typeWhiteList = ['video/mp4', 'video/avi', 'video/mpeg', 'video/x-ms-wmv']
+      let typeWhiteList = ['video/mp4']
       const isType = typeWhiteList.includes(file.type)
       const isSize = file.size / 1024 / 1024 < 200
 
       if (!isType) {
-        this.$message.error('上传视频只能是 MP4、MPEG、WMV格式或AVI格式!')
+        this.$message.error('上传视频只能是 MP4格式!')
       }
       if (!isSize) {
         this.$message.error('上传视频大小不能超过 200MB!')
