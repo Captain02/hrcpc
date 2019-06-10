@@ -1,15 +1,6 @@
 <template>
   <div class="s-list-item">
     <div class="list-item-header">
-      <!-- <div class="list-item-action">
-        <div class="slot-action">
-          <slot name="actions"></slot>
-        </div>
-        <div class="trigger" @click="handleShow">
-          <icon-svg icon-class="arrow-down1" :class="{'trigger-icon': true, 'isActive': this.isShow}"></icon-svg>
-        </div>
-      </div> -->
-      <!-- <div class="list-item-info"> -->
       <div class="list-item-meta">
         <div class="list-item-meta-avatar">
           <el-image :src="item.actlead ? item.actlead.filepath : null"></el-image>
@@ -19,7 +10,7 @@
             <span class="list-item-meta-corname">
               {{item.corname}}
             </span>
-            <span class="list-item-meta-actname">
+            <span class="list-item-meta-actname" @click="handleDetails">
               {{item.actname}}
             </span>
           </h1>
@@ -36,12 +27,6 @@
         </el-steps>
       </div>
       <div class="list-item-action">
-        <!-- <div class="list-item-message-crowds">
-          <span class="label">面向人群：</span>
-          <span class="crowds" v-for="people in item.crowdpeople" :key="people.id">
-            {{people.value}}、
-          </span>
-        </div> -->
         <div class="list-item-action-btn">
           <div class="slot-action">
             <slot name="actions"></slot>
@@ -50,12 +35,6 @@
             <icon-svg icon-class="arrow-down1" :class="{'trigger-icon': true, 'isActive': this.isShow}"></icon-svg>
           </div>
         </div>
-        <!-- <div class="">
-          <slot name="actions"></slot>
-        </div>
-        <div class="trigger" @click="handleShow">
-          <icon-svg icon-class="arrow-down1" :class="{'trigger-icon': true, 'isActive': this.isShow}"></icon-svg>
-        </div> -->
         <div class="list-item-message">
           <div class="like-wrapper" title="点赞">
             <icon-svg :icon-class="hasLike"></icon-svg>
@@ -122,7 +101,7 @@ export default {
     },
     profile() {
       // console.log(this.item.profile)
-      return (this.item.profile && this.item.profile.length > 65) ? (this.item.profile.substring(0, 66) + '...')  : this.item.profile
+      return (this.item.profile && this.item.profile.length > 65) ? (this.item.profile.substring(0, 66) + '...') : this.item.profile
     },
     hasLike() {
       let flag = this.item.likePeople.some((item) => {
@@ -143,11 +122,13 @@ export default {
       event.preventDefault()
       this.isShow = !this.isShow
     },
+    handleDetails() {
+      this.$emit('on-details', this.item.actid)
+    },
     handleChangeProcessState(index) {
       let proceNodes = this.item.processnodes.map((item, i) => {
         return i <= index ? { proid: item.proid, type: 1 } :{ proid: item.proid, type: 0 }
       })
-      console.log('listItem', proceNodes)
       this.$emit('on-process-state-chnage', proceNodes)
     }
   }
@@ -187,28 +168,19 @@ export default {
           } 
           .list-item-meta-actname {
             margin-left: 8px;
+            cursor: pointer;
+            transition: color .3s;
+            &:hover {
+              color: #409eff;
+            }
           }
         }
         .list-item-meta-description {
-          // position: relative;
-          // max-height: 50px;
-          overflow: hidden;
           letter-spacing: 2px;
           color: rgba(0, 0, 0, 0.45);
           font-size: 12px;
           line-height: 25px;
           padding-right: 30px;
-          // &::after {
-          //   content: "..."; 
-          //   position: absolute; 
-          //   bottom: 0; 
-          //   right: 40px; 
-          //   padding-left: 40px;
-          //   background: -webkit-linear-gradient(left, transparent, #fff 55%);
-          //   background: -o-linear-gradient(right, transparent, #fff 55%);
-          //   background: -moz-linear-gradient(right, transparent, #fff 55%);
-          //   background: linear-gradient(to right, transparent, #fff 55%);
-          // }
         }
       }
     }
@@ -261,6 +233,23 @@ export default {
           }
         }
       }
+    }
+  }
+  .list-item-body {
+    padding: 20px;
+    border-top: 1px solid #e8e8e8;
+    display: flex;
+    // height: 300px;
+    .video-wrapper {
+      // flex: 1 1 0;
+      width: 300px;
+      // display: inline-block;
+    }
+    .image-wrapper {
+      // display: inline-block;
+      margin-left: 25px;
+      width: 300px;
+      // flex: 1 1 0;
     }
   }
   // .list-item-header {
@@ -365,22 +354,6 @@ export default {
   //     transform: rotate(180deg)
   //   }
   // }
-  .list-item-body {
-    padding: 20px;
-    border-top: 1px solid #e8e8e8;
-    display: flex;
-    // height: 300px;
-    .video-wrapper {
-      // flex: 1 1 0;
-      width: 300px;
-      // display: inline-block;
-    }
-    .image-wrapper {
-      // display: inline-block;
-      margin-left: 25px;
-      width: 300px;
-      // flex: 1 1 0;
-    }
-  }
+  
 }
 </style>

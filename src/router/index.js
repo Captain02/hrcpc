@@ -63,6 +63,12 @@ export const routes = [
     component: () => import('@/views/page/join')
   },
   {
+    path: '/forget-pwd',
+    name: 'forget-pwd',
+    hidden: true,
+    component: () => import('@/views/page/forget-pwd/index.vue')
+  },
+  {
     path: '/login',
     name: 'login',
     hidden: true,

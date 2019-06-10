@@ -76,7 +76,7 @@ export default {
     }
   },
   beforeDestroy() {
-    console.log(this.$refs.videoPlayer)
+    // console.log(this.$refs.videoPlayer)
   }
 }
 </script>

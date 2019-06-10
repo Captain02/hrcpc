@@ -21,6 +21,7 @@
           </el-form-item>
           <el-form-item>
             <el-button class="login-btn" type="primary" @click="handleSubmit()">登录</el-button>
+            <el-link :underline="false" style="float: right; font-size: 13px;" href="#/forget-pwd">忘记密码？</el-link>
           </el-form-item>
         </el-form>
       </div>
@@ -89,7 +90,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   .site-wrapper {
     position: absolute;
     top: 0;

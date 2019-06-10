@@ -38,9 +38,11 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item prop="croWdPeople" label="面向人群：">
-          <el-select v-model="activity.croWdPeople" placeholder="面向人群" multiple clearable class="full-width">
-            <el-option v-for="college in collegeOptinos" :key="college.id" :label="college.value" :value="college.id"></el-option>
-          </el-select>
+          <el-tooltip content='不选择则面向人群默认为"全校"' placement="top-start">
+            <el-select v-model="activity.croWdPeople" placeholder="全校" multiple clearable class="full-width">
+              <el-option v-for="college in collegeOptinos" :key="college.id" :label="college.value" :value="college.id"></el-option>
+            </el-select>
+          </el-tooltip>
         </el-form-item>
         <el-form-item label="活动流程：">
           
@@ -251,9 +253,15 @@ export default {
       })
     },
     handleAdd() {
-      let [startTime, endTime] = this.activity.timer 
-      addActivityApi(this.activity.actName, this.activity.actLeader, startTime, endTime, this.activity.images, this.activity.videoid, this.activity.croWdPeople, this.activity.profile, this.activity.enclosure, this.activity.actdetails, this.activity.processNodes).then((result) => {
-        console.log(result)
+      this.$refs['activityForm'].validate((valid) => {
+         if (!valid) {
+          this.$message.error('请填写相关项目!')
+          return
+        }
+        let [startTime, endTime] = this.activity.timer 
+        addActivityApi(this.activity.actName, this.activity.actLeader, startTime, endTime, this.activity.images, this.activity.videoid, this.activity.croWdPeople, this.activity.profile, this.activity.enclosure, this.activity.actdetails, this.activity.processNodes).then((result) => {
+          console.log(result)
+        })
       })
     },
     getCollegeList() {

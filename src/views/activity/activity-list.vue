@@ -7,23 +7,26 @@
          <el-option :value="0" label="无效"></el-option>
        </el-select>
        <el-select class="filter-item" v-model="listQuery.corid" size="small" style="width: 130px;">
-         <el-option value="1" label="本社团活动"></el-option>
+         <el-option :value="1" label="本社团活动"></el-option>
          <el-option value="" label="全部社团活动"></el-option>
        </el-select>
-       <el-select class="filter-item" multiple clearable v-model="listQuery.crowdids" size="small" placeholder="面向人群">
-         <el-option v-for="item in options" :key="item.id" :value="item.id" :label="item.label"></el-option>
-       </el-select>
+       <el-tooltip content='不选择则面向人群默认为"全校"' placement="top">
+        <el-select class="filter-item" multiple clearable v-model="listQuery.crowdids" size="small" placeholder="面向人群">
+          <el-option v-for="item in options" :key="item.id" :value="item.id" :label="item.label"></el-option>
+        </el-select>
+       </el-tooltip>
        <el-input class="filter-item" v-model="listQuery.actName" placeholder="活动名称" style="width: 200px;" size="small"></el-input>
        <el-button class="filter-item" type="primary" size="small" icon="el-icon-search" @click="handleSearch">搜索</el-button>
      </div>
      <div class="activity-list">
-        <s-list :data="listData" :user-id="userId" @on-process-state-chnage="processStateChnage">
+        <s-list :data="listData" :user-id="userId" @on-process-state-chnage="processStateChnage" @on-details="handleDetails">
           <template v-slot:actions="{scope}">
             <el-button size="small" type="primary" @click="handleEdit(scope)">修改</el-button>
             <el-button size="small">统计信息</el-button>
           </template>
         </s-list>
      </div>
+     <pagination v-show="total>0" :total="total" :curr.sync="listQuery.currPage" :size.sync="listQuery.pageSize" @on-page-change="getActivityList" />
   </div>
 </template>
 <script>
@@ -31,10 +34,12 @@ import { getCollegeInfo as getCollegeInfoApi } from '@/api/comm'
 import { getActivitys as getActivitysApi, changeProcessState as changeProcessStateApi } from '@/api/activity'
 import { mapState } from 'vuex'
 import SList from '_c/SList'
+import Pagination from '_c/Pagination'
 export default {
   name: 'activity-list',
   components: {
-    SList
+    SList,
+    Pagination
   },
   data() {
     return {
@@ -44,15 +49,16 @@ export default {
         actName: '',
         crowdids: [],          // 
         currPage: 1,
-        pageSize: 20
+        pageSize: 10
       },
+      total: 0,
       options: [],
       listData: []
     }
   },
   computed: {
     ...mapState({
-      userId: (state) => state.user.userId
+      userId: (state) => state.user.userId,
     })
   },
   methods: {
@@ -60,8 +66,9 @@ export default {
       getActivitysApi(this.listQuery.corid, this.listQuery.actName, this.listQuery.isAct, this
       .listQuery.crowdids, this.listQuery.currPage, this.listQuery.pageSize).then((result) => {
         console.log(result)
-        let { data } = result
+        let { data, page } = result
         this.listData = data
+        this.total = page.totalCount
       }).catch((err) => { })
     },
     handleSearch() {
@@ -69,6 +76,9 @@ export default {
     },
     handleEdit(data) {
       console.log(data)
+    },
+    handleDetails(actid) {
+      console.log(actid)
     },
     /** @param {Array} proceNodes */
     processStateChnage(proceNodes) {  // param{Array}
