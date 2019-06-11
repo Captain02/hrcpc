@@ -19,7 +19,7 @@ export function removeToken() {
  * 社团id
  */
 export function getCorId() {
-  return Cookies.get(CORID)
+  return +Cookies.get(CORID)
 }
 
 export function setCorId(id) {

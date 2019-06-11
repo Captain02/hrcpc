@@ -19,7 +19,7 @@
        <el-button class="filter-item" type="primary" size="small" icon="el-icon-search" @click="handleSearch">搜索</el-button>
      </div>
      <div class="activity-list">
-        <s-list :data="listData" :user-id="userId" @on-process-state-chnage="processStateChnage" @on-details="handleDetails">
+        <s-list :data="listData" :user-id="userId" @on-process-state-chnage="processStateChnage" @on-details="handleDetails" @on-like="handleLike" @on-collect="handleCollect">
           <template v-slot:actions="{scope}">
             <el-button size="small" type="primary" @click="handleEdit(scope)">修改</el-button>
             <el-button size="small">统计信息</el-button>
@@ -31,7 +31,7 @@
 </template>
 <script>
 import { getCollegeInfo as getCollegeInfoApi } from '@/api/comm'
-import { getActivitys as getActivitysApi, changeProcessState as changeProcessStateApi } from '@/api/activity'
+import { getActivitys as getActivitysApi, changeProcessState as changeProcessStateApi, changeLike as changeLikeApi, changeCollect as changeCollectApi } from '@/api/activity'
 import { mapState } from 'vuex'
 import SList from '_c/SList'
 import Pagination from '_c/Pagination'
@@ -79,6 +79,18 @@ export default {
     },
     handleDetails(actid) {
       console.log(actid)
+    },
+    handleLike(actid, isLike) {
+      changeLikeApi(Number(isLike), this.userId, actid).then((result) => {
+        // console.log(result)
+        this.getActivityList()
+      })
+    },
+    handleCollect(actid, isCollect) {
+      changeCollectApi(Number(isCollect), this.userId, actid).then((result) => {
+        // console.log(result)
+        this.getActivityList()
+      })
     },
     /** @param {Array} proceNodes */
     processStateChnage(proceNodes) {  // param{Array}

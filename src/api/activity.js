@@ -84,6 +84,46 @@ export const changeProcessState = (actState) => {
   })
 }
 
+/**
+ * 更改点赞状态
+ * @param {Number} type 新的状态值
+ * @param {Number} userid 点赞用户的id
+ * @param {Number} topicid 活动id
+ */
+export const changeLike = (type, userid, topicid) => {
+  return request({
+    url: '/activity/isLike',
+    method: 'POST',
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }],
+    data: {
+      type,
+      userid,
+      topicid
+    }
+  })
+}
+/**
+ * 更改收藏状态
+ * @param {Number} type 新的状态值
+ * @param {Number} userid 收藏用户的id
+ * @param {Number} topicid 活动id
+ */
+export const changeCollect = (type, userid, topicid) => {
+  return request({
+    url: '/activity/isCollection',
+    method: 'POST',
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }],
+    data: {
+      type,
+      userid,
+      topicid
+    }
+  })
+}
 
 /**
  * 删除文件

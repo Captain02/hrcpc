@@ -1,8 +1,7 @@
 <template>
   <div class="step1">
-    <el-form :model="form" ref="form1" :rules="rules" label-width="60px" size="medium" :hide-required-asterisk="true" class="reset-form">
-      <el-form-item prop="username">
-        <span slot="label">学号：</span>
+    <el-form :model="form" ref="form" :rules="rules" label-width="60px" size="medium" :hide-required-asterisk="true" class="reset-form">
+      <el-form-item label="学号：" prop="username">
         <el-input v-model="form.username" placeholder="请输入学号"></el-input>
       </el-form-item>
       <el-form-item>
@@ -40,7 +39,7 @@ export default {
   },
   methods: {
     handleNext() {
-      this.$refs['form1'].validate((valid) => {
+      this.$refs['form'].validate((valid) => {
         if(!valid){
           this.$message.error('请填写相关项目!')
           return
@@ -58,16 +57,16 @@ export default {
 </script>
 <style lang="less" scoped>
 .step1 {
-  width: 450px;
+  width: 400px;
   margin: 55px auto;
   padding-right: 40px; 
-  .reset-form {
-    .el-form-item{
-      span{
-        color: #333;
-      }
-    }
-  }
+  // .reset-form {
+  //   .el-form-item{
+  //     span{
+  //       color: #333;
+  //     }
+  //   }
+  // }
 }
   
 </style>

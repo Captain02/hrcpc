@@ -36,12 +36,12 @@
           </div>
         </div>
         <div class="list-item-message">
-          <div class="like-wrapper" title="点赞">
-            <icon-svg :icon-class="hasLike"></icon-svg>
+          <div class="like-wrapper" title="点赞" @click="handleClickLike">
+            <icon-svg :icon-class="like.icon"></icon-svg>
             <span class="count">{{item.bbs_like.num}}</span>
           </div>
-          <div class="collect-wrapper" title="收藏">
-            <icon-svg icon-class="collect"></icon-svg>
+          <div class="collect-wrapper" title="收藏" @click="handleClickCollect">
+            <icon-svg :icon-class="collect.icon"></icon-svg>
             <span class="count">{{item.bbs_collection.num}}</span>
           </div>
           <div class="date">
@@ -103,17 +103,17 @@ export default {
       // console.log(this.item.profile)
       return (this.item.profile && this.item.profile.length > 65) ? (this.item.profile.substring(0, 66) + '...') : this.item.profile
     },
-    hasLike() {
+    like() {
       let flag = this.item.likePeople.some((item) => {
-        item === this.userId
+        return item === this.userId
       })
-      return flag ?  'full-like' : 'like'
+      return flag ?  { icon: 'full-like', status: true} : { icon: 'like', status: false }
     },
-    hasCollect() {
+    collect() {
       let flag = this.item.collectionPeople.some((item) => {
-        item === this.userId
+        return item === this.userId
       })
-      return flag ?  'full-collect' : 'collect'
+      return flag ? { icon: 'full-collect', status: true } : { icon: 'collect', status: false }
     }
   },
   methods: {
@@ -124,6 +124,12 @@ export default {
     },
     handleDetails() {
       this.$emit('on-details', this.item.actid)
+    },
+    handleClickLike() {
+      this.$emit('on-like', this.item.actid, !this.like.status)
+    },
+    handleClickCollect() {
+      this.$emit('on-collect', this.item.actid, !this.collect.status)
     },
     handleChangeProcessState(index) {
       let proceNodes = this.item.processnodes.map((item, i) => {

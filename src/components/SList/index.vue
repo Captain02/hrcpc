@@ -2,7 +2,7 @@
   <div class="list-wrapper">
     <div class="list-empty" v-if="isEmpty">{{emptyText}}</div>
     <template v-else>
-      <list-item v-for="item in listData" :key="item.actid" :item="item" :user-id="userId" @on-process-state-chnage="processStateChnage" @on-details="handleDetails">
+      <list-item v-for="item in listData" :key="item.actid" :item="item" :user-id="userId" @on-process-state-chnage="processStateChnage" @on-details="handleDetails" @on-like="handleLike" @on-collect="handleCollect">
         <slot name="actions" slot="actions" :scope="item"></slot>
       </list-item>
     </template>
@@ -66,6 +66,12 @@ export default {
   methods: {
     handleDetails(actid) {
       this.$emit('on-details', actid)
+    },
+    handleLike(actid, isLike) {
+      this.$emit('on-like', actid, isLike)
+    },
+    handleCollect(actid, isCollect) {
+      this.$emit('on-collect', actid, isCollect)
     },
     processStateChnage(proceNodes) {
       this.$emit('on-process-state-chnage', proceNodes)
