@@ -3,7 +3,11 @@
     <div class="list-item-header">
       <div class="list-item-meta">
         <div class="list-item-meta-avatar">
-          <el-image :src="item.actlead ? item.actlead.filepath : null"></el-image>
+          <el-image :src="item.actlead ? item.actlead.filepath : null" alt="头像" >
+            <div slot="error" class="image-slot">
+              <icon-svg icon-class="img-load-fail"></icon-svg>
+            </div>
+          </el-image>
         </div>
         <div class="list-item-meta-content">
           <h1 class="list-item-meta-title">
@@ -223,6 +227,12 @@ export default {
           line-height: 30px;
           cursor: pointer;
           font-size: 12px;
+        }
+        .trigger-icon {
+          transition: all .3s;
+        }
+        .isActive {
+          transform: rotate(180deg)
         }
       }
       .list-item-message {

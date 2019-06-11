@@ -10,9 +10,9 @@
         </el-steps>
       </div>
       <div class="step-wrapper">
-        <step1 v-if="step === 0" @next-step="next" :email.sync="email" :mobile.sync="mobile"></step1>
-        <step2 v-if="step === 1" @next-step="next" :email="email" :mobile="mobile"></step2>
-        <step3 v-if="step === 2" @next-step="finish"></step3>
+        <step1 v-if="step === 0" @next-step="next" :email.sync="email" :mobile.sync="mobile" :username.sync="username"></step1>
+        <step2 v-if="step === 1" @next-step="next" :email="email" :mobile="mobile" :username="username" ></step2>
+        <step3 v-if="step === 2" @next-step="finish" :username="username"></step3>
         <div class="step-finish" v-if="step === 3">
           <div class="icon-wrapper">
             <icon-svg icon-class="success"></icon-svg>
@@ -44,7 +44,8 @@ export default {
     return {
       step: 0,
       email: '',
-      mobile: ''
+      mobile: '',
+      username: '',
     }
   },
   methods: {

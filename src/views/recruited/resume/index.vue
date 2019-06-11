@@ -28,7 +28,6 @@
           <el-image :src="scope.row.filepath" alt="头像" >
             <div slot="error" class="image-slot">
               <icon-svg icon-class="img-load-fail"></icon-svg>
-              <!-- <i class="el-icon-picture-outline"></i> -->
             </div>
           </el-image>
         </div>

@@ -22,7 +22,7 @@
         <s-list :data="listData" :user-id="userId" @on-process-state-chnage="processStateChnage" @on-details="handleDetails" @on-like="handleLike" @on-collect="handleCollect">
           <template v-slot:actions="{scope}">
             <el-button size="small" type="primary" @click="handleEdit(scope)">修改</el-button>
-            <el-button size="small">统计信息</el-button>
+            <el-button size="small" @click="handleInActivity(scope.actid)">统计信息</el-button>
           </template>
         </s-list>
      </div>
@@ -77,19 +77,51 @@ export default {
     handleEdit(data) {
       console.log(data)
     },
+    handleInActivity(actid) {
+      console.log(actid)
+    },
     handleDetails(actid) {
       console.log(actid)
     },
     handleLike(actid, isLike) {
       changeLikeApi(Number(isLike), this.userId, actid).then((result) => {
         // console.log(result)
-        this.getActivityList()
+        let activity = this.listData.find((item) => {
+          return item.actid === actid
+        })
+        if(isLike){
+          // 点赞
+          activity.likePeople.push(this.userId)
+          activity.bbs_like[0].num++
+        }else{
+          // 取消点赞
+          
+          let index = activity.likePeople.findIndex((item) => {
+            return item === this.userId
+          })
+          activity.likePeople.splice(index, 1)
+          activity.bbs_like[0].num--
+        }
       })
     },
     handleCollect(actid, isCollect) {
       changeCollectApi(Number(isCollect), this.userId, actid).then((result) => {
         // console.log(result)
-        this.getActivityList()
+        let activity = this.listData.find((item) => {
+          return item.actid === actid
+        })
+        if(isCollect){
+          // 收藏
+          activity.collectionPeople.push(this.userId)
+          activity.bbs_collection[0].num++
+        }else{
+          // 取消收藏
+          let index = activity.collectionPeople.findIndex((item) => {
+            return item === this.userId
+          })
+          activity.collectionPeople.splice(index, 1)
+          activity.bbs_collection[0].num--
+        }
       })
     },
     /** @param {Array} proceNodes */

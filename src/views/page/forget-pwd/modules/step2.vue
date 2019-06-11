@@ -31,6 +31,7 @@
   </div>
 </template>
 <script>
+import { getVerCode as getVerCodeApi, checkVerCode as checkVerCodeApi } from '@/api/forgetpwd'
 export default {
   name: 'step2',
   props: {
@@ -41,7 +42,11 @@ export default {
     mobile: {
       type: String,
       default: ''
-    }
+    },
+    username: {
+      type: String,
+      default: ''
+    },
   },
   data() {
     return {
@@ -49,6 +54,7 @@ export default {
       form: {
         code: ''
       },
+      token: '',
       loading: false,
       timeNumber: 60,
       btnText: '获取验证码',
@@ -70,7 +76,7 @@ export default {
   methods: {
     handleSendCode() {
       this.loading = true
-      this.timeNumber = 60
+      this.timeNumber = 10
       let timerId = setInterval(() => {
         if(this.timeNumber === 0){
           clearInterval(timerId)
@@ -79,6 +85,12 @@ export default {
           this.timeNumber--
         }
       }, 1000)
+      let type = this.option === 'email' ? 0 : 1
+      getVerCodeApi(this.username, type, this.value).then((result) => {
+        console.log(result)
+        let { data } = result
+        this.token = data.token
+      }).catch((err) => { })
     },
     handleNext() {
       this.$refs['form'].validate((valid) => {
@@ -86,7 +98,10 @@ export default {
           this.$message.error('请填写相关项目!')
           return
         }
-        this.$emit('next-step')
+        checkVerCodeApi(this.username, this.token, this.form.code).then((result) => {
+          console.log(result)
+          this.$emit('next-step')
+        }).catch((err) => {})    
       })
     }
   }

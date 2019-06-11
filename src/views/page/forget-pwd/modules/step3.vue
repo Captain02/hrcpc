@@ -14,8 +14,15 @@
   </div>
 </template>
 <script>
+import { resetPassword as resetPasswordApi } from '@/api/forgetpwd'
 export default {
   name: 'step3',
+  props: {
+    username: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     const validatePassword = (rule, value, callback) => {
       if (value === '') {
@@ -58,7 +65,10 @@ export default {
           this.$message.error('请填写相关项目!')
           return
         }
-        this.$emit('next-step')
+        resetPasswordApi(this.username, this.form.password).then((result) => {
+          console.log(result)
+          this.$emit('next-step')
+        }).catch((err) => {})
       })
     }
   }

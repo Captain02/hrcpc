@@ -58,6 +58,7 @@ export default {
   methods: {
     handleEdit() {
       this.role = cloneDeep(this.data)
+      this.dialogFormVisible = true
     },
     editRole() {
       this.$refs['roleForm'].validate((valid) => {

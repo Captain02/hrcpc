@@ -22,6 +22,10 @@ export default {
     mobile: {
       type: String,
       default: ''
+    },
+    username: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -48,6 +52,7 @@ export default {
           let { data } = result
           this.$emit('update:email', data.email)
           this.$emit('update:mobile', data.mobile)
+          this.$emit('update:username', data.username)
           this.$emit('next-step')
         }).catch((err) => { })
       })
@@ -60,13 +65,6 @@ export default {
   width: 400px;
   margin: 55px auto;
   padding-right: 40px; 
-  // .reset-form {
-  //   .el-form-item{
-  //     span{
-  //       color: #333;
-  //     }
-  //   }
-  // }
 }
   
 </style>
