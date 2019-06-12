@@ -30,13 +30,14 @@
               <img :src="item.file.src">
             </div>
           </div>
+
         </div>
-        <div class="upimgBtn">
-          <el-button  type="success" :disabled="!flag" plain @click="compile">开始上传</el-button>
-        </div>
+
       </div>
     </el-row>
-
+    <div class="upimgBtn">
+      <el-button  type="success" :disabled="!flag" plain @click="compile">开始上传</el-button>
+    </div>
   </div>
 </template>
 <script>
@@ -168,9 +169,9 @@ export default {
   }
 }
 </script>
-<style lang="">
+<style lang="" >
 .app-container {
-  min-height: 700px;
+  max-height: 1120px;
 }
 .uploadBtn {
   margin-top: 20px;
@@ -210,8 +211,12 @@ export default {
   text-overflow: ellipsis;
 }
 .upimgBtn {
-  position: absolute;
-  bottom: -90px;
+  position: relative;
+  width:100%;
+  height:120px;
+  background:#fff;
+  margin-left: 20px;
+  margin-top: 20px;
 }
 .upload_warp_img_div img {
   max-width: 100%;

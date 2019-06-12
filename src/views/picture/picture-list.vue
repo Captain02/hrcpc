@@ -120,7 +120,11 @@ export default {
             // 处理图片地址(线上不需要处理)
             // res.date[i].url = BaseUrl + res.date[i].url;
             // 处理文件名称
+            // console.log(res.date[i].imagename.length)
             res.date[i].imagename = res.date[i].imagename.substring(0, res.date[i].imagename.indexOf("."));
+            if (res.date[i].imagename.length > 20) {
+              res.date[i].imagename = res.date[i].imagename.substring(0, 20) + '...';
+            }
           }
           that.pic_list = res.date;
         }
@@ -159,7 +163,7 @@ export default {
   }
 };
 </script>
-<style>
+<style >
 .page-title {
   padding: 15px 0;
   font-size: 18px;
