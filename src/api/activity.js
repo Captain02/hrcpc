@@ -4,7 +4,7 @@ import qs from 'querystring'
 
 
 
-export const addActivity = (actName, actLeader, actStartTime, actEndTime, images, videoid, croWdPeople, profile, enclosure, actdetails, processNodes) => {
+export const addActivity = (actName, deptid, actLeader, actStartTime, actEndTime, images, videoid, croWdPeople, profile, enclosure, actdetails, processNodes) => {
   return request({
     url: '/activity/add',
     method: 'POST',
@@ -16,6 +16,7 @@ export const addActivity = (actName, actLeader, actStartTime, actEndTime, images
     data: {
       actCorId: getCorId(),
       actName,
+      deptid,
       actLeader,
       actStartTime,
       actEndTime,
@@ -66,6 +67,19 @@ export const getUsersByName = (name) => {
     params: {
       corid: getCorId(),
       name
+    }
+  })
+}
+
+/***
+ * 获取社团的所有部门
+ */
+export const getDepts = () => {
+  return request({
+    url: '/dept/getDepts',
+    method: 'GET',
+    params: {
+      corid: getCorId()
     }
   })
 }

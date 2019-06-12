@@ -2,7 +2,7 @@
   <div class="list-wrapper">
     <div class="list-empty" v-if="isEmpty">{{emptyText}}</div>
     <template v-else>
-      <list-item v-for="item in listData" :key="item.actid" :item="item" :user-id="userId" @on-process-state-chnage="processStateChnage" @on-details="handleDetails" @on-like="handleLike" @on-collect="handleCollect">
+      <list-item v-for="item in listData" :key="item.actid" :item="item" :user-id="userId" @on-process-state-chnage="processStateChnage" @on-details="handleDetails" @on-add-like="handleAddLike" @on-cancel-like="handleCancelLike" @on-add-collect="handleAddCollect" @on-cancel-collect="handleCancelCollect">
         <slot name="actions" slot="actions" :scope="item"></slot>
       </list-item>
     </template>
@@ -36,28 +36,7 @@ export default {
   },
   computed: {
     listData() {
-     return this.data.map((item) => {
-        let data =  {
-          actid: item.actid,
-          actname: item.actname,
-          actstarttame: item.actstarttame,
-          actendtime: item.actendtime,
-          createtime: item.createtime,
-          profile: item.profile,
-          corname: item.corname,
-          actlead: item.actlead && item.actlead.length ?  item.actlead[0] : null,
-          likePeople: item.likePeople,
-          collectionPeople: item.collectionPeople,
-          crowdpeople: item.crowdpeople,
-          bbs_like: item.bbs_like && item.bbs_like.length ? item.bbs_like[0] : null,
-          bbs_collection: item.bbs_collection &&  item.bbs_collection.length ? item.bbs_collection[0] : null,
-          processnodes: item.processnodes && item.processnodes.length ? item.processnodes : [],
-          video: item.video && item.video.length ? item.video[0] : null,
-          image: item.image && item.image.length ? item.image[0] : null
-        }
-        // console.log(data)
-        return data
-      })
+      return this.data
     },
     isEmpty() {
       return this.data.length <= 0
@@ -67,11 +46,17 @@ export default {
     handleDetails(actid) {
       this.$emit('on-details', actid)
     },
-    handleLike(actid, isLike) {
-      this.$emit('on-like', actid, isLike)
+    handleAddLike(actid, status) {
+      this.$emit('on-add-like', actid, status)
     },
-    handleCollect(actid, isCollect) {
-      this.$emit('on-collect', actid, isCollect)
+    handleCancelLike(actid, status) {
+      this.$emit('on-cancel-like', actid, status)
+    },
+    handleAddCollect(actid, status) {
+      this.$emit('on-add-collect', actid, status)
+    },
+    handleCancelCollect(actid, status) {
+      this.$emit('on-cancel-collect', actid, status)
     },
     processStateChnage(proceNodes) {
       this.$emit('on-process-state-chnage', proceNodes)

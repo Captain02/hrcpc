@@ -16,10 +16,11 @@
           class="form-wrapper"
           ref="userForm" 
           size="small"
+          :rules="rules"
           :hide-required-asterisk="true"
         >
-          <el-form-item prop="roles" label="部门：">
-            <tree-select v-model="user.depart" :options="departs" :normalizer="normalizer" placeholder="请选择部门"></tree-select>
+          <el-form-item prop="depart" label="部门：">
+            <tree-select v-model="user.depart" :options="departs" :clearable="false" :normalizer="normalizer" placeholder="请选择部门"></tree-select>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="editUser">保存</el-button> 
@@ -55,6 +56,11 @@ export default {
           label: node.name
         }
       },
+      rules: {
+        depart: [
+          { required: true, message: '请选择部门！' }
+        ]
+      }
     }
   },
   methods: {
@@ -72,11 +78,17 @@ export default {
       })
     },
     editUser() {
-      updateUserDepartApi(this.user.userId, this.user.depart).then((result) => {
-        // console.log(result)
-        this.$message.success('修改成功!')
-        this.dialogFormVisible = false
-        this.$emit('on-edit-success')
+      this.$refs['userForm'].validate((valid) => {
+        if (!valid) {
+          this.$message.error('请填写相关项目!')
+          return
+        }
+        updateUserDepartApi(this.user.userId, this.user.depart).then((result) => {
+          // console.log(result)
+          this.$message.success('修改成功!')
+          this.dialogFormVisible = false
+          this.$emit('on-edit-success')
+        })
       })
     }
   }

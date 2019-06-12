@@ -130,10 +130,14 @@ export default {
       this.$emit('on-details', this.item.actid)
     },
     handleClickLike() {
-      this.$emit('on-like', this.item.actid, !this.like.status)
+      // this.like.status为true说明已经点赞了再次点击则是取消点赞
+      let eventName = this.like.status ? 'on-cancel-like' : 'on-add-like'
+      console.log(eventName, this.like.status)
+      this.$emit(eventName, this.item.actid, !this.like.status)
     },
     handleClickCollect() {
-      this.$emit('on-collect', this.item.actid, !this.collect.status)
+      let eventName = this.collect.status ? 'on-cancel-collect' : 'on-add-collect'
+      this.$emit(eventName, this.item.actid, !this.collect.status)
     },
     handleChangeProcessState(index) {
       let proceNodes = this.item.processnodes.map((item, i) => {
@@ -215,12 +219,13 @@ export default {
       flex: 1;
       flex-direction: column;
       justify-content: space-between;
+      min-width: 210px;
       .list-item-action-btn {
         display: flex;
+        justify-content: space-around;
         .trigger {
           width: 30px;
           height: 30px;
-          margin-left: 10px;
           background: #EBEEF5;
           text-align: center;
           border-radius: 5px;
