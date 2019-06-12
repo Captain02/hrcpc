@@ -54,7 +54,6 @@ export default {
       form: {
         code: ''
       },
-      token: '',
       loading: false,
       timeNumber: 60,
       btnText: '获取验证码',
@@ -89,7 +88,6 @@ export default {
       getVerCodeApi(this.username, type, this.value).then((result) => {
         console.log(result)
         let { data } = result
-        this.token = data.token
       }).catch((err) => { })
     },
     handleNext() {
@@ -98,7 +96,7 @@ export default {
           this.$message.error('请填写相关项目!')
           return
         }
-        checkVerCodeApi(this.username, this.token, this.form.code).then((result) => {
+        checkVerCodeApi(this.username, this.form.code).then((result) => {
           console.log(result)
           this.$emit('next-step')
         }).catch((err) => {})    

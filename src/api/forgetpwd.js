@@ -2,10 +2,22 @@ import request from '@/utils/request'
 import qs from 'querystring'
 
 /**
+ * 获取图片验证码
+ */
+export const getCaptcha = () => {
+  return request({
+    url: '/user/kaptcha.jpg',
+    method: 'GET'
+  })
+}
+
+/**
  * 根据学号查找用户信息
  * @param {String} username 
+ * @param {String} key 
+ * @param {String} captcha 验证码
  */
-export const getUserByUsername = (username) => {
+export const getUserByUsername = (username, key, captcha) => {
   return request({
     url: '/user/getUserInfo',
     method: 'POST',
@@ -13,7 +25,9 @@ export const getUserByUsername = (username) => {
       return qs.stringify(data)
     }],
     data: {
-      username
+      username,
+      key,
+      captcha
     }
   })
 }
@@ -42,17 +56,15 @@ export const getVerCode = (username, type, checkway) => {
 /**
  * 检查验证码是否正确
  * @param {String} username 
- * @param {String} token 
  * @param {String} verCode 
  */
-export const checkVerCode = (username, token, verCode) => {
+export const checkVerCode = (username, verCode) => {
   return request({
     url: '/user/checkVerCode',
     method: 'POST',
     transformRequest: [function (data) {
       return qs.stringify(data)
     }],
-    headers: {'Authorization': token},
     data: {
       username,
       verCode

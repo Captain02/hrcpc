@@ -59,7 +59,7 @@ export default {
       //     path: '/login'
       //   })
       // }, 3000)
-    }
+    },
   }
 }
 </script>

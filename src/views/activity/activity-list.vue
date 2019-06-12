@@ -19,7 +19,7 @@
        <el-button class="filter-item" type="primary" size="small" icon="el-icon-search" @click="handleSearch">搜索</el-button>
      </div>
      <div class="activity-list">
-        <s-list :data="listData" :user-id="userId" @on-process-state-chnage="processStateChnage" @on-details="handleDetails" @on-like="handleLike" @on-collect="handleCollect">
+        <s-list :data="listData" :user-id="userId" @on-process-state-chnage="processStateChnage" @on-details="handleDetails" @on-add-like="handleAddLike" @on-cancel-like="handleCancelLike" @on-add-collect="handleAddCollect" @on-cancel-collect="handleCancelCollect">
           <template v-slot:actions="{scope}">
             <el-button size="small" type="primary" @click="handleEdit(scope)">修改</el-button>
             <el-button size="small" @click="handleInActivity(scope.actid)">统计信息</el-button>
@@ -62,12 +62,36 @@ export default {
     })
   },
   methods: {
+    initListData(data) {
+      return data.map((item) => {
+        let data =  {
+          actid: item.actid,
+          actname: item.actname,
+          actstarttame: item.actstarttame,
+          actendtime: item.actendtime,
+          createtime: item.createtime,
+          profile: item.profile,
+          corname: item.corname,
+          actlead: item.actlead && item.actlead.length ?  item.actlead[0] : null,
+          likePeople: item.likePeople,
+          collectionPeople: item.collectionPeople,
+          crowdpeople: item.crowdpeople,
+          bbs_like: item.bbs_like && item.bbs_like.length ? item.bbs_like[0] : null,
+          bbs_collection: item.bbs_collection &&  item.bbs_collection.length ? item.bbs_collection[0] : null,
+          processnodes: item.processnodes && item.processnodes.length ? item.processnodes : [],
+          video: item.video && item.video.length ? item.video[0] : null,
+          image: item.image && item.image.length ? item.image[0] : null
+        }
+        // console.log(data)
+        return data
+      })
+    },
     getActivityList() {
       getActivitysApi(this.listQuery.corid, this.listQuery.actName, this.listQuery.isAct, this
       .listQuery.crowdids, this.listQuery.currPage, this.listQuery.pageSize).then((result) => {
         console.log(result)
         let { data, page } = result
-        this.listData = data
+        this.listData = this.initListData(data)
         this.total = page.totalCount
       }).catch((err) => { })
     },
@@ -83,45 +107,47 @@ export default {
     handleDetails(actid) {
       console.log(actid)
     },
-    handleLike(actid, isLike) {
-      changeLikeApi(Number(isLike), this.userId, actid).then((result) => {
-        // console.log(result)
+    handleAddLike(actid, status) {
+      changeLikeApi(Number(status), this.userId, actid).then((result) => {
         let activity = this.listData.find((item) => {
           return item.actid === actid
         })
-        if(isLike){
-          // 点赞
-          activity.likePeople.push(this.userId)
-          activity.bbs_like[0].num++
-        }else{
-          // 取消点赞
-          
-          let index = activity.likePeople.findIndex((item) => {
-            return item === this.userId
-          })
-          activity.likePeople.splice(index, 1)
-          activity.bbs_like[0].num--
-        }
+        activity.likePeople.push(this.userId)
+        activity.bbs_like.num++
       })
     },
-    handleCollect(actid, isCollect) {
-      changeCollectApi(Number(isCollect), this.userId, actid).then((result) => {
+    handleCancelLike(actid, status) {
+      changeLikeApi(Number(status), this.userId, actid).then((result) => {
+        let activity = this.listData.find((item) => {
+          return item.actid === actid
+        })
+        let index = activity.likePeople.findIndex((item) => {
+          return item === this.userId
+        })
+        activity.likePeople.splice(index, 1)
+        activity.bbs_like.num--
+      })
+    },
+    handleAddCollect(actid, status) {
+      changeCollectApi(Number(status), this.userId, actid).then((result) => {
         // console.log(result)
         let activity = this.listData.find((item) => {
           return item.actid === actid
         })
-        if(isCollect){
-          // 收藏
-          activity.collectionPeople.push(this.userId)
-          activity.bbs_collection[0].num++
-        }else{
-          // 取消收藏
-          let index = activity.collectionPeople.findIndex((item) => {
-            return item === this.userId
-          })
-          activity.collectionPeople.splice(index, 1)
-          activity.bbs_collection[0].num--
-        }
+        activity.collectionPeople.push(this.userId)
+        activity.bbs_collection.num++
+      })
+    },
+    handleCancelCollect(actid, status) {
+      changeCollectApi(Number(status), this.userId, actid).then((result) => {
+        let activity = this.listData.find((item) => {
+          return item.actid === actid
+        })
+        let index = activity.collectionPeople.findIndex((item) => {
+          return item === this.userId
+        })
+        activity.collectionPeople.splice(index, 1)
+        activity.bbs_collection.num--
       })
     },
     /** @param {Array} proceNodes */

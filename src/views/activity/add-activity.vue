@@ -6,6 +6,9 @@
         <el-form-item prop="actName" label="活动名称：">
           <el-input v-model="activity.actName" placeholder="活动名称"></el-input>
         </el-form-item>
+        <el-form-item label="发布部门：">
+          <tree-select v-model="activity.pubDeptId" :clearable="false" :options="deptOptions" :normalizer="normalizer" placeholder="发布部门"></tree-select>
+        </el-form-item>
         <el-form-item label="活动简介：">
           <el-input v-model="activity.profile" type="textarea"  maxlength="200" :rows="6"
   show-word-limit placeholder="活动简介"></el-input>
@@ -134,21 +137,26 @@
 </template>
 <script>
 import { getCollegeInfo as getCollegeInfoApi } from '@/api/comm'
-import { getUsersByName as getUsersByNameApi, deleteFile as deleteFileApi, addActivity as addActivityApi } from '@/api/activity'
+import { getUsersByName as getUsersByNameApi, deleteFile as deleteFileApi, addActivity as addActivityApi, getDepts as getDeptsApi } from '@/api/activity'
+import { transferData2Tree } from '@/utils'
 import MceEditor from '_c/MceEditor'
 window.tinymce.baseURL = '/static/tinymce'
 window.tinymce.suffix = '.min'
 import VideoPlayer from '_c/VideoPlayer'
+import TreeSelect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 export default {
   name: 'add-activity',
   components: {
     MceEditor,
-    VideoPlayer
+    VideoPlayer,
+    TreeSelect
   },
   data() {
     return {
       activity: {
         actName: '',              // 活动名称
+        pubDeptId: '',              // 发布部门
         actLeader: '',            // 活动负责人
         timer: '',
         actStartTime: '',         // 活动开始时间
@@ -165,7 +173,14 @@ export default {
       imageFile: null,                 // 上传的图片海报
       videoFile: null,                // 上传的视频文件
       usersOptions: [],             // 活动负责人选项
-      collegeOptinos: [],           // 面向人群选项
+      collegeOptinos: [],           // 面向人群选项,
+      deptOptions: [],              // 发布部门选项
+      normalizer(node) {
+        return {
+          id: node.dept_id,
+          label: node.name
+        }
+      },
       rules: {}
     }
   },
@@ -259,22 +274,24 @@ export default {
           return
         }
         let [startTime, endTime] = this.activity.timer 
-        addActivityApi(this.activity.actName, this.activity.actLeader, startTime, endTime, this.activity.images, this.activity.videoid, this.activity.croWdPeople, this.activity.profile, this.activity.enclosure, this.activity.actdetails, this.activity.processNodes).then((result) => {
+        addActivityApi(this.activity.actName, this.activity.pubDeptId, this.activity.actLeader, startTime, endTime, this.activity.images, this.activity.videoid, this.activity.croWdPeople, this.activity.profile, this.activity.enclosure, this.activity.actdetails, this.activity.processNodes).then((result) => {
           console.log(result)
         })
       })
     },
-    getCollegeList() {
-      getCollegeInfoApi(1, null).then((result) => {
-        let { data } = result
-        this.collegeOptinos = data.map((item) => {
+    getData() {
+       Promise.all([getCollegeInfoApi(1, null), getDeptsApi()]).then((result) => {
+        let [ colleges, depts ] = result
+        this.collegeOptinos = colleges.data.map((item) => {
           return { id: item.id, value: item.value }
         })
+        depts.data.unshift({ name: '本社团', dept_id: '', parent_id: 0 })
+        this.deptOptions = transferData2Tree(0, depts.data, 'parent_id', 'dept_id', 'children')
       })
     }
   },
   mounted() {
-    this.getCollegeList()
+    this.getData()
   }
 }
 </script>
