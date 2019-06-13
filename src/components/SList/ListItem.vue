@@ -12,7 +12,7 @@
         <div class="list-item-meta-content">
           <h1 class="list-item-meta-title">
             <span class="list-item-meta-corname">
-              {{item.corname}}
+              {{item.corname}}   {{item.deptInfo ? `·  ${item.deptInfo.name}` : ''}}
             </span>
             <span class="list-item-meta-actname" @click="handleDetails">
               {{item.actname}}
@@ -24,11 +24,12 @@
         </div>
       </div>
       <div class="list-item-content">
-        <el-steps space="20%" :active="computeActive" finish-status="success">
+        <slot name="process-nodes"></slot>
+        <!-- <el-steps space="20%" :active="computeActive" finish-status="success">
           <el-step v-for="(proces, index) in item.processnodes" :key="proces.proid" >
             <el-button type="text" class="process-text" slot="title" @click="handleChangeProcessState(index)">{{proces.processnode}}</el-button>
           </el-step>
-        </el-steps>
+        </el-steps> -->
       </div>
       <div class="list-item-action">
         <div class="list-item-action-btn">
@@ -139,12 +140,12 @@ export default {
       let eventName = this.collect.status ? 'on-cancel-collect' : 'on-add-collect'
       this.$emit(eventName, this.item.actid, !this.collect.status)
     },
-    handleChangeProcessState(index) {
-      let proceNodes = this.item.processnodes.map((item, i) => {
-        return i <= index ? { proid: item.proid, type: 1 } :{ proid: item.proid, type: 0 }
-      })
-      this.$emit('on-process-state-chnage', proceNodes)
-    }
+    // handleChangeProcessState(index) {
+    //   let proceNodes = this.item.processnodes.map((item, i) => {
+    //     return i <= index ? { proid: item.proid, type: 1 } :{ proid: item.proid, type: 0 }
+    //   })
+    //   this.$emit('on-process-state-chnage', proceNodes)
+    // }
   }
 }
 </script>
@@ -203,16 +204,7 @@ export default {
       flex: 2;
       padding: 0 20px;
       align-self: center;
-      .process-text {
-        padding: 5px 0 0 0;
-        font-size: 13px;
-        color: #2c3e50;
-        font-weight: bold;
-        transition: color .4s;
-        &:hover {
-          color: #409eff;
-        }
-      }
+      
     }
     .list-item-action {
       display: flex;
@@ -223,6 +215,9 @@ export default {
       .list-item-action-btn {
         display: flex;
         justify-content: space-around;
+        .slot-action {
+          min-width: 150px;
+        }
         .trigger {
           width: 30px;
           height: 30px;

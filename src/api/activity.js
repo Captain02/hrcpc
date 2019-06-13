@@ -3,6 +3,19 @@ import { getCorId } from '@/utils/cookie'
 import qs from 'querystring'
 
 
+/**
+ * 获取单个活动信息
+ * @param {Number} actid 
+ */
+export const getActivity = (actid) => {
+  return request({
+    url: '/activity/getActivity',
+    method: 'GET',
+    params: {
+      actid
+    }
+  })
+}
 
 export const addActivity = (actName, deptid, actLeader, actStartTime, actEndTime, images, videoid, croWdPeople, profile, enclosure, actdetails, processNodes) => {
   return request({
@@ -56,6 +69,41 @@ export const getActivitys = (corid, actName, isAct, crowdids, currPage, pageSize
   })
 }
 
+/**
+ * 查看参加活动的用户
+ * @param {Number} actid 
+ * @param {String} name 
+ * @param {String} username 
+ * @param {Number} currPage
+ * @param {Number} pageSize
+ */
+export const getUsersByActId = (actid, name, username, currPage, pageSize) => {
+  return request({
+    url: '/activity/getUserByActId',
+    method: 'GET',
+    params: {
+      actid,
+      name,
+      username,
+      currPage,
+      pageSize
+    }
+  })
+}
+
+/**
+ * 活动图表统计
+ * @param {Number} actid 
+ */
+export const getActCharts = (actid) => {
+  return request({
+    url: '/activity/getActCharts',
+    method: 'GET',
+    params: {
+      actid
+    }
+  })
+}
 /**
  * 获取活动负责人
  * @param {String} name 

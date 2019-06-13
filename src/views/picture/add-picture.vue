@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="app-container add-picture-page">
     <h1 class="page-title">
       <span style="font-size:18px;" >上传相片</span>  
     </h1>
@@ -170,7 +170,7 @@ export default {
 }
 </script>
 <style lang="" >
-.app-container {
+.add-picture-page {
   max-height: 1120px;
 }
 .uploadBtn {

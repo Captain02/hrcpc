@@ -2,8 +2,9 @@
   <div class="list-wrapper">
     <div class="list-empty" v-if="isEmpty">{{emptyText}}</div>
     <template v-else>
-      <list-item v-for="item in listData" :key="item.actid" :item="item" :user-id="userId" @on-process-state-chnage="processStateChnage" @on-details="handleDetails" @on-add-like="handleAddLike" @on-cancel-like="handleCancelLike" @on-add-collect="handleAddCollect" @on-cancel-collect="handleCancelCollect">
+      <list-item v-for="item in listData" :key="item.actid" :item="item" :user-id="userId" @on-details="handleDetails" @on-add-like="handleAddLike" @on-cancel-like="handleCancelLike" @on-add-collect="handleAddCollect" @on-cancel-collect="handleCancelCollect">
         <slot name="actions" slot="actions" :scope="item"></slot>
+        <slot name="process-nodes" slot="process-nodes" :scope="item"></slot>
       </list-item>
     </template>
   </div>
@@ -58,9 +59,9 @@ export default {
     handleCancelCollect(actid, status) {
       this.$emit('on-cancel-collect', actid, status)
     },
-    processStateChnage(proceNodes) {
-      this.$emit('on-process-state-chnage', proceNodes)
-    }
+    // processStateChnage(proceNodes) {
+    //   this.$emit('on-process-state-chnage', proceNodes)
+    // }
   }
 }
 </script>

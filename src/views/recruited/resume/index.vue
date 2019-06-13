@@ -52,7 +52,6 @@
       </template>
     </s-table>
     <pagination v-show="total>0" :total="total" :curr.sync="listQuery.currPage" :size.sync="listQuery.pageSize" @on-page-change="getResumeList" />
-    <el-dialog></el-dialog>
   </div>
 </template>
 <script>

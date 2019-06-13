@@ -75,7 +75,7 @@ export default {
   methods: {
     handleSendCode() {
       this.loading = true
-      this.timeNumber = 10
+      this.timeNumber = 60
       let timerId = setInterval(() => {
         if(this.timeNumber === 0){
           clearInterval(timerId)

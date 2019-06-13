@@ -6,7 +6,7 @@
          <el-option :value="1" label="有效"></el-option>
          <el-option :value="0" label="无效"></el-option>
        </el-select>
-       <el-select class="filter-item" v-model="listQuery.corid" size="small" style="width: 130px;">
+       <el-select class="filter-item" v-model="listQuery.actcorid" size="small" style="width: 130px;">
          <el-option :value="1" label="本社团活动"></el-option>
          <el-option value="" label="全部社团活动"></el-option>
        </el-select>
@@ -19,10 +19,20 @@
        <el-button class="filter-item" type="primary" size="small" icon="el-icon-search" @click="handleSearch">搜索</el-button>
      </div>
      <div class="activity-list">
-        <s-list :data="listData" :user-id="userId" @on-process-state-chnage="processStateChnage" @on-details="handleDetails" @on-add-like="handleAddLike" @on-cancel-like="handleCancelLike" @on-add-collect="handleAddCollect" @on-cancel-collect="handleCancelCollect">
+        <s-list :data="listData" :user-id="userId" @on-details="handleDetails" @on-add-like="handleAddLike" @on-cancel-like="handleCancelLike" @on-add-collect="handleAddCollect" @on-cancel-collect="handleCancelCollect">
           <template v-slot:actions="{scope}">
-            <el-button size="small" type="primary" @click="handleEdit(scope)">修改</el-button>
-            <el-button size="small" @click="handleInActivity(scope.actid)">统计信息</el-button>
+            <template v-if="scope.actcorid === corid">
+              <el-button size="small" type="primary" @click="handleEdit(scope)">修改</el-button>
+              <el-button size="small" @click="handleInActivity(scope.actid)">报名统计</el-button>
+            </template>
+          </template>
+          <template v-slot:process-nodes="{scope}">
+            <el-steps space="20%" :active="countActives(scope.processnodes)" finish-status="success">
+              <el-step v-for="(node, index) in scope.processnodes" :key="node.proid" >
+                <el-button v-if="scope.actcorid === corid" type="text" class="process-text" slot="title" @click="processStateChnage(index, scope.processnodes)">{{node.processnode}}</el-button>
+                <span v-else slot="title">{{node.processnode}}</span>
+              </el-step>
+            </el-steps>
           </template>
         </s-list>
      </div>
@@ -44,7 +54,7 @@ export default {
   data() {
     return {
       listQuery: {
-        corid: this.$store.state.user.corid,
+        actcorid: this.$store.state.user.corid,
         isAct: 1,
         actName: '',
         crowdids: [],          // 
@@ -59,12 +69,14 @@ export default {
   computed: {
     ...mapState({
       userId: (state) => state.user.userId,
+      corid: (state) => state.user.corid
     })
   },
   methods: {
     initListData(data) {
       return data.map((item) => {
         let data =  {
+          actcorid: item.actcorid,
           actid: item.actid,
           actname: item.actname,
           actstarttame: item.actstarttame,
@@ -78,6 +90,7 @@ export default {
           crowdpeople: item.crowdpeople,
           bbs_like: item.bbs_like && item.bbs_like.length ? item.bbs_like[0] : null,
           bbs_collection: item.bbs_collection &&  item.bbs_collection.length ? item.bbs_collection[0] : null,
+          deptInfo: item.deptInfo && item.deptInfo.length ? item.deptInfo[0] : null,
           processnodes: item.processnodes && item.processnodes.length ? item.processnodes : [],
           video: item.video && item.video.length ? item.video[0] : null,
           image: item.image && item.image.length ? item.image[0] : null
@@ -87,7 +100,7 @@ export default {
       })
     },
     getActivityList() {
-      getActivitysApi(this.listQuery.corid, this.listQuery.actName, this.listQuery.isAct, this
+      getActivitysApi(this.listQuery.actcorid, this.listQuery.actName, this.listQuery.isAct, this
       .listQuery.crowdids, this.listQuery.currPage, this.listQuery.pageSize).then((result) => {
         console.log(result)
         let { data, page } = result
@@ -102,7 +115,12 @@ export default {
       console.log(data)
     },
     handleInActivity(actid) {
-      console.log(actid)
+      this.$router.push({
+        name: 'activity-report',
+        params: {
+          id: actid
+        }
+      })
     },
     handleDetails(actid) {
       console.log(actid)
@@ -150,12 +168,23 @@ export default {
         activity.bbs_collection.num--
       })
     },
-    /** @param {Array} proceNodes */
-    processStateChnage(proceNodes) {  // param{Array}
+    processStateChnage(index, processNodes) {
+      let proceNodes = processNodes.map((item, i) => {
+        return i <= index ? { proid: item.proid, type: 1 } : { proid: item.proid, type: 0 }
+      })
       changeProcessStateApi(proceNodes).then((result) => {
         this.$message.success('更新状态成功!')
         this.getActivityList()
       }).catch((err) => {})
+    },
+    countActives(nodes) {
+      let count = 0
+      nodes.forEach((item) => {
+        if(item.states){
+          count++
+        }
+      })
+      return count
     }
   },
   mounted() {
@@ -172,5 +201,15 @@ export default {
 <style lang="less" scoped>
 .activity-list {
   border-top: 1px solid #e8e8e8;
+  .process-text {
+    padding: 5px 0 0 0;
+    font-size: 13px;
+    color: #2c3e50;
+    font-weight: bold;
+    transition: color .4s;
+    &:hover {
+      color: #409eff;
+    }
+  }
 }
 </style>

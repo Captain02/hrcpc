@@ -54,11 +54,11 @@ export default {
     },
     finish() {
       this.next()
-      // setTimeout(() => {
-      //   this.$router.replace({
-      //     path: '/login'
-      //   })
-      // }, 3000)
+      setTimeout(() => {
+        this.$router.replace({
+          path: '/login'
+        })
+      }, 3000)
     },
   }
 }

@@ -24,7 +24,7 @@ let map = {
   'report': () => import('@/views/recruited/report'),
 
   // 社团活动
-  'activity-list': () => import('@/views/activity/activity-list'),
-  'add-activity': () => import('@/views/activity/add-activity')
-
+  'activity-list': () => import('@/views/activity'),
+  'add-activity': () => import('@/views/activity/modules/add'),
+  'activity-report': () => import('@/views/activity/modules/report')
 }
