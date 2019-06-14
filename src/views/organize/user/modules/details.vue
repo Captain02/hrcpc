@@ -3,9 +3,6 @@
     <div @click="handleDetails">
       <slot name="action-btn"></slot>
     </div>
-    <!-- <el-button type="text" size="small" >
-      <slot name="btn-label">查看</slot>
-    </el-button> -->
     <el-dialog
       title="成员信息"
       :visible.sync="dialogFormVisible"

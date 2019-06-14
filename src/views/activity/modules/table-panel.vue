@@ -25,6 +25,11 @@
         </div>
       </template>
       <template v-slot:action="{scope}">
+        <details-user :data="scope.row" class="handle-btn">
+          <template v-slot:action-btn>
+            <el-button type="text" size="small" >查看 </el-button>
+          </template>
+        </details-user>
         <el-button type="text" size="small">删除</el-button>
       </template>
     </s-table>
@@ -33,10 +38,12 @@
 </template>
 <script>
 import STable from '_c/STable'
+import detailsUser from '../../organize/user/modules/details'
 export default {
   name: 'table-panel',
   components: {
-    STable
+    STable,
+    detailsUser
   },
   props: {
     data: {

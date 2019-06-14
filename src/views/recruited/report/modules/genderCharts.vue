@@ -3,7 +3,6 @@
 </template>
 <script>
 import echarts from 'echarts'
-require('echarts/theme/macarons') // echarts theme
 export default {
   name: 'genderCharts',
   props: {
