@@ -26,5 +26,6 @@ let map = {
   // 社团活动
   'activity-list': () => import('@/views/activity'),
   'add-activity': () => import('@/views/activity/modules/add'),
+  'details-activity': () => import('@/views/activity/modules/details'),
   'activity-report': () => import('@/views/activity/modules/report')
 }

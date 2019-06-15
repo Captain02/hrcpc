@@ -56,7 +56,7 @@
       </div>
       <!-- </div> -->
     </div>
-    <collapse-transition>
+    <el-collapse-transition>
       <div class="list-item-body" v-show="isShow">
         <div class="video-wrapper">
           <video-player :video-source="item.video ? item.video.filepath : ''"></video-player>
@@ -65,7 +65,7 @@
           <el-image :src="item.image ? item.image.filepath : ''"></el-image>
         </div>
       </div>
-    </collapse-transition>
+    </el-collapse-transition>
   </div>
 </template>
 <script>

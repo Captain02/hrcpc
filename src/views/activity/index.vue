@@ -123,7 +123,13 @@ export default {
       })
     },
     handleDetails(actid) {
-      console.log(actid)
+      // console.log(actid)
+      this.$router.push({
+        name: 'details-activity',
+        params: {
+          id: actid
+        }
+      })
     },
     handleAddLike(actid, status) {
       changeLikeApi(Number(status), this.userId, actid).then((result) => {
