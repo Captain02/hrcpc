@@ -258,7 +258,7 @@ export default {
     // height: 300px;
     .video-wrapper {
       // flex: 1 1 0;
-      width: 300px;
+      width: 400px;
       // display: inline-block;
     }
     .image-wrapper {

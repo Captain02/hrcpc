@@ -25,6 +25,7 @@ import { getActivity as getActivityApi, getUsersByActId as getUsersByActIdApi, g
 import tablePanel from './table-panel'
 import chartsPanel from './charts-panel'
 import Pagination from '_c/Pagination'
+import { mapState } from 'vuex'
 export default {
   name: 'activity-report',
   components: {
@@ -53,11 +54,21 @@ export default {
       chartsData: {}
     }
   },
+  computed: {
+    ...mapState({
+      corid: (state) => state.user.corid
+    })
+  },
   methods: {
     getActivity() {
       getActivityApi(this.actId).then((result) => {
         // console.log(result)
         let { data } = result
+        // if(this.corid !== data.actcorid) {
+        //   this.$message.error('没有该条数据!')
+        //   this.$router.go(-1)
+        //   return
+        // }
         this.actName = data.actname
       }).catch((err) => { })
     },
@@ -91,6 +102,7 @@ export default {
   mounted() {
     this.getActivity()
     this[this.dataMap[this.activeTab]]()
-  }
+  },
+
 }
 </script>
