@@ -38,6 +38,9 @@
         </div>
       </div>
     </div>
+    <div class="comments-wrapper">
+      <s-comments :list="comments"></s-comments>
+    </div>
   </div>
 </template>
 <script>
@@ -45,14 +48,35 @@ import { getActivity as getActivityApi, changeLike as changeLikeApi, changeColle
 import { mapState } from 'vuex'
 import { parseTime } from '@/utils'
 import VideoPlayer from '_c/VideoPlayer'
+import SComments from '_c/SComments'
 export default {
   name: 'details-activity',
   components: {
-    VideoPlayer
+    VideoPlayer,
+    SComments
   },
   data() {
     return {
-      activity: null
+      activity: null,
+      comments: [
+        {
+          "repliespeople": [
+            {
+              "college": "历史与社会管理学院",
+              "descs": "<p>卡卡卡卡</p>",
+              "gender": "男",
+              "filepath": "/file/persionDefaultHeadPicture/20190517155219man.png",
+              "user_id": 1,
+              "corid": null,
+              "name": "赵国哈哈",
+              "collegetie": "公管事业管理",
+              "headpath": "/file/persionDefaultHeadPicture/20190517155219man.png",
+              "username": "admin"
+            }
+          ],
+          "repliesid": 2,
+        }
+      ]
     }
   },
   computed: {
@@ -159,7 +183,17 @@ export default {
   box-sizing: border-box;
   margin: 15px 15px;
   min-height: 600px;
+  .comments-wrapper {
+    box-sizing: border-box;
+    padding: 20px;
+    background: #fff;
+    width: 800px;
+    margin: 0 auto;
+    border: 1px solid #ebeef5;
+    margin-top: 15px;
+  }
   .article {
+    box-sizing: border-box;
     background: #fff;
     width: 800px;
     margin: 0 auto;

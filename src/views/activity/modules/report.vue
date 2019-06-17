@@ -64,11 +64,6 @@ export default {
       getActivityApi(this.actId).then((result) => {
         // console.log(result)
         let { data } = result
-        // if(this.corid !== data.actcorid) {
-        //   this.$message.error('没有该条数据!')
-        //   this.$router.go(-1)
-        //   return
-        // }
         this.actName = data.actname
       }).catch((err) => { })
     },
