@@ -17,6 +17,20 @@ export const getActivity = (actid) => {
   })
 }
 
+/**
+ * 获取活动的评论信息
+ * @param {Number} topicid 活动的id
+ */
+export const getComments = (topicid) => {
+  return request({
+    url: '/activity/getReplies',
+    method: 'GET',
+    params: {
+      topicid
+    }
+  })
+}
+
 export const addActivity = (actName, deptid, actLeader, actStartTime, actEndTime, images, videoid, croWdPeople, profile, enclosure, actdetails, processNodes) => {
   return request({
     url: '/activity/add',

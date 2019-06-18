@@ -44,7 +44,7 @@
   </div>
 </template>
 <script>
-import { getActivity as getActivityApi, changeLike as changeLikeApi, changeCollect as changeCollectApi } from '@/api/activity'
+import { getActivity as getActivityApi, getComments as getCommentsApi , changeLike as changeLikeApi, changeCollect as changeCollectApi } from '@/api/activity'
 import { mapState } from 'vuex'
 import { parseTime } from '@/utils'
 import VideoPlayer from '_c/VideoPlayer'
@@ -58,25 +58,7 @@ export default {
   data() {
     return {
       activity: null,
-      comments: [
-        {
-          "repliespeople": [
-            {
-              "college": "历史与社会管理学院",
-              "descs": "<p>卡卡卡卡</p>",
-              "gender": "男",
-              "filepath": "/file/persionDefaultHeadPicture/20190517155219man.png",
-              "user_id": 1,
-              "corid": null,
-              "name": "赵国哈哈",
-              "collegetie": "公管事业管理",
-              "headpath": "/file/persionDefaultHeadPicture/20190517155219man.png",
-              "username": "admin"
-            }
-          ],
-          "repliesid": 2,
-        }
-      ]
+      comments: []
     }
   },
   computed: {
@@ -98,7 +80,7 @@ export default {
   },
   methods: {
     parseTime,
-    initData(data) {
+    initActivityData(data) {
       return {
         actid: data.actid,
         actcorid: data.actcorid,
@@ -125,7 +107,9 @@ export default {
       getActivityApi(this.$route.params.id).then((result) => {
         console.log(result)
         let { data } = result
-        this.activity = this.initData(data)
+        // 获取评论
+        this.getComments(data.actid)
+        this.activity = this.initActivityData(data)
       }).catch((err) => { })
     },
     handleLike() {
@@ -171,10 +155,36 @@ export default {
       })
       this.activity.collectionPeople.splice(index, 1)
       this.activity.bbs_collection.num--
+    },
+    getComments(actid) {
+      getCommentsApi(actid).then((result) => {
+        console.log(result)
+        let { data } = result
+        this.comments = this.initCommentsData(data)
+        console.log(this.comments)
+      })
+    },
+    initCommentsData(data) {
+      return data.map((item) => {
+        let data = {
+          repliesid: item.repliesid,
+          createtime: item.createtime,
+          parentid: item.parentid,
+          topicid: item.topicid,                        // 在这指活动的id
+          repliespeople: item.repliespeople && item.repliespeople.length ? item.repliespeople[0] : {},
+          likePeopleIds: item.likePeopleIds,              // 为这条评论点赞的人
+          likeNumber: item.likeNumber[0],                    // 点赞的人数
+          repliedpeople: item.repliedpeople && item.repliedpeople.length ? item.repliedpeople[0] : {},
+          repliescontent: item.repliescontent,            // 评论的内容
+          child: item.child.length ? this.initCommentsData(item.child) : []
+        }
+        return data
+      })
     }
   },
   mounted() {
     this.getActivity()
+    
   }
 }
 </script>
