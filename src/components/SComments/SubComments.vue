@@ -1,8 +1,8 @@
 <template>
   <div>
     <template v-for="item in subComment">
-      <comments-item :key="item.repliesid" :comment="item"></comments-item>
-      <sub-comments v-if="item.child.length" :key="`sub_${item.repliesid}`" :subComment="item.child" ></sub-comments>
+      <comments-item :key="item.repliesid" :comment="item" @cancel-comment-like="handleCancelLike" @add-comment-like="handleAddLike"></comments-item>
+      <sub-comments v-if="item.child.length" :key="`sub_${item.repliesid}`" :subComment="item.child" @cancel-comment-like="handleCancelLike" @add-comment-like="handleAddLike" ></sub-comments>
     </template>
   </div>
 </template>
@@ -24,5 +24,15 @@ export default {
       
     }
   },
+  methods: {
+    handleCancelLike(commentid, status) {
+      console.log('Sub', commentid, status)
+      this.$emit('cancel-comment-like', commentid, status)
+    },
+    handleAddLike(commentid, status) {
+      console.log('Sub', commentid, status)
+      this.$emit('add-comment-like', commentid, status)
+    }
+  }
 }
 </script>

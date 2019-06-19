@@ -39,12 +39,12 @@
       </div>
     </div>
     <div class="comments-wrapper">
-      <s-comments :list="comments"></s-comments>
+      <s-comments :list="comments" @cancel-comment-like="handleCancelCommentLike" @add-comment-like="handleAddCommentLike"></s-comments>
     </div>
   </div>
 </template>
 <script>
-import { getActivity as getActivityApi, getComments as getCommentsApi , changeLike as changeLikeApi, changeCollect as changeCollectApi } from '@/api/activity'
+import { getActivity as getActivityApi, getComments as getCommentsApi , changeLike as changeLikeApi, changeCollect as changeCollectApi, changeCommentLike as changeCommentLikeApi } from '@/api/activity'
 import { mapState } from 'vuex'
 import { parseTime } from '@/utils'
 import VideoPlayer from '_c/VideoPlayer'
@@ -180,6 +180,51 @@ export default {
         }
         return data
       })
+    },
+    handleCancelCommentLike(commentid, status) {
+      console.log(commentid, status)
+      // changeCommentLikeApi().then((result) => {
+      //   let comment = this.getCommentByid(this.comments, commentid)
+      //   let index = comment.likePeopleIds.findIndex((item) => {
+      //     return item === this.userId
+      //   })
+      //   comment.likePeopleIds.splice(index, 1)
+      //   comment.likeNumber--
+      // })
+      let comment = this.getCommentByid(this.comments, commentid)
+      let index = comment.likePeopleIds.findIndex((item) => {
+        return item === this.userId
+      })
+      comment.likePeopleIds.splice(index, 1)
+      comment.likeNumber--
+    },
+    handleAddCommentLike(commentid, status) {
+      console.log(commentid, status)
+      // changeCommentLikeApi().then((result) => {
+      //   let comment = this.getCommentByid(this.comments, commentid)
+      //   comment.likePeopleIds.push(this.userId)
+      //   comment.likeNumber++
+      // })
+      let comment = this.getCommentByid(this.comments, commentid)
+      console.log(comment)
+      comment.likePeopleIds.push(this.userId)
+      comment.likeNumber++
+    },
+    getCommentByid(list, id) {
+      let comment = null
+      function handle(list, id){
+        list.some((item) => {
+          if(item.repliesid === id){
+            comment = item
+            return true
+          }
+          if(item.child.length){
+            handle(item.child, id)
+          }
+        })
+      }
+      handle(list, id)
+      return comment
     }
   },
   mounted() {

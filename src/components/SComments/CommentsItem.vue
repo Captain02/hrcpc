@@ -24,7 +24,7 @@
               · 删除
           </div>
           <div class="actions">
-            <div class="like-wrapper" title="点赞">
+            <div class="like-wrapper" title="点赞" @click="handleLike">
               <icon-svg :icon-class="like.icon"></icon-svg>
               <span class="count">{{comment.likeNumber}}</span>
             </div>
@@ -63,6 +63,11 @@ export default {
   },
   methods: {
     formatTime,
+    handleLike() {
+      let eventName = this.like.status ? 'cancel-comment-like' : 'add-comment-like'
+      console.log(eventName, this.like.status)
+      this.$emit(eventName, this.comment.repliesid, !this.like.status)
+    }
   }
 }
 </script>

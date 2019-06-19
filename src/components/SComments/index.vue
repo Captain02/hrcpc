@@ -3,8 +3,8 @@
     <div class="empty" v-if="!list.length">无评论</div>
     <template v-else >
       <template v-for="item in list">
-        <comments-item :key="item.repliesid" :comment="item">
-          <sub-comments slot="sub-commrnts-list" v-if="item.child.length" :sub-comment="item.child" :key="item.repliesid" class="sub-comment-lsit" ></sub-comments>
+        <comments-item :key="item.repliesid" :comment="item" @cancel-comment-like="handleCancelLike" @add-comment-like="handleAddLike">
+          <sub-comments slot="sub-commrnts-list" v-if="item.child.length" :sub-comment="item.child" :key="item.repliesid" class="sub-comment-lsit" @cancel-comment-like="handleCancelLike" @add-comment-like="handleAddLike"></sub-comments>
         </comments-item>
       </template>
     </template>
@@ -30,6 +30,16 @@ export default {
       
     }
   },
+  methods: {
+    handleCancelLike(commentid, status) {
+      console.log('SComm', commentid, status)
+      this.$emit('cancel-comment-like', commentid, status)
+    },
+    handleAddLike(commentid, status) {
+      console.log('SComm', commentid, status)
+      this.$emit('add-comment-like', commentid, status)
+    }
+  }
 }
 </script>
 <style lang="less" scoped>

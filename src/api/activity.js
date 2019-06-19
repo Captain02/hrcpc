@@ -31,6 +31,26 @@ export const getComments = (topicid) => {
   })
 }
 
+/**
+ * 评论点赞
+ * @param {Number} userid 
+ * @param {Number} repliesid 
+ * @param {Number}
+ */
+export const changeCommentLike = (userid, repliesid) => {
+  return request({
+    url: '/activity/repliesLike',
+    method: 'POST',
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }],
+    data: {
+      userid,
+      repliesid
+    }
+  })
+}
+
 export const addActivity = (actName, deptid, actLeader, actStartTime, actEndTime, images, videoid, croWdPeople, profile, enclosure, actdetails, processNodes) => {
   return request({
     url: '/activity/add',
