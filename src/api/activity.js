@@ -35,9 +35,9 @@ export const getComments = (topicid) => {
  * 评论点赞
  * @param {Number} userid 
  * @param {Number} repliesid 
- * @param {Number}
+ * @param {Number} type
  */
-export const changeCommentLike = (userid, repliesid) => {
+export const changeCommentLike = (userid, repliesid, type) => {
   return request({
     url: '/activity/repliesLike',
     method: 'POST',
@@ -46,7 +46,8 @@ export const changeCommentLike = (userid, repliesid) => {
     }],
     data: {
       userid,
-      repliesid
+      repliesid,
+      type
     }
   })
 }

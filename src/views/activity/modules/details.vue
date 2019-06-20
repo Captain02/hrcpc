@@ -182,33 +182,23 @@ export default {
       })
     },
     handleCancelCommentLike(commentid, status) {
-      console.log(commentid, status)
-      // changeCommentLikeApi().then((result) => {
-      //   let comment = this.getCommentByid(this.comments, commentid)
-      //   let index = comment.likePeopleIds.findIndex((item) => {
-      //     return item === this.userId
-      //   })
-      //   comment.likePeopleIds.splice(index, 1)
-      //   comment.likeNumber--
-      // })
-      let comment = this.getCommentByid(this.comments, commentid)
-      let index = comment.likePeopleIds.findIndex((item) => {
-        return item === this.userId
+      // console.log(commentid, status)
+      changeCommentLikeApi(this.userId, commentid, Number(status)).then((result) => {
+        let comment = this.getCommentByid(this.comments, commentid)
+        let index = comment.likePeopleIds.findIndex((item) => {
+          return item === this.userId
+        })
+        comment.likePeopleIds.splice(index, 1)
+        comment.likeNumber--
       })
-      comment.likePeopleIds.splice(index, 1)
-      comment.likeNumber--
     },
     handleAddCommentLike(commentid, status) {
-      console.log(commentid, status)
-      // changeCommentLikeApi().then((result) => {
-      //   let comment = this.getCommentByid(this.comments, commentid)
-      //   comment.likePeopleIds.push(this.userId)
-      //   comment.likeNumber++
-      // })
-      let comment = this.getCommentByid(this.comments, commentid)
-      console.log(comment)
-      comment.likePeopleIds.push(this.userId)
-      comment.likeNumber++
+      // console.log(commentid, status)
+      changeCommentLikeApi(this.userId, commentid, Number(status)).then((result) => {
+        let comment = this.getCommentByid(this.comments, commentid)
+        comment.likePeopleIds.push(this.userId)
+        comment.likeNumber++
+      })
     },
     getCommentByid(list, id) {
       let comment = null

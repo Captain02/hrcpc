@@ -65,7 +65,7 @@ export default {
     formatTime,
     handleLike() {
       let eventName = this.like.status ? 'cancel-comment-like' : 'add-comment-like'
-      console.log(eventName, this.like.status)
+      // console.log(eventName, this.like.status)
       this.$emit(eventName, this.comment.repliesid, !this.like.status)
     }
   }

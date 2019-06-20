@@ -26,11 +26,11 @@ export default {
   },
   methods: {
     handleCancelLike(commentid, status) {
-      console.log('Sub', commentid, status)
+      // console.log('Sub', commentid, status)
       this.$emit('cancel-comment-like', commentid, status)
     },
     handleAddLike(commentid, status) {
-      console.log('Sub', commentid, status)
+      // console.log('Sub', commentid, status)
       this.$emit('add-comment-like', commentid, status)
     }
   }
