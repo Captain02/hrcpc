@@ -1,12 +1,9 @@
 <template>
   <div class="comment-list">
-    <div class="empty" v-if="!list.length">无评论</div>
-    <template v-else >
-      <template v-for="item in list">
-        <comments-item :key="item.repliesid" :comment="item" @cancel-comment-like="handleCancelLike" @add-comment-like="handleAddLike">
-          <sub-comments slot="sub-commrnts-list" v-if="item.child.length" :sub-comment="item.child" :key="item.repliesid" class="sub-comment-lsit" @cancel-comment-like="handleCancelLike" @add-comment-like="handleAddLike"></sub-comments>
-        </comments-item>
-      </template>
+    <template v-for="item in list">
+      <comments-item :key="item.repliesid" :comment="item" @cancel-comment-like="handleCancelLike" @add-comment-like="handleAddLike" @on-reply="handleReply">
+        <sub-comments slot="sub-commrnts-list" v-if="item.child.length" :sub-comment="item.child" :key="item.repliesid" class="sub-comment-lsit" @cancel-comment-like="handleCancelLike" @add-comment-like="handleAddLike" @on-reply="handleReply"></sub-comments>
+      </comments-item>
     </template>
   </div>
 </template>
@@ -38,6 +35,9 @@ export default {
     handleAddLike(commentid, status) {
       // console.log('SComm', commentid, status)
       this.$emit('add-comment-like', commentid, status)
+    },
+    handleReply(parentid, topicid, content, repliesuserid) {
+      this.$emit('on-reply', parentid, topicid, content, repliesuserid)
     }
   }
 }

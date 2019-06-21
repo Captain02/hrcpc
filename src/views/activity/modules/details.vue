@@ -39,21 +39,25 @@
       </div>
     </div>
     <div class="comments-wrapper">
-      <s-comments :list="comments" @cancel-comment-like="handleCancelCommentLike" @add-comment-like="handleAddCommentLike"></s-comments>
+      <h1 class="comments-title">评论</h1>
+      <reply class="reply-box" @on-reply="(content) => { this.handleReply(0, this.activity.actid, content, 0) }"></reply>
+      <s-comments :list="comments" @cancel-comment-like="handleCancelCommentLike" @add-comment-like="handleAddCommentLike" @on-reply="handleReply"></s-comments>
     </div>
   </div>
 </template>
 <script>
-import { getActivity as getActivityApi, getComments as getCommentsApi , changeLike as changeLikeApi, changeCollect as changeCollectApi, changeCommentLike as changeCommentLikeApi } from '@/api/activity'
+import { getActivity as getActivityApi, getComments as getCommentsApi , changeLike as changeLikeApi, changeCollect as changeCollectApi, changeCommentLike as changeCommentLikeApi, addComment as addCommentApi } from '@/api/activity'
 import { mapState } from 'vuex'
 import { parseTime } from '@/utils'
 import VideoPlayer from '_c/VideoPlayer'
 import SComments from '_c/SComments'
+import Reply from '_c/SComments/Reply'
 export default {
   name: 'details-activity',
   components: {
     VideoPlayer,
-    SComments
+    SComments,
+    Reply
   },
   data() {
     return {
@@ -215,6 +219,13 @@ export default {
       }
       handle(list, id)
       return comment
+    },
+    handleReply(parentid, topicid, content, repliesuserid) {
+      // console.log(parentid, topicid, content, repliesuserid)
+      addCommentApi(this.userId, parentid, topicid, content, repliesuserid).then((result) => {
+        console.log(result)
+        this.getComments(this.activity.actid)
+      })
     }
   },
   mounted() {
@@ -236,7 +247,18 @@ export default {
     margin: 0 auto;
     border: 1px solid #ebeef5;
     margin-top: 15px;
+    .comments-title {
+      text-align: center;
+      color: #8a9aa9;
+      font-size: 16px;
+    }
+    .reply-box {
+      background-color: #fafbfc;
+      padding: 12px 15px;
+      margin: 15px 0;
+    }
   }
+  
   .article {
     box-sizing: border-box;
     background: #fff;

@@ -28,12 +28,14 @@
               <icon-svg :icon-class="like.icon"></icon-svg>
               <span class="count">{{comment.likeNumber}}</span>
             </div>
-            <div class="reply-wrapper">
+            <div class="reply-wrapper" @click.stop="handleReply">
               <icon-svg icon-class="comment"></icon-svg>
                 <span class="count">回复</span>
             </div>
+            
           </div>
         </div>
+        <reply v-if="showReply" :placeholder="`回复${comment.repliespeople.name}...`" @click.native.stop="handleReply" @on-reply="onReply"></reply>
         <slot name="sub-commrnts-list"></slot>
       </div>
     </div>
@@ -42,12 +44,21 @@
 <script>
 import { formatTime } from '@/utils'
 import { mapState } from 'vuex'
+import Reply from './Reply'
 export default {
   name: 'CommentsItem',
+  components: {
+    Reply
+  },
   props: {
     comment: {
       type: Object,
       required: true
+    }
+  },
+  data() {
+    return {
+      showReply: false,
     }
   },
   computed: {
@@ -67,7 +78,24 @@ export default {
       let eventName = this.like.status ? 'cancel-comment-like' : 'add-comment-like'
       // console.log(eventName, this.like.status)
       this.$emit(eventName, this.comment.repliesid, !this.like.status)
+    },
+    handleReply(e) {
+      this.showReply = true
+      
+    },
+    hideReply(e) {
+      this.showReply = false
+    },
+    onReply(content){
+      this.$emit('on-reply', this.comment.repliesid, this.comment.topicid, content, this.comment.repliespeople.user_id)
+      this.hideReply()
     }
+  },
+  mounted() {
+    document.addEventListener('click', this.hideReply, false)
+  },
+  beforeDestroy() {
+    document.removeEventListener('click', this.hideReply, false)
   }
 }
 </script>

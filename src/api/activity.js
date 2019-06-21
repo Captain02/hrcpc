@@ -32,6 +32,31 @@ export const getComments = (topicid) => {
 }
 
 /**
+ * 添加评论
+ * @param {Number} userid 
+ * @param {Number} parentid 该评论的上级评论
+ * @param {Number} topicid 评论的活动id
+ * @param {String} repliescontent 评论的内容
+ * @param {Number} repliesuserid 被回复人的id
+ */
+export const addComment = (userid, parentid, topicid, repliescontent, repliesuserid) => {
+  return request({
+    url: '/activity/replies',
+    method: 'POST',
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }],
+    data: {
+      userid,
+      parentid,
+      topicid,
+      repliescontent,
+      repliesuserid
+    }
+  })
+}
+
+/**
  * 评论点赞
  * @param {Number} userid 
  * @param {Number} repliesid 
