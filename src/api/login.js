@@ -48,3 +48,39 @@ export const getToken = () => {
     method: 'POST'
   })
 }
+
+
+/**
+ * 用户注册
+ * @param {String} name 
+ * @param {String} username 
+ * @param {String} gender 
+ * @param {String} password 
+ * @param {String} mobile 
+ * @param {String} wechart 
+ * @param {String} qq 
+ * @param {String} college 
+ * @param {String} collegetie 
+ */
+export const register = (name, username, gender, password, mobile, wechart, qq, college, collegetie) => {
+  return request({
+    baseUrl: 'http://47.105.58.149:8081/HBO/',
+    url: '/user/add',
+    method: 'POST',
+    transformRequest: [function (data) {
+      // 对 data 进行任意转换处理
+      return qs.stringify(data)
+    }],
+    data: {
+      name,
+      username,
+      gender,
+      password,
+      mobile,
+      wechart,
+      qq,
+      college,
+      collegetie
+    }
+  })
+}

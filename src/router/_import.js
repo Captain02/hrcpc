@@ -27,5 +27,17 @@ let map = {
   'activity-list': () => import('@/views/activity'),
   'add-activity': () => import('@/views/activity/modules/add'),
   'details-activity': () => import('@/views/activity/modules/details'),
-  'activity-report': () => import('@/views/activity/modules/report')
+  'activity-report': () => import('@/views/activity/modules/report'),
+
+
+  // 社团新闻
+  'news-list': () => import('@/views/news'),
+  'add-news': () => import('@/views/news/modules/add'),
+  'edit-news': () => import('@/views/news/modules/edit'),
+  'details-news': () => import('@/views/news/modules/details'),
+
+
+  // 社团管理
+  'corporation-info': () => import('@/views/corporation'),
+  'corporation-qrcode': () => import('@/views/corporation/modules/qrcode')
 }

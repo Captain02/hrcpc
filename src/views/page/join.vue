@@ -84,9 +84,13 @@ export default {
       this.handleSearch(val)
     },
     handleSearch: debounce(function (username) {
-      hasRegisterApi(username).then((result) => {
-        console.log(result)
-      }).catch((err) => {})
+      this.$refs['userForm'].validateField('username', (errorMessage) => {
+        if(!errorMessage){
+          hasRegisterApi(username).then((result) => {
+            console.log(result)
+          }).catch((err) => {})
+        }
+      })
     }, 1000),
     handleClick() {
       this.$refs['userForm'].validate((valid) => {

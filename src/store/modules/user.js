@@ -12,6 +12,9 @@ const user = {
     userName: '',         // 用户名
     permits: [],          // 用户所拥有的权限
     avatar: '',
+    gender: '',
+    depart: '',
+    mobile: ''
     
   },
   mutations: {
@@ -38,8 +41,16 @@ const user = {
     },
     SET_AVATAR(state, avatar) {
       state.avatar = avatar
+    },
+    SET_GENDER(state, gender) {
+      state.gender = gender
+    },
+    SET_DEPART(state, depart) {
+      state.depart = depart
+    },
+    SET_MOBILE(state, mobile) {
+      state.mobile = mobile
     }
-
   },
   actions: {
     Login({commit}, userInfo){
@@ -72,6 +83,9 @@ const user = {
           commit('SET_USERNAME', user.username)
           commit('SET_NAME', user.name)
           commit('SET_AVATAR', user.filepath)
+          commit('SET_GENDER', user.gender)
+          commit('SET_DEPART', user.depts && user.depts.length ? user.depts[0].name : '')
+          commit('SET_MOBILE', user.mobile)
 
           // 获取用户权限
           return getUserPermitsApi(user.user_id)  

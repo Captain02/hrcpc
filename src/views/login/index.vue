@@ -5,86 +5,42 @@
         <h2 class="brand-title">德州学院社团管理系统</h2>
         <p class="brand-desc">renren-fast-vue基于vue、element-ui构建开发，实现renren-fast后台管理前端功能，提供一套更优的前端解决方案。</p>
       </div>
-      <div class="login-wrapper">
-        <h3 class="login-title">管理员登录</h3>
-        <el-form :model="loginForm" :rules="dataRule" ref="loginForm" @keyup.enter.native="handleSubmit()" status-icon>
-          <el-form-item prop="userName">
-            <el-input :value="loginForm.userName" @input="handleInput" placeholder="学号"></el-input>
-          </el-form-item>
-          <el-form-item prop="password">
-            <el-input v-model="loginForm.password" type="password" placeholder="密码"></el-input>
-          </el-form-item>
-          <el-form-item prop="team">
-            <el-select v-model="loginForm.team" placeholder="请选择所属社团" clearable no-data-text="未检测到您所加入的社团">
-              <el-option v-for="team in teamOptions" :label="team.corname" :key="team.id" :value="team.id"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-button class="login-btn" type="primary" @click="handleSubmit()">登录</el-button>
-            <el-link :underline="false" style="float: right; font-size: 13px;" href="#/forget-pwd">忘记密码？</el-link>
-          </el-form-item>
-        </el-form>
+      <div class="tabs-wrapper">
+        <el-tabs v-model="activeTab" :stretch="true">
+          <el-tab-pane label="登录" name="login">
+            <login-form/>
+          </el-tab-pane>
+          <el-tab-pane label="注册" name="register" :lazy="true">
+            <register-form  @success="handleSuccess"/>
+          </el-tab-pane>
+          <el-tab-pane label="社团申请" name="apply" :lazy="true">
+            <apply-form @success="handleSuccess" />
+          </el-tab-pane>
+        </el-tabs>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { getUserInCors as getUserInCorsApi } from '@/api/login'
-import { debounce } from '@/utils'
+import loginForm from './modules/login-form'
+import registerForm from './modules/register-form'
+import applyForm from './modules/apply-form'
 export default {
   name: 'login',
+  components: {
+    loginForm,
+    registerForm,
+    applyForm
+  },
   data () {
     return {
-      loginForm: {
-        userName: '',
-        password: '',
-        team: ''
-      },
-      teamOptions: [],
-      dataRule: {
-        userName: [
-          { required: true, message: '学号不能为空', trigger: 'blur' }
-        ],
-        password: [
-          { required: true, message: '密码不能为空', trigger: 'blur' }
-        ],
-        team: [
-          { required: true, message: '请选择所属社团', trigger: 'change' }
-        ]
-      },
+      activeTab: 'login'
     }
   },
   methods: {
-    // 提交表单
-    handleSubmit () {
-      this.$refs['loginForm'].validate((valid) => {
-        if (!valid) {
-          this.$message.error('请填写相关项目!')
-          return
-        }
-        this.$store.dispatch('Login', this.loginForm).then((result) => {
-          this.$message.success('登录成功!')
-          setTimeout(() => {
-            this.$router.push({
-              path: '/dashboard'
-            })
-          }, 1500)
-        }).catch((error) => {
-          console.log(error)
-        })
-      })
-    },
-    handleSearch: debounce(function (username) {
-      getUserInCorsApi(username).then((result) => {
-        console.log(result)
-        let { data } = result
-        this.teamOptions = data
-      }).catch((err) => {})
-    }, 1000),
-    handleInput(val) {
-      this.loginForm.userName = val
-      this.handleSearch(val)
+    handleSuccess() {
+      this.activeTab = 'login'
     }
   }
 }
@@ -130,27 +86,25 @@ export default {
       line-height: 1.58;
       opacity: .6;
     }
-    .login-wrapper {
+    .tabs-wrapper {
       box-sizing: border-box;
       position: absolute;
       top: 0;
       right: 0;
-      padding: 150px 60px 180px;
+      // padding: 150px 60px 180px;
+      padding: 50px 60px;
       width: 470px;
       min-height: 100%;
       background-color: #fff;
-      .el-form-item__content .el-select {
-        width: 100%;
-      }
     }
-    .login-title {
-      font-weight: bold;
-      margin: 15px 0;
-      font-size: 16px;
-    }
-    .login-btn {
-      width: 100%;
-      margin-top: 15px;
-    }
+    // .login-title {
+    //   font-weight: bold;
+    //   margin: 15px 0;
+    //   font-size: 16px;
+    // }
+    // .login-btn {
+    //   width: 100%;
+    //   margin-top: 15px;
+    // }
   }
 </style>

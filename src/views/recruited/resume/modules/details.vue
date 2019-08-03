@@ -67,7 +67,7 @@
   </div>
 </template>
 <script>
-import { getResume as getResumeApi } from '@/api/recruited/resume'
+import { getResume as getResumeApi } from '@/api/resume'
 import { options } from './data'
 export default {
   name: 'details-resume',

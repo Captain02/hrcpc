@@ -75,7 +75,7 @@
   </div>
 </template>
 <script>
-import { getResume as getResumeApi, editResume as editResumeApi } from '@/api/recruited/resume'
+import { getResume as getResumeApi, editResume as editResumeApi } from '@/api/resume'
 import cloneDeep from 'clonedeep'
 import { options } from './data'
 export default {

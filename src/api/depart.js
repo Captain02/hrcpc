@@ -23,7 +23,6 @@ export const getDeparts = () => {
  */
 export const getDepart = (deptId) => {
   return request({
-    // baseURL:'http://192.168.137.182:8081/HBO/sys',
     url: '/dept/selectDeptById',
     method:'GET',
     params: {
@@ -39,7 +38,6 @@ export const getDepart = (deptId) => {
  */
 export const addDepart = ({name, parentId}) => {
   return request({
-    // baseURL:'http://192.168.137.182:8081/HBO/sys',
     url: '/dept/save',
     method: 'POST',
     transformRequest: [function (data) {
@@ -62,7 +60,6 @@ export const addDepart = ({name, parentId}) => {
  */
 export const editDepart = ({ deptId, name, parentId}) => {
   return request({
-    // baseURL:'http://192.168.137.182:8081/HBO/sys',
     url: '/dept/update',
     method: 'POST',
     transformRequest: [function (data) {
@@ -84,7 +81,6 @@ export const editDepart = ({ deptId, name, parentId}) => {
 export const deleteDeparts = (deptId) => {
   deptId = deptId.join(',')
   return request({
-    // baseURL:'http://192.168.137.182:8081/HBO/sys',
     url: '/dept/delete',
     method: 'GET',
     params: {

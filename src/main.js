@@ -10,6 +10,9 @@ import '@/assets/css/animate.css'
 import './styles/index.less'
 import './icons'
 import './permission'
+import Constants from './config'
+
+Vue.use(Constants)
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 /* eslint-disable no-new */

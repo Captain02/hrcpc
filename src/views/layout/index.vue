@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <Sidebar class="sidebar-container"/>
-    <div class="main-wrapper" :class="isCollapse==true?'container_collapse':''">
+    <div class="main-wrapper" :class="isCollapse == true ? 'container_collapse' : ''">
       <app-header/>
       <tags/>
       <app-main/>

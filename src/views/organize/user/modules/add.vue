@@ -68,7 +68,7 @@
 import { addUser as addUserApi, hasUserInCor as hasUserInCorApi } from '@/api/user'
 import { debounce } from '@/utils'
 import mixins from '../mixins'
-import MceEditor from '@/components/MceEditor'
+import MceEditor from '_c/MceEditor'
 window.tinymce.baseURL = '/static/tinymce'
 window.tinymce.suffix = '.min'
 export default {
@@ -99,7 +99,7 @@ export default {
     addUser() {
       // 添加成员
       this.$refs['userForm'].validate((valid) => {
-         if (!valid) {
+        if (!valid) {
           this.$message.error('请填写相关项目!')
           return
         }
@@ -122,9 +122,13 @@ export default {
       this.handleSearch(val)
     },
     handleSearch: debounce(function(username) {
-      hasUserInCorApi(username).then((result) => {
-        console.log(result)
-      }).catch((err) => {})
+      this.$refs['userForm'].validateField('username', (errorMessage) => {
+        if(!errorMessage){
+          hasUserInCorApi(username).then((result) => {
+            console.log(result)
+          }).catch((err) => {})
+        }
+      })
     }, 1000)
   },
 }

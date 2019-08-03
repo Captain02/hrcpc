@@ -22,6 +22,7 @@
         <s-list :data="listData" :user-id="userId" @on-details="handleDetails" @on-add-like="handleAddLike" @on-cancel-like="handleCancelLike" @on-add-collect="handleAddCollect" @on-cancel-collect="handleCancelCollect">
           <template v-slot:actions="{scope}">
             <template v-if="scope.actcorid === corid">
+              <el-button size="small" type="primary">二维码</el-button>
               <el-button size="small" type="primary" @click="handleEdit(scope)">修改</el-button>
               <el-button size="small" @click="handleInActivity(scope.actid)">报名统计</el-button>
             </template>

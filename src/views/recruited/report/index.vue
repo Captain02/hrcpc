@@ -35,7 +35,7 @@
   </div>
 </template>
 <script>
-import { getCharts as getChartsApi } from '@/api/recruited/report'
+import { getCharts as getChartsApi } from '@/api/report'
 import levelCharts from './modules/levelCharts'
 import collegeCharts from './modules/collegeCharts'
 import genderCharts from './modules/genderCharts'

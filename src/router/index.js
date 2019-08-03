@@ -75,7 +75,7 @@ export const routes = [
     component: login
   },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
-  { path: '/401', component: () => import('@/views/403'), hidden: true }
+  { path: '/403', component: () => import('@/views/403'), hidden: true }
 ]
 export default new Router({
   routes

@@ -120,6 +120,7 @@ export default {
         .user-college {
           color: #8a9aa9;
           margin-left: 10px;
+          font-size: 13px;
         }
       }
       .content {

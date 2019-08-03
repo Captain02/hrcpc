@@ -113,7 +113,7 @@ export const addActivity = (actName, deptid, actLeader, actStartTime, actEndTime
  * @param {Number} pageSize 每页大小
  * @param {Number} currPage 当前页
  */
-export const getActivitys = (corid, actName, isAct, crowdids, currPage, pageSize) => {
+export const getActivitys = (corid, actName = '', isAct = 1, crowdids = [], currPage = 1, pageSize = 5) => {
   crowdids = crowdids.join(',')
   return request({
     url: '/activity/list',
@@ -179,18 +179,6 @@ export const getUsersByName = (name) => {
   })
 }
 
-/***
- * 获取社团的所有部门
- */
-export const getDepts = () => {
-  return request({
-    url: '/dept/getDepts',
-    method: 'GET',
-    params: {
-      corid: getCorId()
-    }
-  })
-}
 
 /**
  * 更改活动流程状态

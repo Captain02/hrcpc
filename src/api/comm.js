@@ -9,9 +9,8 @@ import qs from 'querystring'
  */
 export const getCollegeInfo = (typeId, parentValue) => {
   return request({
-    baseURL: 'http://140.143.201.244:8081/HBO/sys/comm/',
     method: 'GET',
-    url: '/getselectes',
+    url: '/comm/getselectes',
     params: {
       typeId,
       parentValue
@@ -85,6 +84,19 @@ export const join = (corid, openid, username, name, gender, password, college, c
   })
 }
 
+/***
+ * 获取社团的所有部门
+ */
+export const getDepts = () => {
+  return request({
+    url: '/dept/getDepts',
+    method: 'GET',
+    params: {
+      corid: getCorId()
+    }
+  })
+}
+
 export const hasRegister = (username) => {
   return request({
     url: '/user/selectCountByUserName',
@@ -97,3 +109,5 @@ export const hasRegister = (username) => {
     }
   })
 }
+
+

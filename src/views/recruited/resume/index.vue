@@ -55,7 +55,7 @@
   </div>
 </template>
 <script>
-import { getResumes as getResumesApi, deleteResume as deleteResumeApi } from '@/api/recruited/resume'
+import { getResumes as getResumesApi, deleteResume as deleteResumeApi } from '@/api/resume'
 import { mapState } from 'vuex'
 import { columns, options } from './modules/data'
 import STable from '_c/STable'
@@ -133,7 +133,7 @@ export default {
       column.hidden = !value
     },
     exportExcel() {
-      window.open(`http://192.168.137.182:8081/HBO/sys/resume/exportExcel?corId=${this.corid}`)
+      window.open(`${this.$constants.BASE_API}resume/exportExcel?corId=${this.corid}`)
     }
   },
   mounted() {

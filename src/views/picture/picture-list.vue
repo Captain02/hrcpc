@@ -51,7 +51,7 @@
 import 'viewerjs/dist/viewer.css';
 import Viewer from "v-viewer/src/component.vue";
 import { getImgList, delPicture } from "@/api/photomodule";
-const BaseUrl = "http://140.143.201.244:82";
+// const BaseUrl = "http://140.143.201.244:82";
 export default {
   name: "picture-list",
   components: {

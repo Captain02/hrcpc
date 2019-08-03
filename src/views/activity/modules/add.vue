@@ -73,7 +73,7 @@
           <!-- {type: 0}上传图片、{type: 1}上传视频 -->
           <el-upload
             :limit="1"
-            action="http://140.143.201.244:8081/HBO/sys/activity/uploudActivitiBananer"
+            :action="`${$constants.BASE_API}activity/uploudActivitiBananer`"
             :data="{type: 0}"
             name="file"
             :show-file-list="false"
@@ -98,7 +98,7 @@
           <!-- {type: 0}上传图片、{type: 1}上传视频 -->
           <el-upload
             :limit="1"
-            action="http://140.143.201.244:8081/HBO/sys/activity/uploudActivitiBananer"
+            :action="`${$constants.BASE_API}activity/uploudActivitiBananer`"
             :data="{type: 1}"
             name="file"
             :on-remove="deleteVideo"
@@ -136,8 +136,8 @@
   </div>
 </template>
 <script>
-import { getCollegeInfo as getCollegeInfoApi } from '@/api/comm'
-import { getUsersByName as getUsersByNameApi, deleteFile as deleteFileApi, addActivity as addActivityApi, getDepts as getDeptsApi } from '@/api/activity'
+import { getCollegeInfo as getCollegeInfoApi, getDepts as getDeptsApi } from '@/api/comm'
+import { getUsersByName as getUsersByNameApi, deleteFile as deleteFileApi, addActivity as addActivityApi,  } from '@/api/activity'
 import { transferData2Tree } from '@/utils'
 import MceEditor from '_c/MceEditor'
 window.tinymce.baseURL = '/static/tinymce'

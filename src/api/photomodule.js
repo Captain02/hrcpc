@@ -7,7 +7,7 @@ import { getCorId } from '@/utils/cookie'
  * @param {每页显示记录数} pageSize 
  * 
  */
-export function getImgList(currPage, pageSize) {
+export function getImgList(currPage = 1, pageSize = 5) {
   return request({
     url: '/img/list',
     method: 'get',
