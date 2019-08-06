@@ -208,17 +208,18 @@ export default {
     }
     .list-item-action {
       display: flex;
-      flex: 1;
+      // flex: 1;
       flex-direction: column;
       justify-content: space-between;
-      min-width: 210px;
+      // min-width: 270px;
       .list-item-action-btn {
         display: flex;
         justify-content: space-around;
         .slot-action {
-          min-width: 150px;
+          min-width: 230px;
         }
         .trigger {
+          margin-left: 13px;
           width: 30px;
           height: 30px;
           background: #EBEEF5;

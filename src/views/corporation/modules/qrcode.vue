@@ -23,26 +23,29 @@
     <el-dialog
       title="添加二维码"
       :visible.sync="dialogVisible"
-      width="600px"
+      width="450px"
       :append-to-body="true"
       :close-on-click-modal="false"
     >
-      <el-button size="mini" type="primary" style="margin-bottom: 15px;">开始上传</el-button>
+      <!-- <el-button size="mini" type="primary" style="margin-bottom: 15px;">开始上传</el-button>
       <el-upload
         action="https://jsonplaceholder.typicode.com/posts/"
         list-type="picture-card"
         class="upload"
         :on-remove="handleRemove">
         <i class="el-icon-plus"></i>
-      </el-upload>
+      </el-upload> -->
+      <s-upload action="https://jsonplaceholder.typicode.com/posts/" :file-list="[]" @success="uploadSuccess" @remove="handleRemove" />
     </el-dialog>
   </div>
 </template>
 <script>
+import SUpload from '_c/SUpload'
 import Pagination from '_c/Pagination'
 export default {
   name: 'corporation-qrcode',
   components: {
+    SUpload,
     Pagination
   },
   data() {
@@ -84,6 +87,9 @@ export default {
     },
     handleAdd() {
       this.dialogVisible = true
+    },
+    uploadSuccess() {
+
     },
     handleRemove(file, fileList) {
       console.log(file, fileList)

@@ -22,7 +22,11 @@
         <s-list :data="listData" :user-id="userId" @on-details="handleDetails" @on-add-like="handleAddLike" @on-cancel-like="handleCancelLike" @on-add-collect="handleAddCollect" @on-cancel-collect="handleCancelCollect">
           <template v-slot:actions="{scope}">
             <template v-if="scope.actcorid === corid">
-              <el-button size="small" type="primary">二维码</el-button>
+              <qr-code style="display: inline-block; margin-right: 10px;">
+                <template v-slot:action-btn>
+                  <el-button size="small" type="primary">二维码</el-button>
+                </template>
+              </qr-code>
               <el-button size="small" type="primary" @click="handleEdit(scope)">修改</el-button>
               <el-button size="small" @click="handleInActivity(scope.actid)">报名统计</el-button>
             </template>
@@ -46,11 +50,13 @@ import { getActivitys as getActivitysApi, changeProcessState as changeProcessSta
 import { mapState } from 'vuex'
 import SList from '_c/SList'
 import Pagination from '_c/Pagination'
+import QrCode from './modules/qrcode'
 export default {
   name: 'activity-list',
   components: {
     SList,
-    Pagination
+    Pagination,
+    QrCode
   },
   data() {
     return {
