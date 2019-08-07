@@ -5,7 +5,7 @@
       <el-form label-width="100px" size="small">
         <el-col :span="9">
           <el-card>
-            <div slot="header" class="clearfix">
+            <div slot="header">
               <span>基本信息</span>
             </div>
             <el-form-item label="社团名称：">
@@ -48,7 +48,7 @@
             </el-form-item>
           </el-card>
           <el-card style="margin-top:20px;">
-            <div slot="header" class="clearfix card-header">
+            <div slot="header">
               <span>社团二维码</span>
             </div>
             <el-image 
@@ -65,9 +65,12 @@
               <span>海报图片</span>
               <div class="action-btn">
                 <el-upload
-                  action="https://jsonplaceholder.typicode.com/posts/"
+                  :action="`${$constants.BASE_API}corporation/updateCorBanner`"
                   :show-file-list="false"
                   :before-upload="beforeBanerUpload"
+                  :data="{corid}"
+                  name="file"
+                  :on-success="handleSuccessBanner"
                 >
                   <el-button size="small" type="primary">点击上传</el-button>
                 </el-upload>
@@ -85,9 +88,12 @@
               <span>宣传视频</span>
               <div class="action-btn">
                 <el-upload 
-                  action="https://jsonplaceholder.typicode.com/posts/"
+                  :action="`${$constants.BASE_API}corporation/updateCorVideo`"
                   :before-upload="beforeVideoUpload"
                   :show-file-list="false"
+                  :data="{corid}"
+                  name="file"
+                  :on-success="handleSuccessVideo"
                 >
                   <el-button size="small" type="primary">点击上传</el-button>
                 </el-upload>
@@ -104,6 +110,7 @@
 </template>
 <script>
 import { getCorporation as getCorporationApi, getUserByUserName as getUserByUserNameApi } from '@/api/corporation'
+import { mapState } from 'vuex'
 export default {
   name: 'corporation-info',
   data() {
@@ -111,6 +118,11 @@ export default {
       form: null,
       options: []
     }
+  },
+  computed: {
+    ...mapState({
+      corid: (state) => state.user.corid
+    })
   },
   methods: {
     remoteMethod(username) {
@@ -154,6 +166,14 @@ export default {
         this.$message.error('上传视频大小不能超过 200MB!')
       }
       return isMP4 && isLt200M
+    },
+    handleSuccessBanner(response, file, fileList) {
+      console.log(response)
+      this.form.bannerfile = response.filePath
+    },
+    handleSuccessVideo(response, file, fileList) {
+      console.log(response)
+      this.form.videofile = response.filePath
     },
     getCorInfo() {
       getCorporationApi().then((result) => {
