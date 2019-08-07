@@ -43,3 +43,19 @@ export const getCorporation = () => {
     }
   })
 } 
+
+
+/**
+ * 根据用户名获取用户
+ * @param {String} username 
+ */
+export const getUserByUserName = (username) => {
+  return request({
+    url: '/user/getusersByusernameAndcor',
+    method: 'GET',
+    params: {
+      corid: getCorId(),
+      username
+    }
+  })
+}

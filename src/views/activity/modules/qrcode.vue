@@ -5,7 +5,7 @@
     </div>
     <el-dialog
       title="活动二维码"
-      width="450px"
+      width="430px"
       :visible.sync="dialogVisible"
       :append-to-body="true"
       :close-on-click-modal="false"
@@ -17,7 +17,7 @@
         <el-button size="small" type="primary">点击上传</el-button>
         <slot name="tip"></slot>
       </el-upload> -->
-      <s-upload action="https://jsonplaceholder.typicode.com/posts/" :file-list="fileList" @success="uploadSuccess" />
+      <s-upload action="https://jsonplaceholder.typicode.com/posts/" :file-list="fileList" @success="uploadSuccess" @remove="handleRemove" />
       <!-- {{fileList}} -->
     </el-dialog>
   </div>
@@ -43,10 +43,13 @@ export default {
     uploadSuccess(res) {
       console.log(res)
     },
+    handleRemove(file, fileList) {
+      this.fileList = []
+    },
     getQRCode() {
       setTimeout(() => {
         this.fileList = [
-          {name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
+          {name: 'food.jpeg', url: 'http://www.btzmpro.com:82/file/QrCode/Corporation/1559357297.png'}
         ]
       }, 100)
     }

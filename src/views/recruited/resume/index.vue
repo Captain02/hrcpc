@@ -25,13 +25,6 @@
     <s-table :columns="columns" :data="resumeList" size="medium">
       <template v-slot:avatar="{scope}">
         <s-avatar :url="scope.row.filepath" alt="头像"/>
-        <!-- <div class="table-avatar">
-          <el-image :src=""  >
-            <div slot="error" class="image-slot">
-              <icon-svg icon-class="img-load-fail"></icon-svg>
-            </div>
-          </el-image>
-        </div> -->
       </template>
       <template v-slot:status="{scope}">
         <template v-for="item in options">

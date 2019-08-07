@@ -19,13 +19,7 @@
     </div>
     <s-table :data="userList" :columns="columns" @selection-change="handleSelectionChange" size="medium">
       <template v-slot:avatar="{scope}">
-        <div class="table-avatar">
-          <el-image :src="scope.row.filepath" alt="头像" >
-            <div slot="error" class="image-slot">
-              <icon-svg icon-class="img-load-fail"></icon-svg>
-            </div>
-          </el-image>
-        </div>
+        <s-avatar :url="scope.row.filepath" alt="头像"/>
       </template>
       <template v-slot:action="{scope}">
         <el-dropdown trigger="click">
@@ -68,6 +62,7 @@
 import {getUsers as getUsersApi, deleteUsers as deleteUsersApi } from '@/api/user'
 import { columns } from './modules/dada'
 import STable from '_c/STable'
+import SAvatar from '_c/SAvatar'
 import Pagination from '_c/Pagination'
 import detailsUser from './modules/details'
 import editUserInfo from './modules/edit-info'
@@ -78,6 +73,7 @@ export default {
   name: 'user',
   components: {
     STable,
+    SAvatar,
     Pagination,
     detailsUser,
     editUserInfo,

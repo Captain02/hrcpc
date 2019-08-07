@@ -12,7 +12,24 @@
               <el-input v-model="form.corname" placeholder="" />
             </el-form-item>
             <el-form-item label="社团负责人：">
-              <el-input v-model="form.corleading" placeholder="" />
+              <el-select
+                v-model="form.leadusername"
+                filterable
+                remote
+                class="full-width"
+                clearable
+                placeholder="请输入学号"
+                :remote-method="remoteMethod"
+              >
+                <el-option
+                  v-for="item in options"
+                  :key="item.username"
+                  :label="item.name"
+                  :value="item.username">
+                  <span style="float: left">{{ item.name }}</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px">{{ item.username }}</span>
+                </el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="领导老师：">
               <el-input v-model="form.cortercher" placeholder="" />
@@ -33,15 +50,6 @@
           <el-card style="margin-top:20px;">
             <div slot="header" class="clearfix card-header">
               <span>社团二维码</span>
-              <div class="action-btn">
-                <el-upload 
-                  action="https://jsonplaceholder.typicode.com/posts/"
-                  :before-upload="beforeVideoUpload"
-                  :show-file-list="false"
-                >
-                  <el-button size="small" type="primary">点击上传</el-button>
-                </el-upload>
-              </div>
             </div>
             <el-image 
               class="view-wrapper"
@@ -95,15 +103,33 @@
   </div>
 </template>
 <script>
-import { getCorporation as getCorporationApi } from '@/api/corporation'
+import { getCorporation as getCorporationApi, getUserByUserName as getUserByUserNameApi } from '@/api/corporation'
 export default {
   name: 'corporation-info',
   data() {
     return {
-      form: null
+      form: null,
+      options: []
     }
   },
   methods: {
+    remoteMethod(username) {
+      if(username) {
+        getUserByUserNameApi(username).then((res) => {
+          console.log(res)
+          let { data } = res
+          this.options = this.initOptions(data)
+        })
+      }
+    },
+    initOptions(list) {
+      return list.map((item) => {
+        return {
+          name: item.name,
+          username: item.username
+        }
+      })
+    },
     beforeBanerUpload(file) {
       const isJPG = file.type === 'image/jpeg'
       const isLt2M = file.size / 1024 / 1024 < 2
@@ -132,21 +158,27 @@ export default {
     getCorInfo() {
       getCorporationApi().then((result) => {
         console.log(result)
-        this.form = result.data[0]
+        let data = result.data[0]
+        this.form = data
+        this.options = this.initOptions([{
+          name: data.leadingname, username: data.leadusername
+        }])
+        /*{
+          id: Number,
+          corname: String,        社团名
+          corleading: id,         负责人id
+          leadingname: String,    负责人姓名
+          leadusername: String,   负责人学号
+          cortercher: String,     领导老师
+          corworkspace: String,   工作地点
+          corcollege: String,     所属院系
+          descs: String,          简介
+          createtime: String,     创建时间
+          bannerfile: String,     海报图片
+          filefile: String,       社团二维码
+          videofile: String       视频
+        }*/
       }).catch(err => console.log(err))
-      // setTimeout(() => {
-      //   this.form = {
-      //     corname: '红帽子',
-      //     corleading: '赵国真',
-      //     cortercher: '陈德山',
-      //     corworkspace: '明理楼4楼',
-      //     corcollege: '信息管理学院',
-      //     corscale: '50',
-      //     descs: '小红帽',
-      //     bannerid: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-      //     videofile: 'https://www.w3school.com.cn/i/movie.ogg'
-      //   }
-      // }, 0)
     }
   },
   mounted() {

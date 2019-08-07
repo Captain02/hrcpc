@@ -4,10 +4,12 @@
     <el-card class="form-wrapper" shadow="never">
       <el-form :model="user" label-width="100px" :rules="rules" size="small" ref="userForm" :hide-required-asterisk="true">
         <el-form-item label="默认头像：">
-          <div class="avatar-area">
+          <!-- <div class="avatar-area">
+            
             <img src="/file/persionDefaultHeadPicture/20190517155219man.png" alt="默认头像男" v-show="user.gender === '男'">
             <img src="/file/persionDefaultHeadPicture/20190517155056woman.png" alt="默认头像女" v-show="user.gender === '女'">
-          </div>
+          </div> -->
+          <s-avatar :url="defaultAvatar" size="medium" />
         </el-form-item>
         <el-form-item prop="username" label="学号：">
           <el-input :value="user.username" @input="handleInput" placeholder="请输入学号"></el-input>
@@ -68,12 +70,14 @@
 import { addUser as addUserApi, hasUserInCor as hasUserInCorApi } from '@/api/user'
 import { debounce } from '@/utils'
 import mixins from '../mixins'
+import SAvatar from '_c/SAvatar'
 import MceEditor from '_c/MceEditor'
 window.tinymce.baseURL = '/static/tinymce'
 window.tinymce.suffix = '.min'
 export default {
   name: 'add-user',
   components: {
+    SAvatar,
     MceEditor
   },
   mixins: [mixins],
@@ -93,6 +97,11 @@ export default {
         qq: '',                 // qq
         descs: ''               // 简介
       },
+    }
+  },
+  computed: {
+    defaultAvatar() {
+      return this.user.gender === '男' ? "/file/persionDefaultHeadPicture/20190517155219man.png" : "/file/persionDefaultHeadPicture/20190517155056woman.png"
     }
   },
   methods: {

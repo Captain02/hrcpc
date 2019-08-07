@@ -6,13 +6,7 @@
     </div>
     <s-table :data="list" size="small" :columns="columns">
       <template v-slot:avatar="{scope}">
-        <div class="table-avatar">
-          <el-image :src="scope.row.avatar" alt="头像" >
-            <div slot="error" class="image-slot">
-              <icon-svg icon-class="img-load-fail"></icon-svg>
-            </div>
-          </el-image>
-        </div>
+        <s-avatar :url="scope.row.avatar" alt="头像" />
       </template>
     </s-table>
   </el-card>
@@ -21,10 +15,12 @@
 import { getNews as getNewsApi } from '@/api/news'
 import { parseTime } from '@/utils'
 import STable from '_c/STable'
+import SAvatar from '_c/SAvatar'
 export default {
   name: 'news-card',
   components: {
-    STable
+    STable,
+    SAvatar
   },
   data() {
     return {
@@ -71,7 +67,7 @@ export default {
     initList(list) {
       return list.map((item) => {
         return {
-          avatar: item.releaseuser && item.releaseuser.length ? item.releaseuser[0].filepath : '',
+          avatar: item.releaseuser && item.releaseuser.length && item.releaseuser[0].filepath ? item.releaseuser[0].filepath : '',
           title: item.title,
           publishUser: item.releaseuser && item.releaseuser.length ? item.releaseuser[0].name : '',
           createtime: item.createtime

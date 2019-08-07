@@ -1,13 +1,8 @@
 <template>
   <el-dropdown class="avatar-container user-menu-item" trigger="click">
     <div class="avatar-wrapper">
-      <el-image :src="avatar" class="user-avatar">
-        <div slot="error" class="image-slot">
-          <icon-svg icon-class="img-load-fail"></icon-svg>
-        </div>
-      </el-image>
-
-      <icon-svg icon-class="arrow-down"></icon-svg>
+      <s-avatar :url="avatar" style="display: inline-block;" alt="头像" />
+      <icon-svg icon-class="arrow-down"/>
     </div>
     <el-dropdown-menu slot="dropdown" class="user-dropdown">
       <router-link to="/profile">
@@ -28,11 +23,13 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import SAvatar from '_c/SAvatar'
 import changePwd from './modules/changePwd'
 import codeMap from './modules/codeMap'
 export default {
   name: 'UserAvatar',
   components: {
+    SAvatar,
     changePwd,
     codeMap
   },
@@ -67,14 +64,7 @@ export default {
   .avatar-wrapper {
     cursor: pointer;
     margin-top: 5px;
-    position: relative;
     line-height: initial;
-    .user-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      overflow: hidden;
-    }
     .el-icon-caret-bottom {
       position: absolute;
       right: -20px;

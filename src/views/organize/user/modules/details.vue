@@ -14,9 +14,7 @@
         <el-row class="details-row">
           <el-col :span="3"><span>头像：</span></el-col>
           <el-col :span="21">
-            <div class="avatar-area">
-              <img :src="user.filepath || ''">
-            </div>
+            <s-avatar :url="user.filepath || ''" size="medium" />
           </el-col>
         </el-row>
         <el-row class="details-row">
@@ -72,8 +70,12 @@
 </template>
 <script>
 import { getUser as getUserApi } from '@/api/user'
+import SAvatar from '_c/SAvatar'
 export default {
   name: 'details-user',
+  components: {
+    SAvatar
+  },
   props: {
     data: {
       type: Object,

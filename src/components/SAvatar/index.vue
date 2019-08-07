@@ -26,7 +26,8 @@ export default {
       return {
         'avatar-wrapper': true,
         'size-default': this.size === 'default',
-        'size-medium': this.size === 'medium'
+        'size-medium': this.size === 'medium',
+        'size-large': this.size === 'large'
       }
     }
   }
@@ -42,6 +43,10 @@ export default {
   height: 40px;
 }
 .size-medium {
+  width: 80px;
+  height: 80px;
+}
+.size-large {
   width: 120px;
   height: 120px;
 }

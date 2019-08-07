@@ -23,7 +23,7 @@
     <el-dialog
       title="添加二维码"
       :visible.sync="dialogVisible"
-      width="450px"
+      width="430px"
       :append-to-body="true"
       :close-on-click-modal="false"
     >

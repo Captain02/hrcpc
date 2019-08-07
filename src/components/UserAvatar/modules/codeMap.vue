@@ -7,19 +7,21 @@
       title="社团二维码"
       :visible.sync="dialogFormVisible"
       :append-to-body="true"
-      width="450px"
+      width="430px"
       :close-on-click-modal="false"
     >
-      <div class="code-map-wrapper">
-        <el-image :src="src"></el-image>
-      </div>
+      <s-qrcode :url="src" style="margin: 0 auto;" />
     </el-dialog>
   </div>
 </template>
 <script>
 import { getCorInfo as getCorInfoApi } from '@/api/comm'
+import SQrcode from '_c/SQRCode'
 export default {
   name: 'code-map',
+  components: {
+    SQrcode
+  },
   data() {
     return {
       dialogFormVisible: false,

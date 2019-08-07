@@ -10,7 +10,8 @@
       <el-button size="small" type="primary">点击上传</el-button>
       <slot name="tip"></slot>
     </el-upload>
-    <div class="upload-img-wrap">
+    <s-qrcode :url="url || ''" style="margin: 15px auto 0;" />
+    <!-- <div class="upload-img-wrap">
       <el-image
         :src="url"
       >
@@ -18,13 +19,17 @@
           暂无图片
         </div>
       </el-image>
-    </div>
+    </div> -->
     
   </div>
 </template>
 <script>
+import SQrcode from '_c/SQRCode'
 export default {
   name: 'SUpload',
+  components: {
+    SQrcode
+  },
   props: {
     action: {
       type: String,
@@ -44,7 +49,8 @@ export default {
   watch: {
     fileList(newVal) {
       this.files = [...newVal]
-      this.url = newVal.url
+      this.url = newVal.length ? newVal[0].url : ''
+      // console.log(newVal)
     }
   },
   methods: {
@@ -52,6 +58,7 @@ export default {
       this.$emit('remove', file, fileList)
     },
     uploadSuccess(response, file, fileList) {
+      // console.log(response, file, fileList)
       this.$emit('success', response)
     },
     beforUpload(file) {

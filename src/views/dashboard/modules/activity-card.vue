@@ -6,13 +6,7 @@
     </div>
     <s-table :data="list" size="small" :columns="columns">
       <template v-slot:avatar="{scope}">
-        <div class="table-avatar">
-          <el-image :src="scope.row.avatar" alt="头像" >
-            <div slot="error" class="image-slot">
-              <icon-svg icon-class="img-load-fail"></icon-svg>
-            </div>
-          </el-image>
-        </div>
+        <s-avatar :url="scope.row.avatar" alt="头像" />
       </template>
     </s-table>
   </el-card>
@@ -22,10 +16,12 @@ import { getActivitys as getActivitysApi } from '@/api/activity'
 import { mapState } from 'vuex'
 import { parseTime } from '@/utils'
 import STable from '_c/STable'
+import SAvatar from '_c/SAvatar'
 export default {
   name: 'activity-card',
   components: {
-    STable
+    STable,
+    SAvatar
   },
   data() {
     return {
@@ -77,7 +73,7 @@ export default {
     initList(list) {
       return list.map((item) => {
         return {
-          avatar: item.actlead && item.actlead.length ? item.actlead[0].filepath : '',
+          avatar: item.actlead && item.actlead.length && item.actlead[0].filepath ? item.actlead[0].filepath : '',
           actname: item.actname,
           corname: item.corname,
           createtime: item.createtime
