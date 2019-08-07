@@ -11,7 +11,7 @@ import qs from 'querystring'
  * @param {Number} corcollege 所属院系
  * @param {String} corscale 社团规模
  */
-export const apply = (corname, corleading, cortercher, corworkspace, corcollege, corscale) => {
+export const apply = (corName, corleading, corTercher, corWorkspace, corCollege, corscale) => {
   return request({
     url: '/corporation/add',
     method: 'POST',
@@ -19,11 +19,11 @@ export const apply = (corname, corleading, cortercher, corworkspace, corcollege,
       return qs.stringify(data)
     }],
     data: {
-      corname,
+      corName,
       corleading,
-      cortercher,
-      corworkspace,
-      corcollege,
+      corTercher,
+      corWorkspace,
+      corCollege,
       corscale
     }
   })

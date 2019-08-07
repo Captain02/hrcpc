@@ -24,13 +24,14 @@
 
     <s-table :columns="columns" :data="resumeList" size="medium">
       <template v-slot:avatar="{scope}">
-        <div class="table-avatar">
-          <el-image :src="scope.row.filepath" alt="头像" >
+        <s-avatar :url="scope.row.filepath" alt="头像"/>
+        <!-- <div class="table-avatar">
+          <el-image :src=""  >
             <div slot="error" class="image-slot">
               <icon-svg icon-class="img-load-fail"></icon-svg>
             </div>
           </el-image>
-        </div>
+        </div> -->
       </template>
       <template v-slot:status="{scope}">
         <template v-for="item in options">
@@ -59,6 +60,7 @@ import { getResumes as getResumesApi, deleteResume as deleteResumeApi } from '@/
 import { mapState } from 'vuex'
 import { columns, options } from './modules/data'
 import STable from '_c/STable'
+import SAvatar from '_c/SAvatar'
 import Pagination from '_c/Pagination'
 import countPanel from './modules/count-panel'
 import detailsResume from './modules/details'
@@ -67,6 +69,7 @@ export default {
   name: 'resume-list',
   components: {
     STable,
+    SAvatar,
     Pagination,
     countPanel,
     detailsResume,

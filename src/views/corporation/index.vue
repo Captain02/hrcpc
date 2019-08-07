@@ -30,6 +30,26 @@
               <el-button class="full-width" type="primary">保存</el-button>
             </el-form-item>
           </el-card>
+          <el-card style="margin-top:20px;">
+            <div slot="header" class="clearfix card-header">
+              <span>社团二维码</span>
+              <div class="action-btn">
+                <el-upload 
+                  action="https://jsonplaceholder.typicode.com/posts/"
+                  :before-upload="beforeVideoUpload"
+                  :show-file-list="false"
+                >
+                  <el-button size="small" type="primary">点击上传</el-button>
+                </el-upload>
+              </div>
+            </div>
+            <el-image 
+              class="view-wrapper"
+              :src="form.filefile" 
+              object-fit="contain"
+              >
+            </el-image>
+          </el-card>
         </el-col>
         <el-col :span="15">
           <el-card>
@@ -47,7 +67,7 @@
             </div>
             <el-image 
               class="view-wrapper"
-              :src="form.bannerid" 
+              :src="form.bannerfile" 
               object-fit="contain"
               >
             </el-image>
@@ -112,20 +132,21 @@ export default {
     getCorInfo() {
       getCorporationApi().then((result) => {
         console.log(result)
+        this.form = result.data[0]
       }).catch(err => console.log(err))
-      setTimeout(() => {
-        this.form = {
-          corname: '红帽子',
-          corleading: '赵国真',
-          cortercher: '陈德山',
-          corworkspace: '明理楼4楼',
-          corcollege: '信息管理学院',
-          corscale: '50',
-          descs: '小红帽',
-          bannerid: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-          videofile: 'https://www.w3school.com.cn/i/movie.ogg'
-        }
-      }, 0)
+      // setTimeout(() => {
+      //   this.form = {
+      //     corname: '红帽子',
+      //     corleading: '赵国真',
+      //     cortercher: '陈德山',
+      //     corworkspace: '明理楼4楼',
+      //     corcollege: '信息管理学院',
+      //     corscale: '50',
+      //     descs: '小红帽',
+      //     bannerid: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
+      //     videofile: 'https://www.w3school.com.cn/i/movie.ogg'
+      //   }
+      // }, 0)
     }
   },
   mounted() {
@@ -145,7 +166,7 @@ export default {
     line-height: 32px;
   }
   .view-wrapper {
-    height: 300px;
+    height: 360px;
     text-align: center;
     /deep/img {
       height: 100%;
