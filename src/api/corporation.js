@@ -31,6 +31,37 @@ export const apply = (corName, corleading, corTercher, corWorkspace, corCollege,
 
 
 /**
+ * 更新社团信息
+ * @param {*} corName 
+ * @param {*} corleading 
+ * @param {*} corTercher 
+ * @param {*} corWorkspace 
+ * @param {*} corCollege 
+ * @param {*} corscale 
+ * @param {*} descs 
+ */
+export const update = (corName, corleading, corTercher, corWorkspace, corCollege, corscale, descs) => {
+  return request({
+    url: '/corporation/update',
+    method: 'POST',
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }],
+    data: {
+      corid: getCorId(),
+      corName,
+      corleading,
+      corTercher,
+      corWorkspace,
+      corCollege,
+      corscale,
+      descs
+    }
+  })
+}
+
+
+/**
  * 获取社团信息
  * @param {Number} corid 社团id
  */
@@ -56,6 +87,24 @@ export const getUserByUserName = (username) => {
     params: {
       corid: getCorId(),
       username
+    }
+  })
+}
+
+
+/**
+ * 获取社团纳新二维码列表
+ * @param {*} pageSize 
+ * @param {*} currPage 
+ */
+export const getQRCodeList = (currPage, pageSize) => {
+  return request({
+    url: '/corporation/qqCodeFileList',
+    method: 'GET',
+    params: {
+      corId: getCorId(),
+      pageSize,
+      currPage
     }
   })
 }

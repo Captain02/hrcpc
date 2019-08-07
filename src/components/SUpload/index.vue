@@ -3,6 +3,8 @@
     <el-upload
       :action="action"
       :file-list="files"
+      :data="data"
+      :name="name"
       :on-remove="handleRemove"
       :before-upload="beforUpload"
       :on-success="uploadSuccess"
@@ -38,6 +40,14 @@ export default {
     fileList: {
       type: Array,
       default: []
+    },
+    data: {
+      type: Object,
+      default: () => ({})
+    },
+    name: {
+      type: String,
+      default: ''
     }
   },
   data() {

@@ -22,7 +22,7 @@
                 :remote-method="remoteMethod"
               >
                 <el-option
-                  v-for="item in options"
+                  v-for="item in userOptions"
                   :key="item.username"
                   :label="item.name"
                   :value="item.username">
@@ -38,13 +38,15 @@
               <el-input v-model="form.corworkspace" placeholder="" />
             </el-form-item>
             <el-form-item label="所属学院：">
-              <el-input v-model="form.corcollege" placeholder="" />
+              <el-select v-model="form.corcollege" placeholder="所属院系" class="full-width">
+                <el-option v-for="item in collegeOptions" :key="item.id" :value="item.id" :label="item.label"></el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="社团规模：">
               <el-input v-model="form.corscale" placeholder="" />
             </el-form-item>
             <el-form-item label-width="0">
-              <el-button class="full-width" type="primary">保存</el-button>
+              <el-button class="full-width" type="primary" @click="handleSave">保存</el-button>
             </el-form-item>
           </el-card>
           <el-card style="margin-top:20px;">
@@ -104,19 +106,35 @@
             </div>
           </el-card>
         </el-col>
+        <el-col :span="24">
+          <el-card style="margin-top:20px;">
+            <div slot="header">
+              <span>社团简介</span>
+            </div>
+            <mce-editor v-model="form.descs" ></mce-editor>
+          </el-card>
+        </el-col>
       </el-form> 
     </el-row>
   </div>
 </template>
 <script>
-import { getCorporation as getCorporationApi, getUserByUserName as getUserByUserNameApi } from '@/api/corporation'
+import { getCorporation as getCorporationApi, update as updateApi, getUserByUserName as getUserByUserNameApi } from '@/api/corporation'
+import { getCollegeInfo as getCollegeInfoApi} from '@/api/comm'
 import { mapState } from 'vuex'
+import MceEditor from '_c/MceEditor'
+window.tinymce.baseURL = '/static/tinymce'
+window.tinymce.suffix = '.min'
 export default {
   name: 'corporation-info',
+  components: {
+    MceEditor
+  },
   data() {
     return {
       form: null,
-      options: []
+      userOptions: [],
+      collegeOptions: []
     }
   },
   computed: {
@@ -130,7 +148,7 @@ export default {
         getUserByUserNameApi(username).then((res) => {
           console.log(res)
           let { data } = res
-          this.options = this.initOptions(data)
+          this.userOptions = this.initOptions(data)
         })
       }
     },
@@ -180,7 +198,7 @@ export default {
         console.log(result)
         let data = result.data[0]
         this.form = data
-        this.options = this.initOptions([{
+        this.userOptions = this.initOptions([{
           name: data.leadingname, username: data.leadusername
         }])
         /*{
@@ -190,6 +208,7 @@ export default {
           leadingname: String,    负责人姓名
           leadusername: String,   负责人学号
           cortercher: String,     领导老师
+          corscale: String,       社团规模
           corworkspace: String,   工作地点
           corcollege: String,     所属院系
           descs: String,          简介
@@ -199,10 +218,23 @@ export default {
           videofile: String       视频
         }*/
       }).catch(err => console.log(err))
+    },
+    handleSave() {
+      console.log(this.form)
+      updateApi(this.form.corname, this.form.leadusername, this.form.cortercher, this.form.corworkspace, this.form.corcollege, this.form.corscale, this.form.descs).then((res) => {
+        console.log(res)
+      })
+      
     }
   },
   mounted() {
     this.getCorInfo()
+    getCollegeInfoApi(1, null).then((result) => {
+      let { data: list } = result
+      this.collegeOptions = list.map((item) => {
+        return { id: item.id, value: item.id, label: item.value }
+      })
+    })
   }
 }
 </script>

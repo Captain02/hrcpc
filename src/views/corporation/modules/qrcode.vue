@@ -35,11 +35,13 @@
         :on-remove="handleRemove">
         <i class="el-icon-plus"></i>
       </el-upload> -->
-      <s-upload action="https://jsonplaceholder.typicode.com/posts/" :file-list="[]" @success="uploadSuccess" @remove="handleRemove" />
+      <s-upload :action="`${$constants.BASE_API}/corporation/save`" :data="{corId: corid}" name="qqCodeFile" :file-list="[]" @success="uploadSuccess" @remove="handleRemove" />
     </el-dialog>
   </div>
 </template>
 <script>
+import { getQRCodeList as getQRCodeListApi } from '@/api/corporation'
+import { mapState } from 'vuex'
 import SUpload from '_c/SUpload'
 import Pagination from '_c/Pagination'
 export default {
@@ -78,9 +80,16 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapState({
+      corid: (state) => state.user.corid
+    })
+  },
   methods: {
     getImgList() {
-
+      getQRCodeListApi(this.currPage, this.pageSize).then((result) => {
+        console.log(result)
+      }).catch((err) => { })
     },
     handleDelete(id) {
       console.log(id)
@@ -88,12 +97,15 @@ export default {
     handleAdd() {
       this.dialogVisible = true
     },
-    uploadSuccess() {
-
+    uploadSuccess(response) {
+      console.log(response)
     },
     handleRemove(file, fileList) {
       console.log(file, fileList)
     }
+  },
+  mounted() {
+    this.getImgList()
   }
 }
 </script>
