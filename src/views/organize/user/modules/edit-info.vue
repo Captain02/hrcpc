@@ -44,7 +44,7 @@
             <el-input v-model="user.QQ" placeholder="请输入QQ"></el-input>
           </el-form-item>
           <el-form-item prop="descs" label="自我描述：">
-            <mce-editor v-model="user.descs" v-if="dialogFormVisible" ></mce-editor>
+            <Tinymce v-model="user.descs" v-if="dialogFormVisible" />
           </el-form-item>
           
           <el-form-item>
@@ -62,13 +62,11 @@ import { getUser as getUserApi, updateUser as updateUserApi } from '@/api/user'
 import mixins from '../mixins'
 import { getCollegeInfo as getCollegeInfoApi } from '@/api/comm'
 import cloneDeep from 'clonedeep'
-import MceEditor from '@/components/MceEditor'
-window.tinymce.baseURL = '/static/tinymce'
-window.tinymce.suffix = '.min'
+import Tinymce from '_c/Tinymce'
 export default {
   name: 'edit-user-info',
   components: {
-    MceEditor
+    Tinymce
   },
   props: {
     data: {

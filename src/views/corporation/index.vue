@@ -2,16 +2,16 @@
   <div class="app-container">
     <h1 class="page-title">社团信息</h1>
     <el-row :gutter="25" class="corinfo-wrapper" v-if="form">
-      <el-form label-width="100px" size="small">
+      <el-form label-width="100px" size="small" :model="form" ref="form" :rules="rules" :hide-required-asterisk="true">
         <el-col :span="9">
           <el-card>
             <div slot="header">
               <span>基本信息</span>
             </div>
-            <el-form-item label="社团名称：">
-              <el-input v-model="form.corname" placeholder="" />
+            <el-form-item label="社团名称：" prop="corname">
+              <el-input v-model="form.corname" placeholder="社团名称" />
             </el-form-item>
-            <el-form-item label="社团负责人：">
+            <el-form-item label="社团负责人：" prop="leadusername">
               <el-select
                 v-model="form.leadusername"
                 filterable
@@ -31,19 +31,19 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="领导老师：">
-              <el-input v-model="form.cortercher" placeholder="" />
+            <el-form-item label="领导老师：" prop="cortercher">
+              <el-input v-model="form.cortercher" placeholder="领导老师" />
             </el-form-item>
-            <el-form-item label="工作地点：">
-              <el-input v-model="form.corworkspace" placeholder="" />
+            <el-form-item label="工作地点：" prop="corworkspace">
+              <el-input v-model="form.corworkspace" placeholder="工作地点" />
             </el-form-item>
-            <el-form-item label="所属学院：">
+            <el-form-item label="所属学院：" prop="corcollege">
               <el-select v-model="form.corcollege" placeholder="所属院系" class="full-width">
                 <el-option v-for="item in collegeOptions" :key="item.id" :value="item.id" :label="item.label"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="社团规模：">
-              <el-input v-model="form.corscale" placeholder="" />
+            <el-form-item label="社团规模：" prop="corscale">
+              <el-input v-model="form.corscale" placeholder="社团规模：人数" />
             </el-form-item>
             <el-form-item label-width="0">
               <el-button class="full-width" type="primary" @click="handleSave">保存</el-button>
@@ -111,7 +111,6 @@
             <div slot="header">
               <span>社团简介</span>
             </div>
-            <!-- <mce-editor v-model="form.descs" :url="`${$constants.BASE_API}comm/upload`" @on-upload-success="handleSuccessDescs"></mce-editor> -->
             <tinymce v-model="form.descs" />
           </el-card>
         </el-col>
@@ -123,21 +122,47 @@
 import { getCorporation as getCorporationApi, update as updateApi, getUserByUserName as getUserByUserNameApi } from '@/api/corporation'
 import { getCollegeInfo as getCollegeInfoApi} from '@/api/comm'
 import { mapState } from 'vuex'
-import MceEditor from '_c/MceEditor'
-window.tinymce.baseURL = '/static/tinymce'
-window.tinymce.suffix = '.min'
 import Tinymce from '_c/Tinymce'
 export default {
   name: 'corporation-info',
   components: {
-    Tinymce,
-    MceEditor
+    Tinymce
   },
   data() {
+    const validateCorscale = (min, max) => (rule, value, callback) => {
+      if(Number(value) < min){
+        callback(new Error(`不能小于${min}人`))
+      }else if(Number(value) > max){
+        callback(new Error(`不能大于${max}人`))
+      }
+      // console.log(value, typeof value, Number(value))
+      callback()
+    }
     return {
       form: null,
       userOptions: [],
-      collegeOptions: []
+      collegeOptions: [],
+      rules: {
+        corname: [
+          { required: true, message: '请输入社团名称', trigger: 'blur' }
+        ],
+        leadusername: [
+          { required: true, message: '请选择社团负责人', trigger: 'change' },
+          // { pattern: /^\d{12}$/,  message: '请填写正确的学号', trigger: ['blur', 'change'] }
+        ],
+        cortercher: [
+          { required: true, message: '请输入领导老师', trigger: 'blur' }
+        ],
+        corcollege: [
+          { required: true, message: '请选择所属院系', trigger: 'change' }
+        ],
+        corworkspace: [
+          { required: true, message: '请输入工作地点', trigger: 'blur' }
+        ],
+        corscale: [
+          { validator: validateCorscale(1, 1000), trigger: 'change' }
+        ]
+      }
     }
   },
   computed: {
@@ -226,10 +251,16 @@ export default {
       }).catch(err => console.log(err))
     },
     handleSave() {
-      console.log(this.form)
-      updateApi(this.form.corname, this.form.leadusername, this.form.cortercher, this.form.corworkspace, this.form.corcollege, this.form.corscale, this.form.descs).then((res) => {
-        console.log(res)
-        this.$message.success('保存成功')
+      this.$refs['form'].validate((valid) => {
+        if(!valid) {
+          this.$message.error('请填写相关项目')
+          return
+        }
+        console.log(this.form)
+        updateApi(this.form.corname, this.form.leadusername, this.form.cortercher, this.form.corworkspace, this.form.corcollege, this.form.corscale, this.form.descs).then((res) => {
+          console.log(res)
+          this.$message.success('保存成功')
+        })
       })
       
     }

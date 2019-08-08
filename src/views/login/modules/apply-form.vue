@@ -58,6 +58,12 @@ export default {
           { required: true, message: '请填写学号', trigger: 'blur' },
           { pattern: /^\d{12}$/,  message: '请填写正确的学号', trigger: ['blur', 'change'] }
         ],
+        cortercher: [
+          { required: true, message: '请输入领导老师', trigger: 'blur' }
+        ],
+        corworkspace: [
+          { required: true, message: '请输入工作地点', trigger: 'blur' }
+        ],
         corcollege: [
           { required: true, message: '请选择所属院系', trigger: 'change' }
         ],

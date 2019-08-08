@@ -108,3 +108,22 @@ export const getQRCodeList = (currPage, pageSize) => {
     }
   })
 }
+
+/**
+ * 删除纳新二维码
+ * @param {Number} id 图片id
+ * @param {String} path 图片的路径
+ */
+export const deleteQRCode = (id, path) => {
+  return request({
+    url: '/corporation/delQqCodeFile',
+    method: 'POST',
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }],
+    data: {
+      id,
+      path
+    }
+  })
+}

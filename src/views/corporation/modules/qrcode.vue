@@ -7,14 +7,14 @@
     <div class="imgs-wrapper clearfix">
       <div class="img-item" v-for="item in imgList" :key="item.id">
         <div class="item-wrapper">
-          <el-image :src="item.url" :preview-src-list="imgViews">
+          <el-image :src="item.path" :preview-src-list="imgViews">
             <div slot="error" class="image-slot">
               <icon-svg icon-class="img-load-fail"></icon-svg>
             </div>
           </el-image>
         </div>
-        <div class="img-name">{{item.imgname}}</div>
-        <div class="delete-btn-wrapper" @click="handleDelete(item.id)">
+        <div class="img-name" :title="item.filename">{{item.filename}}</div>
+        <div class="delete-btn-wrapper" @click="handleDelete(item.id, item.path)">
           <icon-svg icon-class="close"></icon-svg>
         </div>
       </div>
@@ -35,12 +35,12 @@
         :on-remove="handleRemove">
         <i class="el-icon-plus"></i>
       </el-upload> -->
-      <s-upload :action="`${$constants.BASE_API}/corporation/save`" :data="{corId: corid}" name="qqCodeFile" :file-list="[]" @success="uploadSuccess" @remove="handleRemove" />
+      <s-upload :action="`${$constants.BASE_API}/corporation/save`" :data="{corId: corid}" name="qqCodeFile" :file-list="imgFile" @success="uploadSuccess" @remove="handleRemove" />
     </el-dialog>
   </div>
 </template>
 <script>
-import { getQRCodeList as getQRCodeListApi } from '@/api/corporation'
+import { getQRCodeList as getQRCodeListApi, deleteQRCode as deleteQRCodeApi } from '@/api/corporation'
 import { mapState } from 'vuex'
 import SUpload from '_c/SUpload'
 import Pagination from '_c/Pagination'
@@ -55,29 +55,10 @@ export default {
       dialogVisible: false,
       pageSize: 10,
       currPage: 1,
-      total: 10,
-      imgList: [
-        { url: 'https://user-gold-cdn.xitu.io/2019/723/16c1f11a5c47a950?imageView2/0/w/1280/h/960/format/webp/ignore-error/1', imgname: 'qq纳新群1', id: 1 },
-        { url: 'https://user-gold-cdn.xitu.io/2019/7/23/16c1f11a5c47a950?imageView2/0/w/1280/h/960/format/webp/ignore-error/1', imgname: 'qq纳新群1', id: 2 },
-        { url: 'https://user-gold-cdn.xitu.io/2019/7/23/16c1f11a5c47a950?imageView2/0/w/1280/h/960/format/webp/ignore-error/1', imgname: 'qq纳新群1', id: 3 },
-        { url: 'https://user-gold-cdn.xitu.io/2019/7/23/16c1f11a5c47a950?imageView2/0/w/1280/h/960/format/webp/ignore-error/1', imgname: 'qq纳新群1', id: 4 },
-        { url: 'https://user-gold-cdn.xitu.io/2019/7/23/16c1f11a5c47a950?imageView2/0/w/1280/h/960/format/webp/ignore-error/1', imgname: 'qq纳新群1', id: 5 },
-        { url: 'https://user-gold-cdn.xitu.io/2019/7/23/16c1f11a5c47a950?imageView2/0/w/1280/h/960/format/webp/ignore-error/1', imgname: 'qq纳新群1', id: 6 },
-        { url: 'https://user-gold-cdn.xitu.io/2019/7/23/16c1f11a5c47a950?imageView2/0/w/1280/h/960/format/webp/ignore-error/1', imgname: 'qq纳新群1', id: 7 },
-        { url: 'https://user-gold-cdn.xitu.io/2019/7/23/16c1f11a5c47a950?imageView2/0/w/1280/h/960/format/webp/ignore-error/1', imgname: 'qq纳新群1', id: 8 },
-        { url: 'https://user-gold-cdn.xitu.io/2019/7/23/16c1f11a5c47a950?imageView2/0/w/1280/h/960/format/webp/ignore-error/1', imgname: 'qq纳新群1', id: 9 },
-        { url: 'https://user-gold-cdn.xitu.io/2019/7/23/16c1f11a5c47a950?imageView2/0/w/1280/h/960/format/webp/ignore-error/1', imgname: 'qq纳新群1', id: 10 },
-        { url: 'https://user-gold-cdn.xitu.io/2019/7/23/16c1f11a5c47a950?imageView2/0/w/1280/h/960/format/webp/ignore-error/1', imgname: 'qq纳新群1', id: 11 },
-        { url: 'https://user-gold-cdn.xitu.io/2019/7/23/16c1f11a5c47a950?imageView2/0/w/1280/h/960/format/webp/ignore-error/1', imgname: 'qq纳新群1', id: 12 },
-        { url: 'https://user-gold-cdn.xitu.io/2019/7/23/16c1f11a5c47a950?imageView2/0/w/1280/h/960/format/webp/ignore-error/1', imgname: 'qq纳新群1', id: 13 },
-        { url: 'https://user-gold-cdn.xitu.io/2019/7/23/16c1f11a5c47a950?imageView2/0/w/1280/h/960/format/webp/ignore-error/1', imgname: 'qq纳新群1', id: 14 }
-      ],
-      imgViews: [
-        'https://user-gold-cdn.xitu.io/2019/7/23/16c1f11a5c47a950?imageView2/0/w/1280/h/960/format/webp/ignore-error/1',
-        'https://user-gold-cdn.xitu.io/2019/7/23/16c1f11a5c47a950?imageView2/0/w/1280/h/960/format/webp/ignore-error/1',
-        'https://user-gold-cdn.xitu.io/2019/7/23/16c1f11a5c47a950?imageView2/0/w/1280/h/960/format/webp/ignore-error/1',
-        'https://user-gold-cdn.xitu.io/2019/7/23/16c1f11a5c47a950?imageView2/0/w/1280/h/960/format/webp/ignore-error/1','https://user-gold-cdn.xitu.io/2019/7/23/16c1f11a5c47a950?imageView2/0/w/1280/h/960/format/webp/ignore-error/1','https://user-gold-cdn.xitu.io/2019/7/23/16c1f11a5c47a950?imageView2/0/w/1280/h/960/format/webp/ignore-error/1'
-      ]
+      total: 0,
+      imgFile: [],
+      imgList: [],
+      imgViews: []
     }
   },
   computed: {
@@ -89,16 +70,50 @@ export default {
     getImgList() {
       getQRCodeListApi(this.currPage, this.pageSize).then((result) => {
         console.log(result)
+        let { data, page } = result
+        /*data[{
+            corid: 1,
+            createtime: "2019-08-07 14:45:09",
+            filename: "省电壁纸 - 4.jpg",
+            id: 1,
+            path: "/file/qqCodeFile/20190807224509省电壁纸 - 4.jpg"
+          }]*/
+        this.imgList = data
+        this.total = page.totalCount
+        this.imgViews = this.initImgViews(data)
       }).catch((err) => { })
     },
-    handleDelete(id) {
-      console.log(id)
+    initImgViews(list) {
+      return list.map((item) => {
+        return item.path
+      })
+    },
+    handleDelete(id, path) {
+      console.log(id, path)
+      this.$confirm('确定要删除吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteQRCodeApi(id, path).then((result) => {
+          this.$message.success('删除成功')
+          this.getImgList()
+        }).catch((err) => {
+          console.log(err)
+        })
+      }).catch(() => {})
     },
     handleAdd() {
+      this.imgFile = []
       this.dialogVisible = true
     },
     uploadSuccess(response) {
       console.log(response)
+      this.imgFile = [{
+        name: response.data.filename,
+        url: response.data.path
+      }]
+      this.getImgList()
     },
     handleRemove(file, fileList) {
       console.log(file, fileList)

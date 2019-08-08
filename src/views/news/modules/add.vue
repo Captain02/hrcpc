@@ -19,7 +19,7 @@
           </el-col>
         </el-row>
         <el-form-item label="内容：">
-          <mce-editor v-model="news.content" ></mce-editor>
+          <Tinymce v-model="news.content" />
         </el-form-item>
         <el-form-item>
           <el-col :offset="5">
@@ -37,15 +37,13 @@ import { mapState } from 'vuex'
 import { transferData2Tree } from '@/utils'
 import TreeSelect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import MceEditor from '_c/MceEditor'
-window.tinymce.baseURL = '/static/tinymce'
-window.tinymce.suffix = '.min'
+import Tinymce from '_c/Tinymce'
 
 export default {
   name: 'add-news',
   components: {
     TreeSelect,
-    MceEditor
+    Tinymce
   },
   data() {
     return {

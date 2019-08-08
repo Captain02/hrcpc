@@ -59,19 +59,25 @@ export default {
     },
     uploadSuccess(response, file, fileList) {
       // console.log(response, file, fileList)
+      if(response.code !== 0) {
+        this.$message.error('上传失败')
+        return
+      }
       this.$emit('success', response)
     },
     beforUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      let types = ['image/jpeg', 'image/png']
+      console.log(file.type)
+      const isJPG = types.includes(file.type)
+      const isLt2M = file.size / 1024 / 1024 < 2
 
       if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!');
+        this.$message.error('上传图片只能是 JPG 或 PNG 格式!')
       }
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
+        this.$message.error('上传图片大小不能超过 2MB!')
       }
-      return isJPG && isLt2M;
+      return isJPG && isLt2M
     }
   }
 }

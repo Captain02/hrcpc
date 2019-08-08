@@ -53,7 +53,7 @@
           <el-input v-model="user.qq" placeholder="请输入QQ号"></el-input>
         </el-form-item>
         <el-form-item prop="descs" label="自我描述：">
-          <mce-editor v-model="user.descs" ></mce-editor>
+          <Tinymce v-model="user.descs" />
         </el-form-item>
         
         <el-form-item class="">
@@ -71,14 +71,12 @@ import { addUser as addUserApi, hasUserInCor as hasUserInCorApi } from '@/api/us
 import { debounce } from '@/utils'
 import mixins from '../mixins'
 import SAvatar from '_c/SAvatar'
-import MceEditor from '_c/MceEditor'
-window.tinymce.baseURL = '/static/tinymce'
-window.tinymce.suffix = '.min'
+import Tinymce from '_c/Tinymce'
 export default {
   name: 'add-user',
   components: {
     SAvatar,
-    MceEditor
+    Tinymce
   },
   mixins: [mixins],
   data() {

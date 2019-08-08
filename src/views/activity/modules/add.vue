@@ -123,7 +123,7 @@
         </el-form-item>
         
         <el-form-item prop="desc" label="活动详情：">
-          <mce-editor v-model="activity.actdetails" ></mce-editor>
+          <Tinymce v-model="activity.actdetails" />
         </el-form-item>
         <el-form-item class="">
           <el-col :offset="5">
@@ -139,16 +139,14 @@
 import { getCollegeInfo as getCollegeInfoApi, getDepts as getDeptsApi } from '@/api/comm'
 import { getUsersByName as getUsersByNameApi, deleteFile as deleteFileApi, addActivity as addActivityApi,  } from '@/api/activity'
 import { transferData2Tree } from '@/utils'
-import MceEditor from '_c/MceEditor'
-window.tinymce.baseURL = '/static/tinymce'
-window.tinymce.suffix = '.min'
+import Tinymce from '_c/Tinymce'
 import VideoPlayer from '_c/VideoPlayer'
 import TreeSelect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 export default {
   name: 'add-activity',
   components: {
-    MceEditor,
+    Tinymce,
     VideoPlayer,
     TreeSelect
   },

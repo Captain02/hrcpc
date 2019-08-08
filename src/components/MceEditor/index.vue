@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import "../../../static/tinymce/tinymce.min.js"
+// import "../../../static/tinymce/tinymce.min.js"
 export default {
   name: "MceEditor",
   props: {
