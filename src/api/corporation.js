@@ -13,6 +13,7 @@ import qs from 'querystring'
  * @param {String} corscale 社团规模
  */
 export const apply = (corName, corleading, corTercher, corWorkspace, corCollege, corcrowd, corscale) => {
+  console.log(corcrowd)
   return request({
     url: '/corporation/add',
     method: 'POST',
@@ -45,6 +46,7 @@ export const apply = (corName, corleading, corTercher, corWorkspace, corCollege,
  * @param {*} descs 
  */
 export const update = (corName, corleading, corTercher, corWorkspace, corCollege, corcrowd, corscale, descs) => {
+  
   return request({
     url: '/corporation/update',
     method: 'POST',

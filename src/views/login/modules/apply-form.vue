@@ -88,7 +88,7 @@ export default {
           this.$message.error('请填写相关项目!')
           return
         }
-        applyApi(this.form.corname, this.form.corleading, this.form.cortercher, this.form.corworkspace, this.form.corcollege, this.form.corscale).then((result) => {
+        applyApi(this.form.corname, this.form.corleading, this.form.cortercher, this.form.corworkspace, this.form.corcollege, this.form.corcrowd, this.form.corscale).then((result) => {
           console.log(result)
           this.$message.success('申请成功')
           this.$refs['form'].resetFields()
