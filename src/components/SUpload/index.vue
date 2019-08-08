@@ -12,17 +12,7 @@
       <el-button size="small" type="primary">点击上传</el-button>
       <slot name="tip"></slot>
     </el-upload>
-    <s-qrcode :url="url || ''" style="margin: 15px auto 0;" />
-    <!-- <div class="upload-img-wrap">
-      <el-image
-        :src="url"
-      >
-        <div slot="error" class="image-slot">
-          暂无图片
-        </div>
-      </el-image>
-    </div> -->
-    
+    <s-qrcode :url="url || ''" style="margin: 15px auto 0;" />    
   </div>
 </template>
 <script>

@@ -111,7 +111,8 @@
             <div slot="header">
               <span>社团简介</span>
             </div>
-            <mce-editor v-model="form.descs" ></mce-editor>
+            <!-- <mce-editor v-model="form.descs" :url="`${$constants.BASE_API}comm/upload`" @on-upload-success="handleSuccessDescs"></mce-editor> -->
+            <tinymce v-model="form.descs" />
           </el-card>
         </el-col>
       </el-form> 
@@ -125,9 +126,11 @@ import { mapState } from 'vuex'
 import MceEditor from '_c/MceEditor'
 window.tinymce.baseURL = '/static/tinymce'
 window.tinymce.suffix = '.min'
+import Tinymce from '_c/Tinymce'
 export default {
   name: 'corporation-info',
   components: {
+    Tinymce,
     MceEditor
   },
   data() {
@@ -193,6 +196,9 @@ export default {
       console.log(response)
       this.form.videofile = response.filePath
     },
+    handleSuccessDescs(arr) {
+      console.log(arr)
+    },
     getCorInfo() {
       getCorporationApi().then((result) => {
         console.log(result)
@@ -210,7 +216,7 @@ export default {
           cortercher: String,     领导老师
           corscale: String,       社团规模
           corworkspace: String,   工作地点
-          corcollege: String,     所属院系
+          corcollege: id,     所属院系
           descs: String,          简介
           createtime: String,     创建时间
           bannerfile: String,     海报图片
@@ -223,6 +229,7 @@ export default {
       console.log(this.form)
       updateApi(this.form.corname, this.form.leadusername, this.form.cortercher, this.form.corworkspace, this.form.corcollege, this.form.corscale, this.form.descs).then((res) => {
         console.log(res)
+        this.$message.success('保存成功')
       })
       
     }

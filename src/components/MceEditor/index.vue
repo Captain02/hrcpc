@@ -51,7 +51,7 @@ export default {
         height: 500,
         theme: "modern",
         menubar: false,
-        toolbar: `styleselect | fontselect | formatselect | fontsizeselect | forecolor backcolor | bold italic underline strikethrough | emoticons image  media | table | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | preview removeformat  hr | paste code  link | undo redo | fullscreen `,
+        toolbar: `styleselect | fontselect | formatselect | fontsizeselect | forecolor backcolor | bold italic underline strikethrough | emoticons image | table | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | preview removeformat  hr | paste code  link | undo redo | fullscreen `,
         plugins: `
             paste
             importcss
@@ -214,7 +214,7 @@ export default {
               // 抛出 'on-upload-success' 钩子
               self.$emit("on-upload-success", [json, success, failure])
             }
-            formData.append("file", blobInfo.blob())
+            formData.append("picture", blobInfo.blob())
             xhr.send(formData)
           }
         },
