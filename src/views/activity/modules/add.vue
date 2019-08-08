@@ -43,7 +43,7 @@
         <el-form-item prop="croWdPeople" label="面向人群：">
           <el-tooltip content='不选择则面向人群默认为"全校"' placement="top-start">
             <el-select v-model="activity.croWdPeople" placeholder="全校" multiple clearable class="full-width">
-              <el-option v-for="college in collegeOptinos" :key="college.id" :label="college.value" :value="college.id"></el-option>
+              <el-option v-for="college in collegeOptions" :key="college.id" :label="college.value" :value="college.id"></el-option>
             </el-select>
           </el-tooltip>
         </el-form-item>
@@ -171,7 +171,7 @@ export default {
       imageFile: null,                 // 上传的图片海报
       videoFile: null,                // 上传的视频文件
       usersOptions: [],             // 活动负责人选项
-      collegeOptinos: [],           // 面向人群选项,
+      collegeOptions: [],           // 面向人群选项,
       deptOptions: [],              // 发布部门选项
       normalizer(node) {
         return {
@@ -280,7 +280,7 @@ export default {
     getData() {
        Promise.all([getCollegeInfoApi(1, null), getDeptsApi()]).then((result) => {
         let [ colleges, depts ] = result
-        this.collegeOptinos = colleges.data.map((item) => {
+        this.collegeOptions = colleges.data.map((item) => {
           return { id: item.id, value: item.value }
         })
         depts.data.unshift({ name: '本社团', dept_id: '', parent_id: 0 })

@@ -9,13 +9,15 @@ import qs from 'querystring'
  * @param {String} cortercher 领导老师
  * @param {String} corworkspace 工作地点
  * @param {Number} corcollege 所属院系
+ * @param {Array} corcrowd 面向人群
  * @param {String} corscale 社团规模
  */
-export const apply = (corName, corleading, corTercher, corWorkspace, corCollege, corscale) => {
+export const apply = (corName, corleading, corTercher, corWorkspace, corCollege, corcrowd, corscale) => {
   return request({
     url: '/corporation/add',
     method: 'POST',
     transformRequest: [function (data) {
+      data.corcrowd = data.corcrowd.join(',')
       return qs.stringify(data)
     }],
     data: {
@@ -24,6 +26,7 @@ export const apply = (corName, corleading, corTercher, corWorkspace, corCollege,
       corTercher,
       corWorkspace,
       corCollege,
+      corcrowd,
       corscale
     }
   })
@@ -38,13 +41,15 @@ export const apply = (corName, corleading, corTercher, corWorkspace, corCollege,
  * @param {*} corWorkspace 
  * @param {*} corCollege 
  * @param {*} corscale 
+ * @param {Array} corcrowd 面向人群
  * @param {*} descs 
  */
-export const update = (corName, corleading, corTercher, corWorkspace, corCollege, corscale, descs) => {
+export const update = (corName, corleading, corTercher, corWorkspace, corCollege, corcrowd, corscale, descs) => {
   return request({
     url: '/corporation/update',
     method: 'POST',
     transformRequest: [function (data) {
+      data.corcrowd = data.corcrowd.join(',')
       return qs.stringify(data)
     }],
     data: {
@@ -54,6 +59,7 @@ export const update = (corName, corleading, corTercher, corWorkspace, corCollege
       corTercher,
       corWorkspace,
       corCollege,
+      corcrowd,
       corscale,
       descs
     }

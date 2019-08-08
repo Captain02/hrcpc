@@ -14,8 +14,15 @@
     </el-form-item>
     <el-form-item prop="corcollege">
       <el-select v-model="form.corcollege" placeholder="所属院系" class="full-width">
-        <el-option v-for="item in collegeOptions" :key="item.id" :value="item.id" :label="item.label"></el-option>
+        <el-option v-for="college in collegeOptions" :key="college.id" :value="college.id" :label="college.label"></el-option>
       </el-select>
+    </el-form-item>
+    <el-form-item prop="corcrowd">
+      <el-tooltip content='不选择则面向人群默认为"全校"' placement="top-start">
+        <el-select v-model="form.corcrowd" placeholder="面向人群" multiple clearable class="full-width">
+          <el-option v-for="college in collegeOptions" :key="college.id" :label="college.label" :value="college.id"></el-option>
+        </el-select>
+      </el-tooltip>
     </el-form-item>
     <el-form-item prop="corscale">
       <el-input type="number" v-model="form.corscale" placeholder="社团规模：人数"></el-input>
@@ -46,7 +53,8 @@ export default {
         corleading: '',         // 社团负责人
         cortercher: '',         // 负责老师
         corworkspace: '',       // 工作地点
-        corcollege: '',         // 所属院系
+        corcollege: '',         // 所属院系，
+        corcrowd: [],           // 面向人群：不选择为“全校”提交数组
         corscale: ''          // 规模
       },
       collegeOptions: [],
