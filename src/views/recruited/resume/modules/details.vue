@@ -14,9 +14,7 @@
         <el-row class="details-row">
           <el-col :span="3"><span>头像：</span></el-col>
           <el-col :span="21">
-            <div class="avatar-area">
-              <img :src="resume.filepath ? resume.filepath : ''">
-            </div>
+            <s-avatar :url="resume.filepath || ''" size="medium" />
           </el-col>
         </el-row>
         <el-row class="details-row">
@@ -69,8 +67,12 @@
 <script>
 import { getResume as getResumeApi } from '@/api/resume'
 import { options } from './data'
+import SAvatar from '_c/SAvatar'
 export default {
   name: 'details-resume',
+  components: {
+    SAvatar
+  },
   props: {
     data: {
       type: Object,

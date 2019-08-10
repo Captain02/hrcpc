@@ -51,6 +51,7 @@ export default {
   .user-info {
     margin: 20px 0;
     .el-col {
+      min-height: 36px;
       padding: 8px 0;
       line-height: 20px;
       color: #909399;

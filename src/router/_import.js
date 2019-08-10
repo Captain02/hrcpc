@@ -39,5 +39,6 @@ let map = {
 
   // 社团管理
   'corporation-info': () => import('@/views/corporation'),
-  'corporation-qrcode': () => import('@/views/corporation/modules/qrcode')
+  'corporation-qrcode': () => import('@/views/corporation/modules/qrcode'),
+  'notices': () => import('@/views/corporation/modules/notices')
 }
