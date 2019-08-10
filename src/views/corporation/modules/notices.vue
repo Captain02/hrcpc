@@ -18,7 +18,7 @@
       >
       </el-date-picker>
       <el-button class="filter-item" type="primary" size="small" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-      <el-button class="filter-item" type="primary" size="small" icon="el-icon-circle-plus-outline" @click="handleAdd">发布公告</el-button>
+      <!-- <el-button class="filter-item" type="primary" size="small" icon="el-icon-circle-plus-outline" @click="handleAdd">发布公告</el-button> -->
       <!-- <el-button class="filter-item filter-right-btn" type="danger" size="small" icon="el-icon-delete" :disabled="!selectedItemsCount" @click="deleteSelectedItems">删除</el-button> -->
     </div>
     <!-- {{listQuery}} -->
@@ -109,7 +109,7 @@ export default {
               cellValue.forEach(user => {
                 notictedusers+=user.notictedusername + '，'
               })
-              return notictedusers
+              return notictedusers.substring(0, notictedusers.length - 1)
             }
           }
         },
