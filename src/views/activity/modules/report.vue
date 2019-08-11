@@ -8,6 +8,9 @@
             <el-input class="filter-item" v-model="listQuery.name" placeholder="请输入姓名" style="width: 200px;" size="small"></el-input>
             <el-input class="filter-item" v-model="listQuery.username" placeholder="请输入学号" style="width: 200px;" size="small"></el-input>
             <el-button class="filter-item" type="primary" size="small" icon="el-icon-search" @click="handleSearch">搜索</el-button>
+            <publish-notice class="filter-item" :users="tableData" v-slot:action-btn>
+              <el-button type="primary" size="small">发布公告</el-button>
+            </publish-notice>
           </template>
           <template v-slot:pagination>
             <pagination  v-show="total>0" :total="total" :curr.sync="listQuery.currPage" :size.sync="listQuery.pageSize" @on-page-change="getTableData" />
@@ -24,6 +27,7 @@
 import { getActivity as getActivityApi, getUsersByActId as getUsersByActIdApi, getActCharts as getActChartsApi } from '@/api/activity'
 import tablePanel from './table-panel'
 import chartsPanel from './charts-panel'
+import PublishNotice from '_c/PublishNotice'
 import Pagination from '_c/Pagination'
 import { mapState } from 'vuex'
 export default {
@@ -31,6 +35,7 @@ export default {
   components: {
     tablePanel,
     chartsPanel,
+    PublishNotice,
     Pagination
   },
   data() {

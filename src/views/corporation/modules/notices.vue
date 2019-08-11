@@ -7,6 +7,7 @@
       <el-input class="filter-item" v-model="listQuery.receiveUser" placeholder="接收人" style="width: 200px;" size="small"></el-input>
       <el-date-picker
         class="filter-item"
+        style="display: inline-flex;"
         v-model="listQuery.dateTime"
         value-format="yyyy-MM-dd"
         size="small"
@@ -18,14 +19,13 @@
       >
       </el-date-picker>
       <el-button class="filter-item" type="primary" size="small" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-      <!-- <el-button class="filter-item" type="primary" size="small" icon="el-icon-circle-plus-outline" @click="handleAdd">发布公告</el-button> -->
-      <!-- <el-button class="filter-item filter-right-btn" type="danger" size="small" icon="el-icon-delete" :disabled="!selectedItemsCount" @click="deleteSelectedItems">删除</el-button> -->
     </div>
     <!-- {{listQuery}} -->
     <s-table :data="noticeList" :columns="columns" size="medium">
-      <template v-slot:action="{scope}">
+      <template v-slot:title="{scope}">
         <details-notice v-slot:action-btn :data="scope.row">
-          <el-button type="text" size="small">查看</el-button>
+          <!-- <el-button type="text" size="small">查看</el-button> -->
+          <div class="notice-title">{{scope.row.notictop}}</div>
         </details-notice>
       </template>
     </s-table>
@@ -86,6 +86,7 @@ export default {
       total: 0,
       columns: [
         {
+          slot: 'title',
           attrs: {
             prop: 'notictop',
             label: '公告标题'
@@ -123,15 +124,15 @@ export default {
             formatter: (row, column, cellValue, index) => parseTime(cellValue, '{y}-{m}-{d}')
           }
         },
-        {
-          slot: 'action',
-          attrs: {
-            prop: 'action',
-            label: '操作',
-            align: "center",
-            width: 120
-          }
-        }
+        // {
+        //   slot: 'action',
+        //   attrs: {
+        //     prop: 'action',
+        //     label: '操作',
+        //     align: "center",
+        //     width: 120
+        //   }
+        // }
       ]
     }
   },
@@ -154,3 +155,12 @@ export default {
   }
 }
 </script>
+<style lang="less" scoped>
+  .notice-title {
+    cursor: pointer;
+    transition: color .3s;
+    &:hover {
+      color: #409eff;
+    }
+  }
+</style>

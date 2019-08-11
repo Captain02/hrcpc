@@ -6,11 +6,11 @@
       <el-input class="filter-item" v-model="listQuery.username" placeholder="请输入学号" style="width: 200px;" size="small"></el-input>
       <el-button class="filter-item" type="primary" size="small" icon="el-icon-search" @click="handleSearch">搜索</el-button>
       <el-button class="filter-item" type="primary" size="small" icon="el-icon-circle-plus-outline" @click="() => this.$router.push({name: 'add-user'})">添加新成员</el-button>
-      <publish-notice class="filter-item" :users="userList" style="display: inline-block;" v-slot:action-btn>
+      <publish-notice class="filter-item" :users="userList" v-slot:action-btn>
         <el-button type="primary" size="small">发布公告</el-button>
       </publish-notice>
       <el-button class="filter-item filter-right-btn" type="danger" size="small" icon="el-icon-delete" :disabled="!selectedItemsCount" @click="deleteSelectedItems">删除</el-button>
-      <el-dropdown trigger="click" style="float: right;">
+      <el-dropdown trigger="click" class="filter-item filter-right-btn">
         <el-button type="primary" size="small">更改显示列</el-button>
         <el-dropdown-menu slot="dropdown">
           <template v-for="column in columns">

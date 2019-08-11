@@ -5,7 +5,7 @@
       <el-tooltip class="item" effect="dark" content="导出列：姓名、性别、学号、手机号、学院、专业、QQ、微信、状态" placement="top">
         <el-button type="success" class="filter-right-btn" @click="exportExcel" size="small">导出Excel</el-button>
       </el-tooltip>
-      <el-dropdown trigger="click" style="float: right;">
+      <el-dropdown trigger="click" class="filter-right-btn">
         <el-button type="primary" size="small">更改显示列</el-button>
         <el-dropdown-menu slot="dropdown">
           <template v-for="column in columns">

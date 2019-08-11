@@ -9,10 +9,13 @@
       <el-input class="filter-item" v-model="listQuery.name" placeholder="姓名" style="width: 200px;" size="small "></el-input>
       <el-input class="filter-item" v-model="listQuery.persionNum" placeholder="学号" style="width: 200px;" size="small"></el-input>
       <el-button class="filter-item" type="primary" size="small" icon="el-icon-search" @click="handleSearch">搜索</el-button>
+      <publish-notice class="filter-item" :users="resumeList" v-slot:action-btn>
+        <el-button type="primary" size="small">发布公告</el-button>
+      </publish-notice>
       <el-tooltip class="item" effect="dark" content="导出列：姓名、性别、学号、手机号、学院、专业、QQ、微信、状态" placement="top">
         <el-button type="success" class="filter-right-btn" @click="exportExcel" size="small">导出Excel</el-button>
       </el-tooltip>
-      <el-dropdown trigger="click" style="float: right;">
+      <el-dropdown trigger="click" class="filter-right-btn">
         <el-button type="primary" size="small">更改显示列</el-button>
         <el-dropdown-menu slot="dropdown">
           <template v-for="column in columns">
@@ -55,6 +58,7 @@ import { columns, options } from './modules/data'
 import STable from '_c/STable'
 import SAvatar from '_c/SAvatar'
 import Pagination from '_c/Pagination'
+import PublishNotice from '_c/PublishNotice'
 import countPanel from './modules/count-panel'
 import detailsResume from './modules/details'
 import editResume from './modules/edit'
@@ -64,6 +68,7 @@ export default {
     STable,
     SAvatar,
     Pagination,
+    PublishNotice,
     countPanel,
     detailsResume,
     editResume

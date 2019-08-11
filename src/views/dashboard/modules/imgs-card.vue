@@ -5,6 +5,7 @@
       <el-button type="text" size="small" style="float: right;padding: 0;" @click="() => this.$router.push({name: 'picture-list'})">更多</el-button>
     </div>
     <ul class="img-list clearfix">
+      <div class="empty" v-if="!list.length">暂无内容</div>
       <li v-for="item in list" :key="item.id" class="img-item">
         <img :src="item.url" class="image">
         <div class="img-meta">
@@ -43,6 +44,12 @@ export default {
 <style lang="less" scoped>
 .img-list {
   margin-left: -15px;
+  .empty {
+    line-height: 22px;
+    text-align: center;
+    color: #909399;
+    font-size: 13px;
+  }
   .img-item {
     float: left;
     margin-left: 15px;

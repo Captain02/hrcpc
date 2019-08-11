@@ -3,7 +3,7 @@
     <el-row :gutter="25">
       <el-col :span="9">
         <user-card class="card-panel" />
-        <notice-card class="card-panel" />
+        <notices-card class="card-panel" />
         <calenderCard class="card-panel" />
       </el-col>
       <el-col :span="15">
@@ -21,7 +21,7 @@
 </template>
 <script>
 import userCard from './modules/user-card'
-import noticeCard from './modules/notice-card'
+import noticesCard from './modules/notices-card'
 import calenderCard from './modules/calender-card'
 import newsCard from './modules/news-card'
 import activityCard from './modules/activity-card'
@@ -31,7 +31,7 @@ export default {
   name: 'dashboard',
   components: {
     userCard,
-    noticeCard,
+    noticesCard,
     calenderCard,
     newsCard,
     activityCard,

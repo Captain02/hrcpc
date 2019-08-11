@@ -4,7 +4,7 @@
     <div class="filter-container">
       <el-input class="filter-item" v-model="listQuery.roleName" placeholder="请输入角色名" style="width: 200px;" size="small"></el-input>
       <el-button class="filter-item" type="primary" size="small" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-      <add-role class="filter-item" style="display: inline-block;" @on-add-success="getRoleList" >
+      <add-role class="filter-item" @on-add-success="getRoleList" >
         <template v-slot:action-btn>
           <el-button type="primary" size="small" icon="el-icon-circle-plus-outline">添加新角色</el-button>
         </template>
