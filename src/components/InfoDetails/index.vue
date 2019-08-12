@@ -11,8 +11,9 @@
       custom-class="details-dialog"
     >
       <div v-if="infoData" class="details-wrapper">
-        <div class="details-cell" v-for="item in infoData" :key="item" :class="hasComplexCell(item)">
-          <span></span>
+        <div class="details-cell" v-for="(value, key) in infoData" :key="key" :class="hasComplexCell(value)">
+          <span class="label">{{key}}</span>
+          {{value}}
         </div>
         <el-row class="details-row">
           <el-col :span="3"><span>头像：</span></el-col>
@@ -102,17 +103,32 @@ export default {
   },
   methods: {
     hasComplexCell(cell) {
-      return cell === 'filepath' || cell === 'descs'
+      return cell === 'filepath' || cell === 'descs' ? 'full' : 'half'
     }
   }
 }
 </script>
 <style lang="less" scoped>
 .details-wrapper {
+  .full {
+    width: 100%;
+  }
+  .half {
+    width: 50%;
+  }
   .details-cell {
     min-height: 25px;
     float: left;
-    
+    box-sizing: border-box;
+    .label{
+      width: 20%;
+    }
+  }
+  .full {
+    width: 100%;
+  }
+  .half {
+    width: 50%;
   }
 }
 </style>

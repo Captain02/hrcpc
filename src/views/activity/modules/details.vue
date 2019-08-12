@@ -3,9 +3,9 @@
     <div class="article" v-if="activity">
       <h1 class="article-title">{{activity.actname}}</h1>
       <div class="article-meta">
-        <span class="meta">{{activity.corname}}  ·  {{activity.deptInfo ? activity.deptInfo.name : ''}}</span>
-        <span class="author">活动负责人：{{activity.actleading ? activity.actleading.name : ''}}</span>
-        <span class="date">创建时间：{{activity.createtime}}</span>
+        <span class="label">{{activity.corname}}  ·  {{activity.deptInfo ? activity.deptInfo.name : ''}}</span>
+        <span class="label">活动负责人：<span class="text">{{activity.actleading ? activity.actleading.name : ''}}</span></span>
+        <span class="label">创建时间：<span class="text">{{activity.createtime}}</span></span>
       </div>
       <div class="article-content">
         <div class="image-wrapper">

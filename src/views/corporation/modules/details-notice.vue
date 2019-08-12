@@ -11,13 +11,13 @@
       :close-on-click-modal="false"
     >
     <!-- {{notice}} -->
-      <div class="notice-wrapper" v-if="notice">
+      <div class="notice" v-if="notice">
         <h1 class="title">{{notice.notictop}}</h1>
         <div class="meta">
-          <span class="author">发布人：{{notice.notictusername}}</span>
-          <span class="date">发布时间：{{notice.createtime}}</span>
-          <div>
-            <span class="receive">接收人：{{receiveUser}}</span>
+          <span class="label">发布人：<span class="text">{{notice.notictusername}}</span></span>
+          <span class="label">发布时间：<span class="text">{{notice.createtime}}</span></span>
+          <div style="text-align: left;">
+            <span class="label">接收人：<span class="text">{{receiveUser}}</span></span>
           </div>
         </div>
         <div class="content">
@@ -68,7 +68,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.notice-wrapper {
+.notice {
   color: #333;
   .title {
     text-align: center;
@@ -78,16 +78,22 @@ export default {
   .meta{
     padding: 10px;
     text-align: center;
-    color: rgba(0,0,0,.45);
     line-height: 23px;
-    .author {
+    font-size: 13px;
+    .label {
+      color: #848484;
       margin-right: 15px;
+      .text {
+        color: #464646;
+        text-align: left;
+      }
     }
   }
   .content {
-    line-height: 23px;
+    line-height: 27px;
     text-indent: 2em;
     padding: 5px 0;
+    letter-spacing: 3px;
   }
 }
 </style>

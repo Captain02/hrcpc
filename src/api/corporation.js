@@ -136,42 +136,75 @@ export const deleteQRCode = (id, path) => {
 }
 
 
-
-export const getNotices = (currPage, pageSize) => {
-  const data = {
-    data: [
-      {
-        noticid: 1,
-        notictop: '浙江最大皮革厂江南皮革厂倒闭了！！',
-        createtime: '2019-08-10',
-        notictuserid: 1,
-        notictusername: '黄鹤',
-        noticteduser: [
-          { noticteduserid: 2, notictedusername: '张三' },
-          { noticteduserid: 3, notictedusername: '李四' },
-          { noticteduserid: 4, notictedusername: '王五' },
-          { noticteduserid: 5, notictedusername: '虾老六' },
-          { noticteduserid: 6, notictedusername: '蟹老八' },
-          { noticteduserid: 7, notictedusername: '尼古拉斯' },
-          { noticteduserid: 8, notictedusername: '赵四' },
-          { noticteduserid: 9, notictedusername: '刘能' },
-          { noticteduserid: 10, notictedusername: '谢广坤' },
-          { noticteduserid: 12, notictedusername: '王大拿' },
-          { noticteduserid: 11, notictedusername: '铁憨憨' },
-          { noticteduserid: 13, notictedusername: '找大胆' }
-        ]
-      }
-    ]
-  }
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(data)
-    }, 100)
-  })
+export const addNotice = (title, publishUser, receiveUserIds, content) => {
   return request({
-    url: '',
+    url:'/notic/add',
+    method: 'POST',
+    transformRequest: [function (data) {
+      data.receiveUserIds = data.receiveUserIds.join(',')
+      return qs.stringify(data)
+    }],
+    data: {
+      corId: getCorId(),
+      title,
+      publishUser,
+      receiveUserIds,
+      content
+    }
+  })
+}
+
+/**
+ * 获取通知公告列表
+ * @param {*} title 
+ * @param {*} publishUser 
+ * @param {*} receiveUser 
+ * @param {*} startTime 
+ * @param {*} endTime 
+ * @param {*} currPage 
+ * @param {*} pageSize 
+ */
+export const getNotices = (title, publishUser, receiveUser, startTime, endTime, currPage, pageSize) => {
+  // const data = {
+  //   data: [
+  //     {
+  //       noticid: 1,
+  //       notictop: '浙江最大皮革厂江南皮革厂倒闭了！！',
+  //       createtime: '2019-08-10',
+  //       notictuserid: 1,
+  //       notictusername: '黄鹤',
+  //       noticteduser: [
+  //         { noticteduserid: 2, notictedusername: '张三' },
+  //         { noticteduserid: 3, notictedusername: '李四' },
+  //         { noticteduserid: 4, notictedusername: '王五' },
+  //         { noticteduserid: 5, notictedusername: '虾老六' },
+  //         { noticteduserid: 6, notictedusername: '蟹老八' },
+  //         { noticteduserid: 7, notictedusername: '尼古拉斯' },
+  //         { noticteduserid: 8, notictedusername: '赵四' },
+  //         { noticteduserid: 9, notictedusername: '刘能' },
+  //         { noticteduserid: 10, notictedusername: '谢广坤' },
+  //         { noticteduserid: 12, notictedusername: '王大拿' },
+  //         { noticteduserid: 11, notictedusername: '铁憨憨' },
+  //         { noticteduserid: 13, notictedusername: '找大胆' }
+  //       ]
+  //     }
+  //   ]
+  // }
+  // return new Promise((resolve) => {
+  //   setTimeout(() => {
+  //     resolve(data)
+  //   }, 100)
+  // })
+  return request({
+    url: '/notic/list',
     method: 'GET',
     params: {
+      corId: getCorId(),
+      title,
+      publishUser,
+      receiveUser,
+      startTime,
+      endTime,
       currPage,
       pageSize
     }

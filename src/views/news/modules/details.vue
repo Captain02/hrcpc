@@ -3,9 +3,9 @@
     <div class="article" v-if="news">
       <h1 class="article-title">{{news.title}}</h1>
       <div class="article-meta">
-        <span class="meta">{{news.corname}}  ·  {{news.publishDept ? news.publishDept.name : ''}}</span>
-        <span class="author">发布人：{{news.publishUser ? news.publishUser.name : ''}}</span>
-        <span class="date">发布时间：{{news.createtime}}</span>
+        <span class="label">{{news.corname}}  ·  {{news.publishDept ? news.publishDept.name : ''}}</span>
+        <span class="label">发布人：<span class="text">{{news.publishUser ? news.publishUser.name : ''}}</span></span>
+        <span class="label">发布时间：<span class="text">{{news.createtime}}</span></span>
       </div>
       <div class="article-content">
         <div class="textarea-wrapper" v-html="news.content"></div>

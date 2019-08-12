@@ -6,30 +6,33 @@
     <el-dialog
       title="发布公告"
       :visible.sync="dialogVisible"
-      width="650px"
+      width="630px"
       :append-to-body="true"
       :close-on-click-modal="false"
+      @close="handleClose"
+      custom-class="notice-dialog"
     >
-      <el-form :model="notice">
+      <el-form :model="notice" size="small" ref="noticeForm" class="notice-form">
         <el-form-item prop="title">
           <el-input v-model="notice.title" placeholder="公告标题"></el-input>
         </el-form-item>
         <el-form-item prop="receiveUserIds">
-          <el-transfer v-model="notice.receiveUserIds" :data="allUsers"></el-transfer>
+          <el-transfer :titles="['未选择', '已选择']" v-model="notice.receiveUserIds" :data="allUsers"></el-transfer>
         </el-form-item>
-        {{allUsers}}
+        <!-- {{allUsers}} -->
         <el-form-item prop="content">
-          <el-input v-model="notice.content" type="textarea" placeholder="内容"></el-input>
+          <el-input v-model="notice.content" type="textarea" :rows="6" placeholder="内容"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">发布</el-button>
+          <el-button type="primary" @click="handlePublish" class="full-width">发布</el-button>
         </el-form-item>
-        {{notice}}
+        <!-- {{notice}} -->
       </el-form>
     </el-dialog>
   </div>
 </template>
 <script>
+import { addNotice as addNoticeApi } from '@/api/corporation'
 import { mapState } from 'vuex' 
 export default {
   name: 'PublishNotice',
@@ -45,7 +48,7 @@ export default {
       notice: {
         title: '',
         content: '',
-        publishUserId: this.userId,
+        // publishUserId: this.userId,
         receiveUserIds: []
       },
       // allUsers: [],
@@ -65,9 +68,35 @@ export default {
     }
   },
   methods: {
+    handleClose() {
+      this.$refs['noticeForm'].resetFields()
+    },
     handleClick() {
       this.dialogVisible = true
+    },
+    handlePublish() {
+      this.$refs['noticeForm'].validate((valid) => {
+         if (!valid) {
+          this.$message.error('请填写相关项目!')
+          return
+        }
+        addNoticeApi(this.notice.title, this.userId, this.notice.receiveUserIds, this.notice.content).then((result) => {
+          console.log(result)
+          this.$message.success('发布成功!')
+          this.dialogVisible = false
+        }).catch((err) => { console.log(err) })
+      })
     }
   }
 }
 </script>
+<style lang="less" scoped>
+  .notice-dialog {
+    .notice-form {
+      padding: 0 10px;
+      /deep/.el-transfer-panel{
+        width: 235px;
+      }
+    }
+  }
+</style>

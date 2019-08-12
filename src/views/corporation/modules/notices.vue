@@ -138,9 +138,15 @@ export default {
   },
   methods: {
     getNoticeList() {
-      getNoticesApi(this.listQuery.title, this.listQuery.publishUser, this.listQuery.receiveUser, this.listQuery.currPage, this.listQuery.pageSize).then((result) => {
-        let { data } = result
-        this.noticeList = data
+      let startTime = ''
+      let endTime = ''
+      if(this.listQuery.dateTime !== null){
+        [startTime, endTime] = this.listQuery.dateTime
+      }
+      getNoticesApi(this.listQuery.title, this.listQuery.publishUser, this.listQuery.receiveUser, startTime, endTime, this.listQuery.currPage, this.listQuery.pageSize).then((result) => {
+        console.log(result)
+        // let { data } = result
+        // this.noticeList = data
       }).catch((err) => { console.log(err) })
     },
     handleSearch() {
