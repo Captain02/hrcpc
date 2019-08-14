@@ -49,6 +49,7 @@
                 </el-select>
               </el-tooltip>
             </el-form-item>
+            
             <el-form-item label="社团规模：" prop="corscale">
               <el-input v-model="form.corscale" placeholder="社团规模：人数" />
             </el-form-item>
