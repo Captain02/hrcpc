@@ -33,12 +33,12 @@ export const getPremits = () => {
 /**
  * 根据社团id获取社团的信息--二维码
  */
-export const getCorporationInfo = () => {
+export const getCorporationInfo = (corid) => {
   return request({
     url: '/corporation/selectByCorIdForQR',
     method: 'GET',
     params: {
-      corid: getCorId()
+      corid
     }
   })
 }
