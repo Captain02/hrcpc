@@ -24,11 +24,11 @@
           </div>
           <div class="card-content-item clearfix">
             <div class="label">所属学院：</div>
-            <div class="text">{{corporation.corcollege}}</div>
+            <div class="text">{{corporation.corcollegename}}</div>
           </div>
           <div class="card-content-item clearfix">
             <div class="label">面向人群：</div>
-            <div class="text">信息管理学院</div>
+            <div class="text">{{crowd}}</div>
           </div>
           <div class="card-content-item clearfix">
             <div class="label">社团规模：</div>
@@ -53,16 +53,40 @@
         <video :src="corporation.videofile" controls="controls"></video>
       </div>
     </div>
+    <div class="card-panel">
+      <div class="card-header">
+        社团简介
+      </div>
+      <div class="card-content">
+        <div class="card-content-inner">
+          {{corporation.descs || '暂无简介'}}
+        </div>
+      </div>
+    </div>
     <el-button type="primary" class="full-width fixed-btn" @click="handleClick">立即加入</el-button>
   </div>
 </template>
 <script>
-import { codeMap as codeMapApi, getCorporationInfo as getCorporationInfoApi } from '@/api/comm'
+import { codeMap as codeMapApi, getCorporationInfo as getCorporationInfoApi, getCollegeInfo as getCollegeInfoApi } from '@/api/comm'
 export default {
   name: 'join',
   data() {
     return {
-      corporation: null
+      corporation: null,
+      collegeMap: {}
+    }
+  },
+  computed: {
+    crowd() {
+      const { corcrowd } = this.corporation
+      console.log(corcrowd)
+      if(!corcrowd.length){
+        return '全校'
+      }else{
+        return corcrowd.map((item) => {
+          return this.collegeMap[item+'']
+        }).join('，')
+      }
     }
   },
   methods: {
@@ -78,9 +102,18 @@ export default {
         this.corporation = result.data[0]
 
       }).catch((err) => { console.log(err) })
+    },
+    getCollegeList() {
+      getCollegeInfoApi(1, null).then((result) => {
+        let { data: list } = result
+        list.forEach((item) => {
+          this.collegeMap[item.id] = item.value
+        })
+      }).catch((err) => { })
     }
   },
   mounted() {
+    this.getCollegeList()
     this.getCorporationInfo()
   }
 }
@@ -158,20 +191,5 @@ export default {
   }
 }
 
-// .add-wrapper {
-//   text-align: center;
-//   width: 150px;
-//   height: 200px;
-//   margin: 6rem auto;
-  
-//   .add-icon-area {
-//     font-size: 7rem;
-//     color: #10AEFF;
-//   }
-//   .add-text-area {
-//     margin-top: 25px;
-//     font-size: 1.5rem;
-//   }
-// }
 
 </style>
