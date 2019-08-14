@@ -273,6 +273,7 @@ export default {
     }
   },
   mounted() {
+    
     this.getCorInfo()
     getCollegeInfoApi(1, null).then((result) => {
       let { data: list } = result

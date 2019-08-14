@@ -2,13 +2,14 @@
   <div class="s-list-item">
     <div class="list-item-header">
       <div class="list-item-meta">
-        <div class="list-item-meta-avatar">
+        <!-- <div class="list-item-meta-avatar">
           <el-image :src="item.actlead ? item.actlead.filepath : null" alt="头像" >
             <div slot="error" class="image-slot">
               <icon-svg icon-class="img-load-fail"></icon-svg>
             </div>
           </el-image>
-        </div>
+        </div> -->
+        <s-avatar :url="item.actlead ? item.actlead.filepath : null" alt="头像" style="margin-right: 16px;" />
         <div class="list-item-meta-content">
           <h1 class="list-item-meta-title">
             <span class="list-item-meta-corname">
@@ -73,11 +74,13 @@ import { parseTime } from '@/utils'
 import cloneDeep from 'clonedeep'
 import CollapseTransition from './CollapseTransition'
 import VideoPlayer from '_c/VideoPlayer'
+import SAvatar from '_c/SAvatar'
 export default {
   name: 'ListItem',
   components: {
     CollapseTransition,
-    VideoPlayer
+    VideoPlayer,
+    SAvatar
   },
   props: {
     item: {

@@ -12,12 +12,17 @@
       @close="handleClose"
       custom-class="notice-dialog"
     >
-      <el-form :model="notice" size="small" ref="noticeForm" class="notice-form">
+      <el-form :model="notice" size="small" :rules="rules" ref="noticeForm" class="notice-form">
         <el-form-item prop="title">
           <el-input v-model="notice.title" placeholder="公告标题"></el-input>
         </el-form-item>
         <el-form-item prop="receiveUserIds">
-          <el-transfer :titles="['未选择', '已选择']" v-model="notice.receiveUserIds" :data="allUsers"></el-transfer>
+          <el-transfer
+          filterable
+          :titles="['未选择', '已选择']"
+          v-model="notice.receiveUserIds" 
+          :data="allUsers">
+          </el-transfer>
         </el-form-item>
         <!-- {{allUsers}} -->
         <el-form-item prop="content">
@@ -51,7 +56,14 @@ export default {
         // publishUserId: this.userId,
         receiveUserIds: []
       },
-      // allUsers: [],
+      rules: {
+        title: [
+          { required: true, message: '请输入标题' }
+        ],
+        receiveUserIds: [
+          { required: true, message: '请选择接收人' }
+        ]
+      }
     }
   },
   computed: {
@@ -87,7 +99,7 @@ export default {
         }).catch((err) => { console.log(err) })
       })
     }
-  }
+  },
 }
 </script>
 <style lang="less" scoped>

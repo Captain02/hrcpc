@@ -29,12 +29,13 @@ export const getPremits = () => {
   })
 }
 
+
 /**
- * 根据社团id获取社团的信息
+ * 根据社团id获取社团的信息--二维码
  */
-export const getCorInfo = () => {
+export const getCorporationInfo = () => {
   return request({
-    url: '/corporation/selectByCorId',
+    url: '/corporation/selectByCorIdForQR',
     method: 'GET',
     params: {
       corid: getCorId()

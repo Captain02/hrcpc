@@ -15,7 +15,7 @@
   </div>
 </template>
 <script>
-import { getCorInfo as getCorInfoApi } from '@/api/comm'
+import { getCorporationInfo as getCorporationInfoApi } from '@/api/comm'
 import SQrcode from '_c/SQRCode'
 export default {
   name: 'code-map',
@@ -31,7 +31,7 @@ export default {
   methods: {
     showCodeMap() {
       if(this.src === null){
-        getCorInfoApi().then((result) => {
+        getCorporationInfoApi().then((result) => {
           let data = result.data[0]
           this.dialogFormVisible = true
           this.src = data.filefile

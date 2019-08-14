@@ -2,7 +2,7 @@
   <div class="site-wrapper">
     <div class="site-content">
       <div class="brand-info">
-        <h2 class="brand-title">德州学院社团管理系统</h2>
+        <h2 class="brand-title">百团争鸣管理系统</h2>
         <p class="brand-desc">renren-fast-vue基于vue、element-ui构建开发，实现renren-fast后台管理前端功能，提供一套更优的前端解决方案。</p>
       </div>
       <div class="tabs-wrapper">

@@ -13,7 +13,7 @@ export default {
   name: 'SAvatar',
   props: {
     url: {
-      type: String,
+      // type: [String, Objsect],
       required: true
     },
     size: {
