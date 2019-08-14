@@ -1,137 +1,176 @@
 <template>
-  <div class="mobile-container">
-    <h1 class="join-message">加入失败，您尚未注册，请填写相关信息进行注册，注册成功后可在百团争鸣小程序中查看更多详情</h1>
-    <el-form class="join-form" :model="user" :rules="rules" ref="userForm" size="small">
-      <el-form-item prop="username">
-        <el-input :value="user.username" @input="handleInput" placeholder="请输入学号"></el-input>
-      </el-form-item>
-      <el-form-item prop="name">
-        <el-input v-model.trim="user.name" placeholder="请输入姓名"></el-input>
-      </el-form-item>
-      <el-form-item prop="gender">
-        <el-radio-group v-model="user.gender">
-            <el-radio label="男"></el-radio>
-            <el-radio label="女"></el-radio>
-          </el-radio-group>
-      </el-form-item>
-      
-      <el-form-item prop="password">
-        <el-input v-model="user.password" type="password" placeholder="请输入密码" ></el-input>
-      </el-form-item>
-      <el-form-item prop="college">
-        <el-select v-model="user.college" placeholder="请选择院系" class="full-width" @change="handleChange">
-          <el-option v-for="item in collegeOptions" :key="item.id" :value="item.id" :label="item.label"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item prop="collegetie">
-        <el-select v-model="user.collegetie" placeholder="请选择专业" class="full-width">
-          <el-option v-for="item in collegetieOptions" :key="item.id" :value="item.id" :label="item.label"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item prop="email">
-        <el-input v-model.trim="user.email" placeholder="请输入邮箱地址"></el-input>
-      </el-form-item>
-      <el-form-item prop="mobile">
-        <el-input v-model.trim="user.mobile" placeholder="请输入手机号"></el-input>
-      </el-form-item>
-      <el-form-item prop="wechart">
-        <el-input v-model.trim="user.wechart" placeholder="请输入微信号"></el-input>
-      </el-form-item>
-      <el-form-item prop="qq">
-        <el-input v-model.trim="user.qq" placeholder="请输入QQ号"></el-input>
-      </el-form-item>
-      <el-form-item prop="descs">
-        <el-input v-model.trim="user.descs" type="textarea" placeholder="自我描述"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button class="full-width" type="primary" @click="handleClick" >提交</el-button>
-      </el-form-item>
-    </el-form> 
-    {{user}}
+  <div class="container" v-if="corporation">
+    <div class="card-panel">
+      <div class="card-header">
+        社团基本信息
+      </div>
+      <div class="card-content">
+        <div class="card-content-inner">
+          <div class="card-content-item clearfix">
+            <div class="label">社团名称：</div>
+            <div class="text">{{corporation.corname}}</div>
+          </div>
+          <div class="card-content-item clearfix">
+            <div class="label">社团负责人：</div>
+            <div class="text">{{corporation.leadingname}}</div>
+          </div>
+          <div class="card-content-item clearfix">
+            <div class="label">领导老师：</div>
+            <div class="text">{{corporation.cortercher}}</div>
+          </div>
+          <div class="card-content-item clearfix">
+            <div class="label">工作地点：</div>
+            <div class="text">{{corporation.corworkspace}}</div>
+          </div>
+          <div class="card-content-item clearfix">
+            <div class="label">所属学院：</div>
+            <div class="text">{{corporation.corcollege}}</div>
+          </div>
+          <div class="card-content-item clearfix">
+            <div class="label">面向人群：</div>
+            <div class="text">信息管理学院</div>
+          </div>
+          <div class="card-content-item clearfix">
+            <div class="label">社团规模：</div>
+            <div class="text">{{corporation.corscale}}人</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-panel">
+      <div class="card-header">
+        海报图片
+      </div>
+      <div class="card-media">
+        <el-image :src="corporation.bannerfile"></el-image>
+      </div>
+    </div>
+    <div class="card-panel">
+      <div class="card-header">
+        宣传视频
+      </div>
+      <div class="card-media">
+        <video :src="corporation.videofile" controls="controls"></video>
+      </div>
+    </div>
+    <el-button type="primary" class="full-width fixed-btn" @click="handleClick">立即加入</el-button>
   </div>
 </template>
 <script>
-import { getCollegeInfo as getCollegeInfoApi, join as joinApi, hasRegister as hasRegisterApi } from '@/api/comm'
-import { debounce } from '@/utils'
-import mixins from '@/views/organize/user/mixins'
+import { codeMap as codeMapApi, getCorporationInfo as getCorporationInfoApi } from '@/api/comm'
 export default {
   name: 'join',
-  mixins: [mixins],
   data() {
     return {
-      // code: this.$route.query.code,
-      corid: this.$route.query.corid,
-      openid: this.$route.query.openid,
-      type: this.$route.query.type,
-      user: {
-        name: '',
-        gender: '男',
-        username: '',
-        college: '',
-        collegetie: '',
-        email: '',
-        mobile: '',
-        wechart: '',
-        qq: '',
-        password: '',
-        descs: ''
-      },
+      corporation: null
     }
   },
   methods: {
-    handleInput(val) {
-      this.user.username = val
-      this.handleSearch(val)
-    },
-    handleSearch: debounce(function (username) {
-      this.$refs['userForm'].validateField('username', (errorMessage) => {
-        if(!errorMessage){
-          hasRegisterApi(username).then((result) => {
-            console.log(result)
-          }).catch((err) => {})
-        }
-      })
-    }, 1000),
     handleClick() {
-      this.$refs['userForm'].validate((valid) => {
-         if (valid) {
-          let collegeName = this.findCollegeName(this.collegeOptions, this.user.college)
-          let collegetieName = this.findCollegeName(this.collegetieOptions, this.user.collegetie)
-          joinApi(this.corid, this.openid, this.user.username, this.user.name, this.user.gender, this.user.password, collegeName, collegetieName, this.user.email, this.user.mobile, this.user.wechart, this.user.qq, this.user.descs).then((result) => {
-            // console.log(result)
-            this.$router.replace({
-              path: '/result',
-              query: {
-                code: 0,
-                corid: this.corid,
-                openid: this.openid,
-                type: this.type
-              }
-            })
-          }).catch((err) => { console.log(err) })
-        }        
-      })
+      let id = this.$route.query.Id
+      let type = this.$route.query.type
+      window.open(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2a89e726a1bf0142&redirect_uri=https%3A%2F%2Fwww.btzmpro.com%2FHBO%2Fwechart%2FOAuth&response_type=code&scope=snsapi_base&state=${id},${type},${deptid},${corid}#wechat_redirect`)
     },
+    getCorporationInfo() {
+      getCorporationInfoApi().then((result) => {
+        console.log(result)
+        this.corporation = result.data[0]
+
+      }).catch((err) => { console.log(err) })
+    }
+  },
+  mounted() {
+    this.getCorporationInfo()
   }
 }
 </script>
-
 <style lang="less" scoped>
-.join-message {
-  margin-top: 3em;
-  // text-align: center;
-  line-height: 25px;
-  color: #ff4d4f;
+.fixed-btn {
+  position: fixed;
+  // top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
-.join-form {
-  margin-top: 1em;
-  .el-form-item--small {
-    margin-bottom: 1em;
+.container {
+  background-color: #efeff4;
+  overflow: auto;
+  padding-bottom: 40px;
+}
+.card-panel {
+  font-size: 14px;
+  position: relative;
+  overflow: hidden;
+  margin: 10px;
+  border-radius: 2px;
+  background-color: #fff;
+  background-clip: padding-box;
+  box-shadow: 0 1px 2px rgba(0,0,0,.3);
+  line-height: 21px;
+  color: #000;
+  .card-header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 39px;
+    padding: 10px 15px;
+    &::after {
+      content: '';
+      position: absolute;
+      top: auto;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background-color: #c8c7cc;
+    }
+  }
+  .card-content {
+    font-size: 14px;
+    position: relative;
+    .card-content-inner {
+      position: relative;
+      padding: 15px;
+      .card-content-item {
+        margin-top: 10px;
+        .label {
+          width: 35%;
+          float: left;
+          color: #848484;
+        }
+        .text {
+          width: 65%;
+          float: left;
+        }
+      }
+     
+    }
+  }
+  .card-media {
+    height: 150px;
+    width: 340px;
+    video {
+      width: 100%;
+      height: 100%;
+    }
   }
 }
-</style>
-<style lang="less">
-.err504-message {
-  min-width: 300px;
-}
+
+// .add-wrapper {
+//   text-align: center;
+//   width: 150px;
+//   height: 200px;
+//   margin: 6rem auto;
+  
+//   .add-icon-area {
+//     font-size: 7rem;
+//     color: #10AEFF;
+//   }
+//   .add-text-area {
+//     margin-top: 25px;
+//     font-size: 1.5rem;
+//   }
+// }
+
 </style>

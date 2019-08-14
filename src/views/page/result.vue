@@ -31,7 +31,7 @@ export default {
     }
   },
   computed: {
-    isJioned() {
+    isJoined() {
       return +this.code === 505
     },
     isSuccess() {
@@ -48,9 +48,9 @@ export default {
   },
   mounted() {
     // 如果没有加入成功并且没有重复加入
-    if(!this.isSuccess && !this.isJioned){
+    if(!this.isSuccess && !this.isJoined){
       this.$router.replace({
-        path: '/join',
+        path: '/register',
         query: {
           code: this.code,
           corid: this.corid,

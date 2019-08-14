@@ -45,10 +45,10 @@ export const routes = [
     ]
   },
   {
-    path: '/code-map',
-    name: 'code-map',
+    path: '/join',
+    name: 'join',
     hidden: true,
-    component: () => import('@/views/page/code-map')
+    component: () => import('@/views/page/join')
   },
   {
     path: '/result',
@@ -57,10 +57,10 @@ export const routes = [
     component: () => import('@/views/page/result')
   },
   {
-    path: '/join',
-    name: 'join',
+    path: '/register',
+    name: 'register',
     hidden: true,
-    component: () => import('@/views/page/join')
+    component: () => import('@/views/page/register')
   },
   {
     path: '/forget-pwd',
