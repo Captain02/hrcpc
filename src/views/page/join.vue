@@ -79,7 +79,6 @@ export default {
   computed: {
     crowd() {
       const { corcrowd } = this.corporation
-      console.log(corcrowd)
       if(!corcrowd.length){
         return '全校'
       }else{
@@ -94,7 +93,7 @@ export default {
       let id = this.$route.query.Id
       let type = this.$route.query.type
       // window.open(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2a89e726a1bf0142&redirect_uri=https%3A%2F%2Fwww.btzmpro.com%2FHBO%2Fwechart%2FOAuth&response_type=code&scope=snsapi_base&state=${id},${type},${deptid},${corid}#wechat_redirect`)
-      window.open(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2a89e726a1bf0142&redirect_uri=http://www.btzmpro.com/HBO/wechart/OAuth&response_type=code&scope=snsapi_base&state=${id},${type},null,null#wechat_redirect`)
+      window.open(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2a89e726a1bf0142&redirect_uri=${$constants.WECHAT_API}&response_type=code&scope=snsapi_base&state=${id},${type},null,null#wechat_redirect`)
     },
     getCorporationInfo() {
       let id = this.$route.query.Id
@@ -126,6 +125,7 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: 5;
 }
 .container {
   background-color: #efeff4;

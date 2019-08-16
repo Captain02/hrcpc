@@ -265,7 +265,7 @@ export default {
           return
         }
         console.log(this.form)
-        updateApi(this.form.corname, this.form.leadusername, this.form.cortercher, this.form.corworkspace, this.form.corcollege, this.form.corscale, this.form.descs).then((res) => {
+        updateApi(this.form.corname, this.form.leadusername, this.form.cortercher, this.form.corworkspace, this.form.corcollege, this.form.corcrowd, this.form.corscale, this.form.descs).then((res) => {
           console.log(res)
           this.$message.success('保存成功')
         })
