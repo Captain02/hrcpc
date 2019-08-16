@@ -4,5 +4,5 @@ const prodEnv = require('./prod.env')
 
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  BASE_API: '"https://www.btzmpro.com:8081/HBO/sys/"'
+  BASE_API: '"http://www.btzmpro.com:8081/HBO/sys/"'
 })
