@@ -94,7 +94,7 @@ export default {
       let id = this.$route.query.Id
       let type = this.$route.query.type
       // window.open(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2a89e726a1bf0142&redirect_uri=https%3A%2F%2Fwww.btzmpro.com%2FHBO%2Fwechart%2FOAuth&response_type=code&scope=snsapi_base&state=${id},${type},${deptid},${corid}#wechat_redirect`)
-      window.open(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2a89e726a1bf0142&redirect_uri=https%3A%2F%2Fwww.btzmpro.com%2FHBO%2Fwechart%2FOAuth&response_type=code&scope=snsapi_base&state=${id},${type},null,null#wechat_redirect`)
+      window.open(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2a89e726a1bf0142&redirect_uri=https://www.btzmpro.com/HBO/wechart/OAuth&response_type=code&scope=snsapi_base&state=${id},${type},null,null#wechat_redirect`)
     },
     getCorporationInfo() {
       let id = this.$route.query.Id
