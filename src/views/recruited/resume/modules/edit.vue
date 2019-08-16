@@ -6,11 +6,69 @@
     <el-dialog
       title="个人信息"
       :visible.sync="dialogFormVisible"
-      width="800px"
+      width="600px"
       :append-to-body="true"
       :close-on-click-modal="false"
     >
-      <template v-if="resume">
+      <div class="details-wrapper" v-if="resume">
+        <div class="row clearfix">
+          <div class="label">头像：</div>
+          <div class="text">
+            <s-avatar :url="resume.filepath || ''" size="medium" />
+          </div>
+        </div>
+        <div class="row clearfix">
+          <div class="label">姓名：</div>
+          <div class="text">{{resume.name || '暂无'}}</div>
+          <div class="label">性别：</div>
+          <div class="text">{{resume.gender || '暂无'}}</div>
+        </div>
+        <div class="row clearfix">
+          <div class="label">学号：</div>
+          <div class="text">{{resume.username || '暂无'}}</div>
+          <div class="label">院系：</div>
+          <div class="text">{{resume.college || '暂无'}}</div>
+        </div>
+        <div class="row clearfix">
+          <div class="label">专业：</div>
+          <div class="text">{{resume.collegetie || '暂无'}}</div>
+          <div class="label">邮箱：</div>
+          <div class="text">{{resume.email || '暂无'}}</div>
+        </div>
+        <div class="row clearfix">
+          <div class="label">手机号：</div>
+          <div class="text">{{resume.mobile || '暂无'}}</div>
+          <div class="label">QQ：</div>
+          <div class="text">{{resume.QQ || '暂无'}}</div>
+        </div>
+        <div class="row clearfix">
+          <div class="label">微信：</div>
+          <div class="text">{{resume.wechart || '暂无'}}</div>
+        </div>
+        <div class="row clearfix">
+          <div class="label">自我描述：</div>
+          <div class="text" style="width: 400px;">
+            <div v-html="resume.descs || ''"></div>
+          </div>
+        </div>
+        <h1 class="details-title">审核信息</h1>
+        <div class="row clearfix">
+          <div class="label">状态：</div>
+          <div class="text" style="width: 430px;">
+            <el-radio-group v-model="resume.status">
+              <template v-for="item in options">
+                <el-radio v-if="item.value && item.tagType" :label="item.value" :key="item.id">{{item.text}}</el-radio>
+              </template>
+            </el-radio-group>
+          </div>
+        </div>
+        <div class="row clearfix">
+          <el-col :offset="3" :span="3">
+            <el-button type="primary" size="small" @click="editResume">保存</el-button>
+          </el-col>
+        </div>
+      </div>
+      <!-- <template v-if="resume">
         <el-row class="details-row">
           <el-col :span="3"><span>头像：</span></el-col>
           <el-col :span="21">
@@ -70,7 +128,7 @@
           </el-col>
         </el-row>
         
-      </template>
+      </template> -->
     </el-dialog>
   </div>
 </template>
@@ -78,8 +136,12 @@
 import { getResume as getResumeApi, editResume as editResumeApi } from '@/api/resume'
 import cloneDeep from 'clonedeep'
 import { options } from './data'
+import SAvatar from '_c/SAvatar'
 export default {
   name: 'edit-resume',
+  components: {
+    SAvatar
+  },
   props: {
     data: {
       type: Object,

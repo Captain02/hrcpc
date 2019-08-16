@@ -6,11 +6,66 @@
     <el-dialog
       title="成员信息"
       :visible.sync="dialogFormVisible"
-      width="800px"
+      width="600px"
       :append-to-body="true"
       :close-on-click-modal="false"
     >
-      <template v-if="user">
+      <div class="details-wrapper" v-if="user">
+        <div class="row clearfix">
+          <div class="label">头像：</div>
+          <div class="text">
+            <s-avatar :url="user.filepath || ''" size="medium" />
+          </div>
+        </div>
+        <div class="row clearfix">
+          <div class="label">姓名：</div>
+          <div class="text">{{user.name || '暂无'}}</div>
+          <div class="label">性别：</div>
+          <div class="text">{{user.gender || '暂无'}}</div>
+        </div>
+        <div class="row clearfix">
+          <div class="label">学号：</div>
+          <div class="text">{{user.username || '暂无'}}</div>
+          <div class="label">院系：</div>
+          <div class="text">{{user.college || '暂无'}}</div>
+        </div>
+        <div class="row clearfix">
+          <div class="label">专业：</div>
+          <div class="text">{{user.collegetie || '暂无'}}</div>
+          <div class="label">邮箱：</div>
+          <div class="text">{{user.email || '暂无'}}</div>
+        </div>
+        <div class="row clearfix">
+          <div class="label">手机号：</div>
+          <div class="text">{{user.mobile || '暂无'}}</div>
+          <div class="label">QQ：</div>
+          <div class="text">{{user.QQ || '暂无'}}</div>
+        </div>
+        <div class="row clearfix">
+          <div class="label">微信：</div>
+          <div class="text">{{user.wechart || '暂无'}}</div>
+          <div class="label">所属部门：</div>
+          <div class="text">{{user.depts.length ? user.depts[0].name : '暂无'}}</div>
+        </div>
+        <div class="row clearfix">
+          <div class="label">拥有角色：</div>
+          <div class="text" style="width: 400px;">
+            <template v-if="user.roles.length">
+              <el-tag style="margin-right: 15px; font-size: 12px;" v-for="role in user.roles" size="small" :key="role.role_id">{{role.role_name}}</el-tag>
+            </template>
+            <template v-else>
+              <span>无</span>
+            </template>
+          </div>
+        </div>
+        <div class="row clearfix">
+          <div class="label">自我描述：</div>
+          <div class="text" style="width: 400px;">
+            <div v-html="user.descs || ''"></div>
+          </div>
+        </div>
+      </div>
+      <!-- <template v-if="user">
         <el-row class="details-row">
           <el-col :span="3"><span>头像：</span></el-col>
           <el-col :span="21">
@@ -64,7 +119,7 @@
           <el-col :span="3"><span>自我描述：</span></el-col>
           <el-col :span="21" v-html="user.descs || ''"></el-col>
         </el-row>
-      </template>
+      </template> -->
     </el-dialog>
   </div>
 </template>
@@ -104,13 +159,3 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-.details-row {
-  font-size: 13px;
-  padding: 15px;
-  span {
-    font-size: 14px;
-    color: #909399;
-  }
-}
-</style>
