@@ -135,7 +135,13 @@ export const deleteQRCode = (id, path) => {
   })
 }
 
-
+/**
+ * 添加通知公告
+ * @param {*} title 
+ * @param {*} publishUser 
+ * @param {*} receiveUserIds 
+ * @param {*} content 
+ */
 export const addNotice = (title, publishUser, receiveUserIds, content) => {
   return request({
     url:'/notic/add',
@@ -165,36 +171,6 @@ export const addNotice = (title, publishUser, receiveUserIds, content) => {
  * @param {*} pageSize 
  */
 export const getNotices = (title, publishUser, receiveUser, startTime, endTime, currPage, pageSize) => {
-  // const data = {
-  //   data: [
-  //     {
-  //       noticid: 1,
-  //       notictop: '浙江最大皮革厂江南皮革厂倒闭了！！',
-  //       createtime: '2019-08-10',
-  //       notictuserid: 1,
-  //       notictusername: '黄鹤',
-  //       noticteduser: [
-  //         { noticteduserid: 2, notictedusername: '张三' },
-  //         { noticteduserid: 3, notictedusername: '李四' },
-  //         { noticteduserid: 4, notictedusername: '王五' },
-  //         { noticteduserid: 5, notictedusername: '虾老六' },
-  //         { noticteduserid: 6, notictedusername: '蟹老八' },
-  //         { noticteduserid: 7, notictedusername: '尼古拉斯' },
-  //         { noticteduserid: 8, notictedusername: '赵四' },
-  //         { noticteduserid: 9, notictedusername: '刘能' },
-  //         { noticteduserid: 10, notictedusername: '谢广坤' },
-  //         { noticteduserid: 12, notictedusername: '王大拿' },
-  //         { noticteduserid: 11, notictedusername: '铁憨憨' },
-  //         { noticteduserid: 13, notictedusername: '找大胆' }
-  //       ]
-  //     }
-  //   ]
-  // }
-  // return new Promise((resolve) => {
-  //   setTimeout(() => {
-  //     resolve(data)
-  //   }, 100)
-  // })
   return request({
     url: '/notic/list',
     method: 'GET',
@@ -244,5 +220,19 @@ export const getNotice = (noticid) => {
   })
   return request({
     url: ''
+  })
+}
+
+/**
+ * 扫码加入社团最后获取社团纳新二维码
+ * @param {Number} corid 扫码得到的社团id
+ */
+export const getCorporationQRCode = (corid) => {
+  return request({
+    url: '/corporation/getQqCodeFileForQr',
+    method: 'GET',
+    params: {
+      corid
+    }
   })
 }

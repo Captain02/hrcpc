@@ -98,6 +98,10 @@ export const getDepts = () => {
   })
 }
 
+/**
+ * 根据学号判断是否注册
+ * @param {String} username 
+ */
 export const hasRegister = (username) => {
   return request({
     url: '/user/selectCountByUserName',

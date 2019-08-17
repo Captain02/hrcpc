@@ -46,14 +46,21 @@ const failHandle = (code, msg) => {
         path: '/404'
       })
       break
-    case 500:
+    case 500:         // 未知异常
       Message({
         message: msg,
         type: 'error',
         duration: 5 * 1000
       })
       break
-    case 504:
+    case 503:         // 用户没有注册
+      Message({
+        message: msg,
+        type: 'error',
+        duration: 5 * 1000
+      })
+      break
+    case 504:       // 
       Message({
         message: msg,
         type: 'error',
@@ -61,7 +68,7 @@ const failHandle = (code, msg) => {
         duration: 6000
       })
       break
-    case 505:
+    case 505:           // 重复加入社团
       Notification({
         title: '提示',
         message: msg,

@@ -12,18 +12,24 @@
         {{description}}
       </div>
       <div class="result-action" v-if="isSuccess">
-        <el-image :src="qqqun"></el-image>
+        <template v-for="item in qrcodes">
+          <s-qrcode :key="item.id" :url="item.path" style="width: 100%; height: 100%; margin-bottom: 15px;" />
+        </template>
       </div>
     </div>
   </div>
 </template>
 <script>
-import qqqun from '@/assets/img/qqqun.png'
+import { getCorporationQRCode as getCorporationQRCodeApi } from '@/api/corporation'
+import SQrcode from '_c/SQRCode'
 export default {
   name: 'result',
+  components: {
+    SQrcode
+  },
   data() {
     return {
-      qqqun,
+      qrcodes: '',
       code: this.$route.query.code,
       corid: this.$route.query.corid,
       openid: this.$route.query.openid,
@@ -45,6 +51,12 @@ export default {
     }
   },
   methods: {
+    getCorQRCode() {
+      getCorporationQRCodeApi(this.corid).then((result) => {
+        // console.log(result)
+        this.qrcodes = result.data
+      }).catch((err) => { console.log(err) })
+    }
   },
   mounted() {
     // 如果没有加入成功并且没有重复加入
@@ -58,6 +70,9 @@ export default {
           type: this.type
         }
       })
+    }
+    if(this.isSuccess) {
+      this.getCorQRCode()
     }
   }
 }

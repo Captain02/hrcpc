@@ -5,7 +5,9 @@
       <el-input class="filter-item" v-model="listQuery.name" placeholder="请输入姓名" style="width: 200px;" size="small"></el-input>
       <el-input class="filter-item" v-model="listQuery.username" placeholder="请输入学号" style="width: 200px;" size="small"></el-input>
       <el-button class="filter-item" type="primary" size="small" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-      <el-button class="filter-item" type="primary" size="small" icon="el-icon-circle-plus-outline" @click="() => this.$router.push({name: 'add-user'})">添加新成员</el-button>
+      <add-user v-slot:action-btn class="filter-item">
+        <el-button type="primary" size="small" icon="el-icon-circle-plus-outline">添加新成员</el-button>
+      </add-user>
       <publish-notice class="filter-item" :users="userList" v-slot:action-btn>
         <el-button type="primary" size="small">发布公告</el-button>
       </publish-notice>
@@ -68,6 +70,7 @@ import STable from '_c/STable'
 import SAvatar from '_c/SAvatar'
 import Pagination from '_c/Pagination'
 import PublishNotice from '_c/PublishNotice'
+import addUser from './modules/add'
 import detailsUser from './modules/details'
 import editUserInfo from './modules/edit-info'
 import editUserRole from './modules/edit-role'
@@ -80,6 +83,7 @@ export default {
     SAvatar,
     Pagination,
     PublishNotice,
+    addUser,
     detailsUser,
     editUserInfo,
     editUserRole,
