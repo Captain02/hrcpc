@@ -18,6 +18,9 @@
       <el-form-item prop="password">
         <el-input v-model="user.password" type="password" placeholder="请输入密码" ></el-input>
       </el-form-item>
+      <el-form-item prop="confirmPwd">
+        <el-input v-model="user.confirmPwd" placeholder="确认密码" type="password"></el-input>
+      </el-form-item>
       <el-form-item prop="college">
         <el-select v-model="user.college" placeholder="请选择院系" class="full-width" @change="handleChange">
           <el-option v-for="item in collegeOptions" :key="item.id" :value="item.id" :label="item.label"></el-option>
@@ -28,9 +31,6 @@
           <el-option v-for="item in collegetieOptions" :key="item.id" :value="item.id" :label="item.label"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item prop="email">
-        <el-input v-model.trim="user.email" placeholder="请输入邮箱地址"></el-input>
-      </el-form-item>
       <el-form-item prop="mobile">
         <el-input v-model.trim="user.mobile" placeholder="请输入手机号"></el-input>
       </el-form-item>
@@ -39,6 +39,9 @@
       </el-form-item>
       <el-form-item prop="qq">
         <el-input v-model.trim="user.qq" placeholder="请输入QQ号"></el-input>
+      </el-form-item>
+      <el-form-item prop="email">
+        <el-input v-model.trim="user.email" placeholder="请输入邮箱地址"></el-input>
       </el-form-item>
       <el-form-item prop="descs">
         <el-input v-model.trim="user.descs" type="textarea" placeholder="自我描述"></el-input>
@@ -51,9 +54,9 @@
   </div>
 </template>
 <script>
-import { getCollegeInfo as getCollegeInfoApi, register as registerApi, hasRegister as hasRegisterApi } from '@/api/comm'
+import { register as registerApi, hasRegister as hasRegisterApi } from '@/api/comm'
 import { debounce } from '@/utils'
-import mixins from '@/views/organize/user/mixins'
+import mixins from '@/views/login/mixins'
 export default {
   name: 'register',
   mixins: [mixins],
@@ -74,6 +77,7 @@ export default {
         wechart: '',
         qq: '',
         password: '',
+        confirmPwd: '',
         descs: ''
       },
     }
@@ -112,6 +116,9 @@ export default {
         }        
       })
     },
+  },
+  mounted() {
+    this.getCollegeOptions()
   }
 }
 </script>

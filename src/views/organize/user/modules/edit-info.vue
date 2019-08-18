@@ -5,8 +5,8 @@
     </div>
     <el-dialog
       title="修改成员信息"
-      :visible.sync="dialogFormVisible"
-      width="800px"
+      :visible.sync="dialogVisible"
+      width="850px"
       :append-to-body="true"
       :close-on-click-modal="false"
     >
@@ -31,9 +31,6 @@
               <el-option v-for="item in collegetieOptions" :key="item.id" :value="item.id" :label="item.label"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item prop="email" label="邮箱：">
-            <el-input v-model="user.email" type="email" placeholder="请输入邮箱"></el-input>
-          </el-form-item>
           <el-form-item prop="mobile" label="手机号：">
             <el-input v-model="user.mobile" placeholder="请输入手机号"></el-input>
           </el-form-item>
@@ -43,8 +40,11 @@
           <el-form-item prop="QQ" label="QQ：">
             <el-input v-model="user.QQ" placeholder="请输入QQ"></el-input>
           </el-form-item>
+          <el-form-item prop="email" label="邮箱：">
+            <el-input v-model="user.email" type="email" placeholder="请输入邮箱"></el-input>
+          </el-form-item>
           <el-form-item prop="descs" label="自我描述：">
-            <Tinymce v-model="user.descs" v-if="dialogFormVisible" />
+            <Tinymce v-model="user.descs" v-if="dialogVisible" />
           </el-form-item>
           
           <el-form-item>
@@ -58,54 +58,32 @@
   </div>
 </template>
 <script>
-import { getUser as getUserApi, updateUser as updateUserApi } from '@/api/user'
-import mixins from '../mixins'
-import { getCollegeInfo as getCollegeInfoApi } from '@/api/comm'
+import { updateUser as updateUserApi } from '@/api/user'
+import { mapState } from 'vuex'
 import cloneDeep from 'clonedeep'
+import mixins from '../mixins'
 import Tinymce from '_c/Tinymce'
 export default {
   name: 'edit-user-info',
   components: {
     Tinymce
   },
-  props: {
-    data: {
-      type: Object,
-      required: true
-    }
-  },
   mixins: [mixins],
   data() {
     return {
-      dialogFormVisible: false,                    // 并控制是否渲染富文本编辑器
+      dialogVisible: false,                    // 并控制是否渲染富文本编辑器
       user: null,
     }
   },
+  computed: {
+    ...mapState({
+      userId: (state) => state.user.userId
+    })
+  },
   methods: {
     handleEdit() {
-      this.user = cloneDeep(this.data)
-      // 将院系名称转换成相应的id
-      this.user.college = this.findCollegeId(this.collegeOptions, this.user.college)
-      getCollegeInfoApi(null, this.user.college).then((result) => {
-        let { data: list } = result
-        this.collegetieOptions = list.map((item) => {
-          return { id: item.id, value: item.id, label: item.value }
-        })
-        // 将专业名称转换为相应的id
-        this.user.collegetie = this.findCollegeId(this.collegetieOptions, this.user.collegetie)
-        this.dialogFormVisible = true
-        // console.log(this.user)
-      })
-    },
-    findCollegeId(list, name) {
-      let res = []
-      list.some((item) => {
-        if(item.label === name){
-          res = item.id
-          return true
-        }
-      })
-      return res
+      this.getUserAndCollegeInfo()
+      this.dialogVisible = true
     },
     updateUser() {
       // 更新成员
@@ -118,7 +96,7 @@ export default {
         let collegetieName = this.findCollegeName(this.collegetieOptions, this.user.collegetie)
         updateUserApi(this.user.user_id, this.user.name, this.user.gender, this.user.email, this.user.mobile, this.user.wechart, this.user.QQ, this.user.descs, collegeName, collegetieName).then((result) => {
           this.$message.success('修改成功!')
-          this.dialogFormVisible = false
+          this.dialogVisible = false
           this.$emit('on-edit-success')
         }).catch((err) => {
           console.log(err)

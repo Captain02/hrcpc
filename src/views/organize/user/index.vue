@@ -38,7 +38,7 @@
               </template>
             </details-user>
                         
-            <edit-user-info :data="scope.row" class="el-dropdown-menu__item" @on-edit-success="getUserList">
+            <edit-user-info class="el-dropdown-menu__item" @on-edit-success="getUserList">
               <template v-slot:action-btn>
                 <el-button type="text" size="small" >编辑 </el-button>
               </template>

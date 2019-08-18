@@ -5,17 +5,19 @@
         <user-info/>
       </el-tab-pane>
       <el-tab-pane label="通知公告" name="notice" :lazy="true">
-        
+        <notice-list/>
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 <script>
 import userInfo from './modules/userInfo'
+import noticeList from './modules/noticeList'
 export default {
   name: 'profile',
   components: {
-    userInfo
+    userInfo,
+    noticeList
   },
   data() {
     return {

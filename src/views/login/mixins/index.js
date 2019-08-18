@@ -1,11 +1,39 @@
-import { getUser as getUserApi } from '@/api/user'
 import { getCollegeInfo as getCollegeInfoApi } from '@/api/comm'
 export default {
   data() {
+    const validatePassword = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请填写密码'))
+      } else {
+        if (this.user.password !== '') {
+          this.$refs['userForm'].validateField('confirmPwd')
+        }
+        callback()
+      }
+    }
+    const validateConfirmPassword= (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次填写密码'))
+      } else if (value !== this.user.password) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
     return {
       rules: {
         name: [
           { required: true, message: '请填写姓名', trigger: 'blur' }
+        ],
+        password: [
+          { validator: validatePassword, trigger: 'blur' }
+        ],
+        confirmPwd: [
+          { validator: validateConfirmPassword, trigger: 'blur' }
+        ],
+        username: [
+          { required: true, message: '请填写学号', trigger: 'blur' },
+          { pattern: /^\d{12}$/,  message: '请填写正确的学号', trigger: ['blur', 'change'] }
         ],
         college: [
           { required: true, message: '请选择院系', trigger: 'change' }
@@ -21,10 +49,10 @@ export default {
           { required: true, message: '请填写微信号', trigger: 'blur' },
           { pattern: /^[a-zA-Z]([-_a-zA-Z0-9]{5,19})+$/,  message: '请填写正确的微信号', trigger: ['blur', 'change'] }
         ],
-        // qq: [
-        //   { required: true, message: '请填写QQ号', trigger: 'blur' },
-        //   { pattern: /^[1-9][0-9]{4,10}$/, message: '请填写正确的QQ号', trigger: ['blur', 'change'] }
-        // ],
+        qq: [
+          { required: true, message: '请填写QQ号', trigger: 'blur' },
+          { pattern: /^[1-9][0-9]{4,10}$/, message: '请填写正确的QQ号', trigger: ['blur', 'change'] }
+        ],
         QQ: [
           { required: true, message: '请填写QQ号', trigger: 'blur' },
           { pattern: /^[1-9][0-9]{4,10}$/, message: '请填写正确的QQ号', trigger: ['blur', 'change'] }
@@ -43,26 +71,22 @@ export default {
       this.user.collegetie = ''
       this.getCollegetieOptions(checkId)
     },
-    getCollegetieOptions(id) {
-      getCollegeInfoApi(null, id).then((result) => {
-        let { data } = result
-        this.collegetieOptions = this.formatCollegeData(data)
-      })
-    },
     formatCollegeData(list) {
       return list.map((item) => {
         return { id: item.id, value: item.id, label: item.value }
       })
     },
-    findCollegeId(list, name) {
-      let res = []
-      list.some((item) => {
-        if(item.label === name){
-          res = item.id
-          return true
-        }
+    getCollegeOptions() {
+      getCollegeInfoApi(1, null).then((res) => {
+        let { data } = res
+        this.collegeOptions = this.formatCollegeData(data)
       })
-      return res
+    },
+    getCollegetieOptions(id) {
+      getCollegeInfoApi(null, id).then((result) => {
+        let { data } = result
+        this.collegetieOptions = this.formatCollegeData(data)
+      })
     },
     findCollegeName(list, id) {
       let res = ''
@@ -74,21 +98,5 @@ export default {
       })
       return res
     },
-    getUserAndCollegeInfo() {
-      Promise.all([getCollegeInfoApi(1, null), getUserApi(this.userId)]).then((result) => {
-        console.log(result)
-        this.collegeOptions = this.formatCollegeData(result[0].data)
-  
-        this.user = result[1].data
-        this.user.college = this.findCollegeId(this.collegeOptions, this.user.college)
-        
-        getCollegeInfoApi(null, this.user.college).then((result) => {
-          let { data } = result
-          this.collegetieOptions = this.formatCollegeData(data)
-          // 将专业名称转换为相应的id
-          this.user.collegetie = this.findCollegeId(this.collegetieOptions, this.user.collegetie)
-        })
-      }).catch((err) => console.log(err))
-    }
   },
 }

@@ -32,7 +32,7 @@
           <el-form-item label="微信：" prop="wechart">
             <el-input v-model.trim="user.wechart" placeholder="微信"></el-input>
           </el-form-item>
-          <el-form-item label="QQ：" prop="qq">
+          <el-form-item label="QQ：" prop="QQ">
             <el-input v-model.trim="user.QQ" placeholder="QQ"></el-input>
           </el-form-item>
           <el-form-item label="邮箱：" prop="email">
@@ -69,7 +69,7 @@
             </el-upload>
           </el-form-item>
           <el-form-item label-width="30px">
-            <el-button @click="handleSave" class="full-width">保存修改</el-button>
+            <el-button @click="handleSave" type="primary" class="full-width">保存修改</el-button>
           </el-form-item>
         </el-col>
       </el-row>
@@ -84,8 +84,8 @@
   </div>
 </template>
 <script>
-import { getUser as getUserApi, updateUserInfo as updateUserInfoApi } from '@/api/user'
-import { getCollegeInfo as getCollegeInfoApi } from '@/api/comm'
+import {  updateUserInfo as updateUserInfoApi } from '@/api/user'
+import mixins from '@/views/organize/user/mixins'
 import { mapState } from 'vuex'
 import Tinymce from '_c/Tinymce'
 import SAvatar from '_c/SAvatar'
@@ -95,6 +95,7 @@ export default {
     Tinymce,
     SAvatar
   },
+  mixins: [mixins],
   data() {
     return {
       user: {
@@ -120,38 +121,6 @@ export default {
         // filepath: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80',
         // fileid: 7
       },
-      collegeOptions: [],
-      collegetieOptions: [],
-      rules: {
-        name: [
-          { required: true, message: '请填写姓名!', trigger: 'blur' }
-        ],
-        username: [
-          { required: true, message: '请填写学号', trigger: 'blur' },
-          { pattern: /^\d{12}$/,  message: '请输入正确的学号', trigger: ['blur', 'change'] }
-        ],
-        email: [
-          { required: true, message: '请填写邮箱地址', trigger: 'blur' },
-          { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
-        ],
-        mobile: [
-          { required: true, message: '请填写手机号', trigger: 'blur' },
-          { pattern: /^[1][3,4,5,6,7,8][0-9]{9}$/, message: '请输入正确的手机号', trigger: ['blur', 'change'] }
-        ],
-        QQ: [
-          { pattern: /^[1-9][0-9]{4,10}$/, message: '请输入正确的QQ号', trigger: ['blur', 'change'] }
-        ],
-        wechart: [
-          { required: true, message: '请填写微信号', trigger: 'blur' },
-          { pattern: /^[a-zA-Z]([-_a-zA-Z0-9]{5,19})+$/,  message: '请输入正确的微信号', trigger: ['blur', 'change'] }
-        ],
-        college: [
-          { required: true, message: '请选择院系', trigger: 'change' }
-        ],
-        collegetie: [
-          { required: true, message: '请选择专业', trigger: 'change' }
-        ]
-      }
     }
   },
   computed: {
@@ -161,41 +130,6 @@ export default {
     })
   },
   methods: {
-    handleChange(checkId) {
-      this.user.collegetie = ''
-      this.getCollegetieOptions(checkId)
-    },
-    getCollegetieOptions(id) {
-      getCollegeInfoApi(null, id).then((result) => {
-        let { data } = result
-        this.collegetieOptions = this.formatCollegeData(data)
-      })
-    },
-    formatCollegeData(list) {
-      return list.map((item) => {
-        return { id: item.id, value: item.id, label: item.value }
-      })
-    },
-    findCollegeId(list, name) {
-      let res = []
-      list.some((item) => {
-        if(item.label === name){
-          res = item.id
-          return true
-        }
-      })
-      return res
-    },
-    findCollegeName(list, id) {
-      let res = ''
-      list.some((item) => {
-        if(item.id === id){
-          res = item.label
-          return true
-        }
-      })
-      return res
-    },
     beforeUpload(file) {
       let types = ['image/jpeg', 'image/png']
       const isJPG = types.includes(file.type)
@@ -234,20 +168,7 @@ export default {
     }
   },
   mounted() {
-    Promise.all([getCollegeInfoApi(1, null), getUserApi(this.userId)]).then((result) => {
-      console.log(result)
-      this.collegeOptions = this.formatCollegeData(result[0].data)
-
-      this.user = result[1].data
-      this.user.college = this.findCollegeId(this.collegeOptions, this.user.college)
-      
-      getCollegeInfoApi(null, this.user.college).then((result) => {
-        let { data } = result
-        this.collegetieOptions = this.formatCollegeData(data)
-        // 将专业名称转换为相应的id
-        this.user.collegetie = this.findCollegeId(this.collegetieOptions, this.user.collegetie)
-      })
-    }).catch((err) => console.log(err))
+    this.getUserAndCollegeInfo()
   }
 }
 </script>
