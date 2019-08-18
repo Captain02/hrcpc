@@ -45,6 +45,23 @@ export const routes = [
     ]
   },
   {
+    path: '/profile',
+    hidden: true,
+    component: layout,
+    redirect: '/profile/index',
+    children: [
+      {
+        path: 'index',
+        name: 'profile',
+        hidden: true,
+        component: () => import('@/views/profile'),
+        meta: {
+          title: '个人中心',
+        }
+      }
+    ]
+  },
+  {
     path: '/join',
     name: 'join',
     hidden: true,

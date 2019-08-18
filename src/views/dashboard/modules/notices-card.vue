@@ -12,6 +12,8 @@
   </el-card>
 </template>
 <script>
+import { getNoticesInHome as getNoticesInHomeApi } from '@/api/notices'
+import { mapState } from 'vuex'
 export default {
   name: 'notice-card',
   data() {
@@ -19,6 +21,21 @@ export default {
       
     }
   },
+  computed: {
+    ...mapState({
+      username: (state) => state.user.userName
+    })
+  },
+  methods: {
+    getNotices() {
+      getNoticesInHomeApi(this.username, 1, 5).then((result) => {
+        console.log(result)
+      }).catch((err) => { console.log(err) })
+    }    
+  },
+  mounted() {
+    this.getNotices()
+  }
 }
 </script>
 <style lang="less" scoped>

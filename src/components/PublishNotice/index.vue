@@ -37,7 +37,7 @@
   </div>
 </template>
 <script>
-import { addNotice as addNoticeApi } from '@/api/corporation'
+import { addNotice as addNoticeApi } from '@/api/notices'
 import { mapState } from 'vuex' 
 export default {
   name: 'PublishNotice',

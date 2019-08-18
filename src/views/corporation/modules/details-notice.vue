@@ -28,7 +28,7 @@
   </div>
 </template>
 <script>
-import { getNotice as getNoticeApi } from '@/api/corporation'
+import { getNotice as getNoticeApi } from '@/api/notices'
 export default {
   name: 'details-notice',
   props: {

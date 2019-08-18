@@ -199,3 +199,41 @@ export const updateUserRole = (isRole, user_id, role_id) => {
     }
   })
 }
+
+
+/**
+ * 个人中心模块更新个人信息
+ * @param {Number} userId 
+ * @param {String} name 
+ * @param {String} gender 
+ * @param {String} college 
+ * @param {String} collegetie 
+ * @param {String} mobile 
+ * @param {String} wechart 
+ * @param {String} qq 
+ * @param {String} email 
+ * @param {String} descs 
+ * @param {Number} fileId 
+ */
+export const updateUserInfo = (userId, name, gender, college, collegetie, mobile, wechart, qq, email, descs, fileId) => {
+  return request({
+    url: '/user/updatePersionInfo',
+    method: 'POST',
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }],
+    data: {
+      userId,
+      name,
+      gender,
+      college,
+      collegetie,
+      mobile,
+      wechart,
+      qq,
+      email,
+      descs,
+      fileId
+    }
+  })
+}

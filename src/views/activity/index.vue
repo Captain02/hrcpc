@@ -7,7 +7,7 @@
          <el-option :value="0" label="无效"></el-option>
        </el-select>
        <el-select class="filter-item" v-model="listQuery.actcorid" size="small" style="width: 130px;">
-         <el-option :value="1" label="本社团活动"></el-option>
+         <el-option :value="corid" label="本社团活动"></el-option>
          <el-option value="" label="全部社团活动"></el-option>
        </el-select>
        <el-tooltip content='不选择则面向人群默认为"全校"' placement="top">

@@ -13,10 +13,6 @@ export default {
           { required: true, message: '请填写学号', trigger: 'blur' },
           { pattern: /^\d{12}$/,  message: '请输入正确的学号', trigger: ['blur', 'change'] }
         ],
-        persionnum: [
-          { required: true, message: '请填写学号', trigger: 'blur' },
-          { pattern: /^\d{12}$/,  message: '请输入正确的学号', trigger: ['blur', 'change'] }
-        ],
         email: [
           { required: true, message: '请填写邮箱地址', trigger: 'blur' },
           { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }

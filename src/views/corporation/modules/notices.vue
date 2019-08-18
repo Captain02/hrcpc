@@ -33,7 +33,7 @@
   </div>
 </template>
 <script>
-import { getNotices as getNoticesApi, getNotice as getNoticeApi } from '@/api/corporation'
+import { getNotices as getNoticesApi, getNotice as getNoticeApi } from '@/api/notices'
 import { parseTime } from '@/utils'
 import STable from '_c/STable'
 import Pagination from '_c/Pagination'

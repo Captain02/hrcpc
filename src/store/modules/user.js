@@ -9,7 +9,7 @@ const user = {
     userId: null,         // 用户ID
     corid: getCorId(),    // 所在社团ID
     name: '',             // 姓名
-    userName: '',         // 用户名
+    userName: '',         // 学号
     permits: [],          // 用户所拥有的权限
     avatar: '',
     gender: '',

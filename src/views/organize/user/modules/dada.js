@@ -18,10 +18,10 @@ export const columns = [
       }
     },
     {
-      hidden: true,
+      hidden: false,
       attrs: {
         prop: 'username',
-        label: '用户名',
+        label: '学号',
         align: 'center'
       }
     },
@@ -38,14 +38,6 @@ export const columns = [
       attrs: {
         prop: 'gender',
         label: '性别',
-        align: 'center'
-      }
-    },
-    {
-      hidden: false,
-      attrs: {
-        prop: 'persionnum',
-        label: '学号',
         align: 'center'
       }
     },
