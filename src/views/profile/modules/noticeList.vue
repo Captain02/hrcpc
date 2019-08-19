@@ -3,7 +3,6 @@
     <s-table :data="noticeList" :columns="columns" size="medium">
       <template v-slot:title="{scope}">
         <details-notice v-slot:action-btn :data="scope.row">
-          <!-- <el-button type="text" size="small">查看</el-button> -->
           <div class="notice-title">{{scope.row.notictop}}</div>
         </details-notice>
       </template>

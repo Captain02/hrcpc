@@ -1,83 +1,99 @@
 <template>
   <div class="user-wrapper">
-    <h1 class="title">基本信息</h1>
+    <!-- <h1 class="title">基本信息</h1> -->
     <el-form :model="user" label-width="100px" ref="userForm" :rules="rules" :hide-required-asterisk="true" label-position="left" size="small">
-      <el-row :gutter="25">
-        <el-col :span="12" style="border-right: 1px soild #e8e8e8;">
-          <el-form-item label="学号：">
-            <span>{{user.username}}</span>
-          </el-form-item>
-          <el-form-item label="姓名：" prop="name">
-            <el-input v-model.trim="user.name" placeholder="姓名"></el-input>
-          </el-form-item>
-          <el-form-item label="性别：">
-            <el-radio-group v-model="user.gender">
-              <el-radio label="男"></el-radio>
-              <el-radio label="女"></el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="院系：" prop="college">
-            <el-select v-model="user.college" placeholder="学院" class="full-width" @change="handleChange">
-              <el-option v-for="item in collegeOptions" :key="item.id" :value="item.id" :label="item.label"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="专业：" prop="collegetie">
-            <el-select v-model="user.collegetie" placeholder="专业" class="full-width">
-              <el-option v-for="item in collegetieOptions" :key="item.id" :value="item.id" :label="item.label"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="手机号：" prop="mobile">
-            <el-input v-model.trim="user.mobile" placeholder="手机号"></el-input>
-          </el-form-item>
-          <el-form-item label="微信：" prop="wechart">
-            <el-input v-model.trim="user.wechart" placeholder="微信"></el-input>
-          </el-form-item>
-          <el-form-item label="QQ：" prop="QQ">
-            <el-input v-model.trim="user.QQ" placeholder="QQ"></el-input>
-          </el-form-item>
-          <el-form-item label="邮箱：" prop="email">
-            <el-input v-model.trim="user.email" placeholder="邮箱"></el-input>
-          </el-form-item>
-          <el-form-item label="加入时间：">
-            <span>{{user.create_time}}</span>
-          </el-form-item>
-          <el-form-item label="所在部门：">
-            <span>{{user.depts && user.depts.length ? user.depts[0].name : '无'}}</span>
-          </el-form-item>
-          <el-form-item label="拥有角色：">
-            <template v-if="user.roles && user.roles.length">
-              <el-tag style="margin-right: 15px; margin-bottom: 10px; font-size: 12px;" v-for="role in user.roles" size="small" :key="role.role_id">{{role.role_name}}</el-tag>
-            </template>
-            <template v-else>
-              <span>无</span>
-            </template>
-          </el-form-item>
+      <el-row :gutter="30">
+        <el-col :span="12">
+          <el-card>
+            <div slot="header">
+              <span>基本信息</span>
+            </div>
+            <el-form-item label="学号：">
+              <span>{{user.username}}</span>
+            </el-form-item>
+            <el-form-item label="姓名：" prop="name">
+              <el-input v-model.trim="user.name" placeholder="姓名"></el-input>
+            </el-form-item>
+            <el-form-item label="性别：">
+              <el-radio-group v-model="user.gender">
+                <el-radio label="男"></el-radio>
+                <el-radio label="女"></el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="院系：" prop="college">
+              <el-select v-model="user.college" placeholder="学院" class="full-width" @change="handleChange">
+                <el-option v-for="item in collegeOptions" :key="item.id" :value="item.id" :label="item.label"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="专业：" prop="collegetie">
+              <el-select v-model="user.collegetie" placeholder="专业" class="full-width">
+                <el-option v-for="item in collegetieOptions" :key="item.id" :value="item.id" :label="item.label"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="手机号：" prop="mobile">
+              <el-input v-model.trim="user.mobile" placeholder="手机号"></el-input>
+            </el-form-item>
+            <el-form-item label="微信：" prop="wechart">
+              <el-input v-model.trim="user.wechart" placeholder="微信"></el-input>
+            </el-form-item>
+            <el-form-item label="QQ：" prop="QQ">
+              <el-input v-model.trim="user.QQ" placeholder="QQ"></el-input>
+            </el-form-item>
+            <el-form-item label="邮箱：" prop="email">
+              <el-input v-model.trim="user.email" placeholder="邮箱"></el-input>
+            </el-form-item>
+            <el-form-item label="加入时间：">
+              <span>{{user.create_time}}</span>
+            </el-form-item>
+            <el-form-item label="所在部门：">
+              <span>{{user.depts && user.depts.length ? user.depts[0].name : '无'}}</span>
+            </el-form-item>
+            <el-form-item label="拥有角色：">
+              <template v-if="user.roles && user.roles.length">
+                <el-tag style="margin-right: 15px; margin-bottom: 10px; font-size: 12px;" v-for="role in user.roles" size="small" :key="role.role_id">{{role.role_name}}</el-tag>
+              </template>
+              <template v-else>
+                <span>无</span>
+              </template>
+            </el-form-item>
+            <el-form-item label-width="0">
+              <el-button @click="handleSave" type="primary" class="full-width">保存修改</el-button>
+            </el-form-item>
+          </el-card>
         </el-col>
-        <el-col :span="10" :offset="1">
-          <el-form-item prop="filepath" label-width="30px">
-            <s-avatar :url="user.filepath" size="large" class="avatar" />
-            <el-upload
-              class="upload-btn"
-              :action="`${$constants.BASE_API}user/chatHead`"
-              :show-file-list="false"
-              :before-upload="beforeUpload"
-              :data="{userId}"
-              name="file"
-              :on-success="uploadSuccess"
-            >
-              <el-button size="small" type="primary">点击上传</el-button>
-            </el-upload>
-          </el-form-item>
-          <el-form-item label-width="30px">
-            <el-button @click="handleSave" type="primary" class="full-width">保存修改</el-button>
-          </el-form-item>
+        <el-col :span="12">
+          <el-card>
+            <div slot="header" class="clearfix card-header">
+              <span>修改头像</span>
+              <div class="action-btn">
+                <el-upload
+                  :action="`${$constants.BASE_API}user/chatHead`"
+                  :show-file-list="false"
+                  :before-upload="beforeUpload"
+                  :data="{userId}"
+                  name="file"
+                  :on-success="uploadSuccess"
+                >
+                  <el-button size="small" type="primary">点击上传</el-button>
+                </el-upload>
+              </div>
+            </div>
+            <el-form-item prop="filepath" label-width="0">
+              <s-avatar :url="user.filepath" size="large" class="avatar" />
+            </el-form-item>
+          </el-card>
         </el-col>
       </el-row>
-      <el-row>
+      <el-row style="margin-top: 15px;">
         <el-col :span="24">
-          <el-form-item label="个人描述：">
-            <Tinymce v-model="user.descs" />
-          </el-form-item>
+          <el-card>
+            <div slot="header">
+              <span>个人描述</span>
+            </div>
+            <el-form-item label-width="0">
+              <Tinymce v-model="user.descs" />
+            </el-form-item>
+          </el-card>
         </el-col>
       </el-row>
     </el-form>
@@ -175,21 +191,30 @@ export default {
 <style lang="less" scoped>
 .user-wrapper {
   padding: 8px 40px;
-  .title {
-    line-height: 23px;
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: rgba(0,0,0,.85);
-    // margin: 0;
+  // .title {
+  //   line-height: 23px;
+  //   font-size: 18px;
+  //   font-weight: bold;
+  //   margin-bottom: 10px;
+  //   color: rgba(0,0,0,.85);
+  //   // margin: 0;
+  // }
+  .action-btn {
+    float: right;
+    margin: 0;
+    padding: 0;
+  }
+  .card-header {
+    line-height: 32px;
   }
   .avatar {
-    display: inline-block;
-    vertical-align: bottom;
+    margin: 0 auto;
+    // display: inline-block;
+    // vertical-align: bottom;
   }
-  .upload-btn {
-    display: inline-block;
-    margin-left: 30px;
-  }
+  // .upload-btn {
+  //   display: inline-block;
+  //   margin-left: 30px;
+  // }
 }
 </style>
