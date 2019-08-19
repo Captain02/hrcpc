@@ -27,14 +27,6 @@
       :append-to-body="true"
       :close-on-click-modal="false"
     >
-      <!-- <el-button size="mini" type="primary" style="margin-bottom: 15px;">开始上传</el-button>
-      <el-upload
-        action="https://jsonplaceholder.typicode.com/posts/"
-        list-type="picture-card"
-        class="upload"
-        :on-remove="handleRemove">
-        <i class="el-icon-plus"></i>
-      </el-upload> -->
       <s-upload :action="`${$constants.BASE_API}/corporation/save`" :data="{corId: corid}" name="qqCodeFile" :file-list="imgFile" @success="uploadSuccess" @remove="handleRemove" />
     </el-dialog>
   </div>
@@ -116,6 +108,7 @@ export default {
       this.getImgList()
     },
     handleRemove(file, fileList) {
+      this.imgFile = []
       console.log(file, fileList)
     }
   },

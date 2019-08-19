@@ -66,16 +66,16 @@
             <div slot="header" class="clearfix card-header">
               <span>修改头像</span>
               <div class="action-btn">
-                <el-upload
+
+                <upload
                   :action="`${$constants.BASE_API}user/chatHead`"
                   :show-file-list="false"
-                  :before-upload="beforeUpload"
                   :data="{userId}"
                   name="file"
-                  :on-success="uploadSuccess"
+                  @on-success="uploadSuccess"
                 >
                   <el-button size="small" type="primary">点击上传</el-button>
-                </el-upload>
+                </upload>
               </div>
             </div>
             <el-form-item prop="filepath" label-width="0">
@@ -103,11 +103,13 @@
 import {  updateUserInfo as updateUserInfoApi } from '@/api/user'
 import mixins from '@/views/organize/user/mixins'
 import { mapState } from 'vuex'
+import Upload from '_c/Upload'
 import Tinymce from '_c/Tinymce'
 import SAvatar from '_c/SAvatar'
 export default {
   name: 'user-info',
   components: {
+    Upload,
     Tinymce,
     SAvatar
   },
@@ -146,19 +148,6 @@ export default {
     })
   },
   methods: {
-    beforeUpload(file) {
-      let types = ['image/jpeg', 'image/png']
-      const isJPG = types.includes(file.type)
-      const isLt2M = file.size / 1024 / 1024 < 2
-
-      if (!isJPG) {
-        this.$message.error('上传图片只能是 JPG 或 PNG 格式!')
-      }
-      if (!isLt2M) {
-        this.$message.error('上传图片大小不能超过 2MB!')
-      }
-      return isJPG && isLt2M
-    },
     uploadSuccess(response) {
       // console.log(response)
       let { data } = response

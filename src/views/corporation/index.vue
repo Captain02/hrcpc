@@ -74,16 +74,15 @@
             <div slot="header" class="clearfix card-header">
               <span>海报图片</span>
               <div class="action-btn">
-                <el-upload
+                <upload
                   :action="`${$constants.BASE_API}corporation/updateCorBanner`"
                   :show-file-list="false"
-                  :before-upload="beforeBanerUpload"
                   :data="{corid}"
                   name="file"
-                  :on-success="handleSuccessBanner"
+                  @on-success="handleSuccessBanner"
                 >
                   <el-button size="small" type="primary">点击上传</el-button>
-                </el-upload>
+                </upload>
               </div>
             </div>
             <el-image 
@@ -97,16 +96,16 @@
             <div slot="header" class="clearfix card-header">
               <span>宣传视频</span>
               <div class="action-btn">
-                <el-upload 
+                <upload
+                  type="video"
                   :action="`${$constants.BASE_API}corporation/updateCorVideo`"
-                  :before-upload="beforeVideoUpload"
                   :show-file-list="false"
                   :data="{corid}"
                   name="file"
-                  :on-success="handleSuccessVideo"
+                  @on-success="handleSuccessVideo"
                 >
                   <el-button size="small" type="primary">点击上传</el-button>
-                </el-upload>
+                </upload>
               </div>
             </div>
             <div class="view-wrapper">
@@ -130,10 +129,12 @@
 import { getCorporation as getCorporationApi, update as updateApi, getUserByUserName as getUserByUserNameApi } from '@/api/corporation'
 import { getCollegeInfo as getCollegeInfoApi} from '@/api/comm'
 import { mapState } from 'vuex'
+import Upload from '_c/Upload'
 import Tinymce from '_c/Tinymce'
 export default {
   name: 'corporation-info',
   components: {
+    Upload,
     Tinymce
   },
   data() {
@@ -196,32 +197,6 @@ export default {
         }
       })
     },
-    beforeBanerUpload(file) {
-      let types = ['image/jpeg', 'image/png']
-      const isJPG = types.includes(file.type)
-      const isLt2M = file.size / 1024 / 1024 < 2
-
-      if (!isJPG) {
-        this.$message.error('上传图片只能是 JPG 或 PNG 格式!')
-      }
-      if (!isLt2M) {
-        this.$message.error('上传图片大小不能超过 2MB!')
-      }
-      return isJPG && isLt2M
-    },
-    beforeVideoUpload(file) {
-      const isMP4 = file.type === 'video/mp4'
-      const isLt200M = file.size / 1024 /1024 < 200
-
-      if(!isMP4) {
-        this.$message.error('上传视频只能是 MP4 格式!')
-      }
-
-      if(!isLt200M) {
-        this.$message.error('上传视频大小不能超过 200MB!')
-      }
-      return isMP4 && isLt200M
-    },
     handleSuccessBanner(response, file, fileList) {
       console.log(response)
       this.form.bannerfile = response.filePath
@@ -229,9 +204,6 @@ export default {
     handleSuccessVideo(response, file, fileList) {
       console.log(response)
       this.form.videofile = response.filePath
-    },
-    handleSuccessDescs(arr) {
-      console.log(arr)
     },
     getCorInfo() {
       getCorporationApi().then((result) => {

@@ -71,18 +71,18 @@
         </el-form-item>
         <el-form-item label="图片上传：" >
           <!-- {type: 0}上传图片、{type: 1}上传视频 -->
-          <el-upload
+          <upload
+            v-slot:tip
+            class="upload"
             :limit="1"
-            :action="`${$constants.BASE_API}activity/uploudActivitiBananer`"
-            :data="{type: 0}"
             name="file"
             :show-file-list="false"
-            :on-success="(res, file) => {this.handleUpdateSuccess(res, file, 'image')}"
-            :before-upload="beforeImageUpload"
+            :data="{type: 0}"
+            :action="`${$constants.BASE_API}activity/uploudActivitiBananer`"
+            @on-success="(res, file) => {this.handleUpdateSuccess(res, file, 'image')}"
           >
-          <el-button type="primary">上传图片</el-button>
-          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2M</div>
-          </el-upload>
+            <div class="el-upload__tip">只能上传jpg/png文件，且不超过2M</div>
+          </upload>
           <div class="images-view" v-if="imageFile">
             <div class="image-wrapper">
               <el-image
@@ -96,18 +96,19 @@
         </el-form-item>
         <el-form-item label="视频上传：" >
           <!-- {type: 0}上传图片、{type: 1}上传视频 -->
-          <el-upload
+          <upload
+            v-slot:tip
+            class="upload"
             :limit="1"
+            type="video"
             :action="`${$constants.BASE_API}activity/uploudActivitiBananer`"
             :data="{type: 1}"
             name="file"
-            :on-remove="deleteVideo"
-            :on-success="(res, file) => {this.handleUpdateSuccess(res, file, 'video')}"
-            :before-upload="beforeVideoUpload"
+            @on-remove="deleteVideo"
+            @on-success="(res, file) => {this.handleUpdateSuccess(res, file, 'video')}"
           >
-          <el-button type="primary" >上传视频</el-button>
-          <div slot="tip" class="el-upload__tip">请上传MP4格式文件，且不超过200M</div>
-          </el-upload>
+            <div class="el-upload__tip">请上传MP4格式文件，且不超过200M</div>
+          </upload>
           <div class="video-view" v-if="videoFile">
             <video-player :video-source="videoFile.filePath" :video-type="videoFile.type"></video-player>
           </div>
@@ -139,6 +140,7 @@
 import { getCollegeInfo as getCollegeInfoApi, getDepts as getDeptsApi } from '@/api/comm'
 import { getUsersByName as getUsersByNameApi, deleteFile as deleteFileApi, addActivity as addActivityApi,  } from '@/api/activity'
 import { transferData2Tree } from '@/utils'
+import Upload from '_c/Upload'
 import Tinymce from '_c/Tinymce'
 import VideoPlayer from '_c/VideoPlayer'
 import TreeSelect from '@riophae/vue-treeselect'
@@ -146,6 +148,7 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 export default {
   name: 'add-activity',
   components: {
+    Upload,
     Tinymce,
     VideoPlayer,
     TreeSelect
@@ -190,33 +193,6 @@ export default {
     deleteProcess(index) {
       this.activity.processNodes.splice(index, 1)
     },
-    beforeImageUpload(file) {
-      let typeWhiteList = ['image/jpeg', 'image/png']
-      const isJPG = typeWhiteList.includes(file.type)
-      const isLt2M = file.size / 1024 / 1024 < 2
-
-      if (!isJPG) {
-        this.$message.error('上传图片只能是 JPG 格式或PNG格式!')
-      }
-      if (!isLt2M) {
-        this.$message.error('上传图片大小不能超过 2MB!')
-      }
-      return isJPG && isLt2M
-    },
-    beforeVideoUpload(file) {
-      let typeWhiteList = ['video/mp4']
-      const isType = typeWhiteList.includes(file.type)
-      const isSize = file.size / 1024 / 1024 < 200
-
-      if (!isType) {
-        this.$message.error('上传视频只能是 MP4格式!')
-      }
-      if (!isSize) {
-        this.$message.error('上传视频大小不能超过 200MB!')
-      }
-      return isType && isSize
-      return false
-    },
     handleUpdateSuccess(res, file, type) {
       if(res.code !== 0){
         this.$message.error('上传失败，请重新上传!')
@@ -251,11 +227,14 @@ export default {
         })
       }
     },
-    deleteVideo() {
-      deleteFileApi(this.videoFile.id, this.videoFile.filePath).then((result) => {
-        this.videoFile = null
-        this.activity.videoid = ''
-      })
+    deleteVideo(file, fileList) {
+      // beforeUpload若返回了false会触发on-remove钩子函数
+      if(this.videoFile){
+        deleteFileApi(this.videoFile.id, this.videoFile.filePath).then((result) => {
+          this.videoFile = null
+          this.activity.videoid = ''
+        })
+      }
     },
     handleSearch(val) {
       getUsersByNameApi(val).then((result) => {
@@ -294,6 +273,11 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.upload{
+  /deep/.el-upload {
+    text-align: left;
+  }
+}
 .form-wrapper {
   margin-top: 30px;
   padding: 0 40px 0 20px;

@@ -1,25 +1,25 @@
 <template>
   <div class="upload-wrapper">
-    <el-upload
+    <upload
       :action="action"
       :file-list="files"
       :data="data"
       :name="name"
-      :on-remove="handleRemove"
-      :before-upload="beforUpload"
-      :on-success="uploadSuccess"
+      @on-remove="handleRemove"
+      @on-success="uploadSuccess"
     >
       <el-button size="small" type="primary">点击上传</el-button>
-      <slot name="tip"></slot>
-    </el-upload>
+    </upload>
     <s-qrcode :url="url || ''" style="margin: 15px auto 0;" />    
   </div>
 </template>
 <script>
+import Upload from '_c/Upload'
 import SQrcode from '_c/SQRCode'
 export default {
   name: 'SUpload',
   components: {
+    Upload,
     SQrcode
   },
   props: {
@@ -64,20 +64,6 @@ export default {
         return
       }
       this.$emit('success', response)
-    },
-    beforUpload(file) {
-      let types = ['image/jpeg', 'image/png']
-      console.log(file.type)
-      const isJPG = types.includes(file.type)
-      const isLt2M = file.size / 1024 / 1024 < 2
-
-      if (!isJPG) {
-        this.$message.error('上传图片只能是 JPG 或 PNG 格式!')
-      }
-      if (!isLt2M) {
-        this.$message.error('上传图片大小不能超过 2MB!')
-      }
-      return isJPG && isLt2M
     }
   }
 }
