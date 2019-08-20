@@ -100,7 +100,7 @@
   </div>
 </template>
 <script>
-import {  updateUserInfo as updateUserInfoApi } from '@/api/user'
+import {  updateUser as updateUserApi } from '@/api/user'
 import mixins from '@/views/organize/user/mixins'
 import { mapState } from 'vuex'
 import Upload from '_c/Upload'
@@ -163,7 +163,7 @@ export default {
         let collegeName = this.findCollegeName(this.collegeOptions, this.user.college)
         let collegetieName = this.findCollegeName(this.collegetieOptions, this.user.collegetie)
 
-        updateUserInfoApi(this.user.user_id, this.user.name, this.user.gender, collegeName, collegetieName, this.user.mobile, this.user.wechart, this.user.QQ, this.user.email, this.user.descs, this.user.fileid).then((res) => {
+        updateUserApi(this.user.user_id, this.user.name, this.user.gender, collegeName, collegetieName, this.user.mobile, this.user.wechart, this.user.QQ, this.user.email, this.user.descs, this.user.fileid).then((res) => {
           // console.log(res)
           this.$store.dispatch('GetUserInfo').then(() => {
             this.$message.success('修改成功!')
@@ -180,14 +180,6 @@ export default {
 <style lang="less" scoped>
 .user-wrapper {
   padding: 8px 40px;
-  // .title {
-  //   line-height: 23px;
-  //   font-size: 18px;
-  //   font-weight: bold;
-  //   margin-bottom: 10px;
-  //   color: rgba(0,0,0,.85);
-  //   // margin: 0;
-  // }
   .action-btn {
     float: right;
     margin: 0;
@@ -198,12 +190,6 @@ export default {
   }
   .avatar {
     margin: 0 auto;
-    // display: inline-block;
-    // vertical-align: bottom;
   }
-  // .upload-btn {
-  //   display: inline-block;
-  //   margin-left: 30px;
-  // }
 }
 </style>

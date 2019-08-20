@@ -94,7 +94,8 @@ export default {
         }
         let collegeName = this.findCollegeName(this.collegeOptions, this.user.college)
         let collegetieName = this.findCollegeName(this.collegetieOptions, this.user.collegetie)
-        updateUserApi(this.user.user_id, this.user.name, this.user.gender, this.user.email, this.user.mobile, this.user.wechart, this.user.QQ, this.user.descs, collegeName, collegetieName).then((result) => {
+        
+        updateUserApi(this.user.user_id, this.user.name, this.user.gender, collegeName, collegetieName,  this.user.mobile, this.user.wechart, this.user.QQ, this.user.email, this.user.descs).then((result) => {
           this.$message.success('修改成功!')
           this.dialogVisible = false
           this.$emit('on-edit-success')

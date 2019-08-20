@@ -116,7 +116,7 @@ export const addUser = (name, username, gender, persionnum, password, email, mob
  * @param {String} college 院系
  * @param {String} collegetie 专业
  */
-export const updateUser = ( userId, name, gender, email, mobile, wechart, qq, descs, college, collegetie) => {
+export const updateUser = ( userId, name, gender, college, collegetie, mobile, wechart, qq, email, descs) => {
   return request({
     url: '/user/update',
     method: 'POST',
@@ -127,13 +127,13 @@ export const updateUser = ( userId, name, gender, email, mobile, wechart, qq, de
       userId,
       name,
       gender,
-      email,
+      college,
+      collegetie,
       mobile,
       wechart,
       qq,
-      descs,
-      college,
-      collegetie
+      email,
+      descs
     }
   })
 }
@@ -213,9 +213,8 @@ export const updateUserRole = (isRole, user_id, role_id) => {
  * @param {String} qq 
  * @param {String} email 
  * @param {String} descs 
- * @param {Number} fileId 
  */
-export const updateUserInfo = (userId, name, gender, college, collegetie, mobile, wechart, qq, email, descs, fileId) => {
+export const updateUserInfo = (userId, name, gender, college, collegetie, mobile, wechart, qq, email, descs) => {
   return request({
     url: '/user/updatePersionInfo',
     method: 'POST',
@@ -232,8 +231,7 @@ export const updateUserInfo = (userId, name, gender, college, collegetie, mobile
       wechart,
       qq,
       email,
-      descs,
-      fileId
+      descs
     }
   })
 }

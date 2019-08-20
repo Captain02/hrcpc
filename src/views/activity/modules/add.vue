@@ -47,80 +47,92 @@
             </el-select>
           </el-tooltip>
         </el-form-item>
-        <el-form-item label="活动流程：">
-          
-          <div class="activity-process-wrapper">
-            <el-steps :active="activity.processNodes.length" space="10%">
-              <el-step v-for="(state, index) in activity.processNodes" :key="index">
-                <el-button slot="title" @click="deleteProcess(index)" type="text">{{state}}</el-button>
-              </el-step>
-            </el-steps>
+        <el-form-item label="活动流程：" prop="processNodes">
+          <div class="card-wrapper">
+            <div class="activity-process-wrapper">
+              <el-steps :active="activity.processNodes.length" space="10%">
+                <el-step v-for="(state, index) in activity.processNodes" :key="index">
+                  <el-button slot="title" @click="deleteProcess(index)" type="text">{{state}}</el-button>
+                </el-step>
+              </el-steps>
+            </div>
+            <el-popover
+              placement="bottom-start"
+              title="流程名称"
+              width="300"
+              trigger="click">
+              <el-row :gutter="10">
+                <el-col :span="19"><el-input v-model="processState"></el-input></el-col>
+                <el-col :span="5"><el-button @click="addProcess">确定</el-button></el-col>
+              </el-row>
+              <el-button slot="reference" type="primary" icon="el-icon-plus" circle></el-button>
+            </el-popover>
           </div>
-          <el-popover
-            placement="bottom-start"
-            title="流程名称"
-            width="300"
-            trigger="click">
-            <el-row :gutter="10">
-              <el-col :span="19"><el-input v-model="processState"></el-input></el-col>
-              <el-col :span="5"><el-button @click="addProcess">确定</el-button></el-col>
-            </el-row>
-            <el-button slot="reference" type="primary" icon="el-icon-plus" circle></el-button>
-          </el-popover>
           
         </el-form-item>
         <el-form-item label="图片上传：" >
           <!-- {type: 0}上传图片、{type: 1}上传视频 -->
-          <upload
-            v-slot:tip
-            class="upload"
-            :limit="1"
-            name="file"
-            :show-file-list="false"
-            :data="{type: 0}"
-            :action="`${$constants.BASE_API}activity/uploudActivitiBananer`"
-            @on-success="(res, file) => {this.handleUpdateSuccess(res, file, 'image')}"
-          >
-            <div class="el-upload__tip">只能上传jpg/png文件，且不超过2M</div>
-          </upload>
-          <div class="images-view" v-if="imageFile">
-            <div class="image-wrapper">
-              <el-image
-              :src="imageFile.filePath"
-              fit="scale-down"></el-image>
-              <div class="image-text-area" :title="imageFile.fileName" @click="deleteImage">
-                <p class="image-text">{{imageFile.fileName}}</p><icon-svg class-name="image-delicon" icon-class="close"></icon-svg>
+          <div class="card-wrapper">
+            <upload
+              v-slot:tip
+              :limit="1"
+              name="file"
+              :show-file-list="false"
+              :data="{type: 0}"
+              :action="`${$constants.BASE_API}activity/uploudActivitiBananer`"
+              @on-success="(res, file) => {this.handleUpdateSuccess(res, file, 'image')}"
+            >
+              <div class="el-upload__tip">只能上传一个jpg/png文件，且不超过2M</div>
+            </upload>
+            <div class="image-view" v-if="imageFile">
+                <el-image
+                :src="imageFile.filePath"
+                fit="scale-down"></el-image>
+                <div class="image-text-area" :title="imageFile.fileName" @click="deleteImage">
+                  <p class="image-text">{{imageFile.fileName}}</p><icon-svg class-name="image-delicon" icon-class="close"></icon-svg>
+                </div>
               </div>
-            </div>
           </div>
         </el-form-item>
         <el-form-item label="视频上传：" >
-          <!-- {type: 0}上传图片、{type: 1}上传视频 -->
-          <upload
-            v-slot:tip
-            class="upload"
-            :limit="1"
-            type="video"
-            :action="`${$constants.BASE_API}activity/uploudActivitiBananer`"
-            :data="{type: 1}"
-            name="file"
-            @on-remove="deleteVideo"
-            @on-success="(res, file) => {this.handleUpdateSuccess(res, file, 'video')}"
-          >
-            <div class="el-upload__tip">请上传MP4格式文件，且不超过200M</div>
-          </upload>
-          <div class="video-view" v-if="videoFile">
-            <video-player :video-source="videoFile.filePath" :video-type="videoFile.type"></video-player>
+          <!-- {type: 0}上传图片、{type: 1}上传视频  {type: 2}上传附件-->
+          <div class="card-wrapper">
+            <upload
+              v-slot:tip
+              :limit="1"
+              type="video"
+              :action="`${$constants.BASE_API}activity/uploudActivitiBananer`"
+              :data="{type: 1}"
+              name="file"
+              @on-remove="deleteVideo"
+              @on-success="(res, file) => {this.handleUpdateSuccess(res, file, 'video')}"
+            >
+              <div class="el-upload__tip">只能上传一个MP4文件，且不超过200M</div>
+            </upload>
+            <div class="video-view" v-if="videoFile">
+              <video-player :video-source="videoFile.filePath" :video-type="videoFile.type"></video-player>
+            </div>
           </div>
         </el-form-item>
         <el-form-item label="附件上传：">
-          <el-upload
-            ref="upload"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :auto-upload="false">
-            <el-button slot="trigger" type="primary">选取文件</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2M</div>
-          </el-upload>
+          <div class="card-wrapper">
+            <upload
+              v-slot:tip
+              :limit="1"
+              type="file"
+              :action="`${$constants.BASE_API}activity/uploudActivitiBananer`"
+              :data="{type: 2}"
+              name="file"
+              :on-preview="handlePreview"
+              @on-remove="deleteEnclosure"
+              @on-success="(res, file) => {this.handleUpdateSuccess(res, file, 'file')}"
+              >
+              <div slot="tip" class="el-upload__tip">只能上传一个zip文件，且不超过20M</div>
+            </upload>
+            <!-- <div v-if="enclosureFile">
+              附件链接: <el-link type="info" target="_blank" :href="enclosureFile.filePath">{{enclosureFile.fileName}}</el-link>
+            </div> -->
+          </div>
         </el-form-item>
         
         <el-form-item prop="desc" label="活动详情：">
@@ -170,9 +182,24 @@ export default {
         actdetails: '',                 // 活动详情
         processNodes: [],         // 活动流程
       },
+      rules: {
+        actName: [
+          { required: true, message: '请输入活动名称' }
+        ],
+        actLeader: [
+          { required: true, message: '请选择活动负责人' }
+        ],
+        timer: [
+          { required: true, message: '请设置活动时间' }
+        ],
+        processNodes: [
+          { required: true, message: '请设置活动流程' }
+        ]
+      },
       processState: '',              // 输入的流程信息
       imageFile: null,                 // 上传的图片海报
       videoFile: null,                // 上传的视频文件
+      enclosureFile: null,            // 上传的附件
       usersOptions: [],             // 活动负责人选项
       collegeOptions: [],           // 面向人群选项,
       deptOptions: [],              // 发布部门选项
@@ -182,10 +209,13 @@ export default {
           label: node.name
         }
       },
-      rules: {}
     }
   },
   methods: {
+    handlePreview(file) {
+      let { response } = file
+      window.open(response.data.filePath)
+    },
     addProcess() {
       this.activity.processNodes.push(this.processState)
       this.processState = ''
@@ -194,10 +224,6 @@ export default {
       this.activity.processNodes.splice(index, 1)
     },
     handleUpdateSuccess(res, file, type) {
-      if(res.code !== 0){
-        this.$message.error('上传失败，请重新上传!')
-        return
-      }
       let { data } = res
       if(type === 'image'){
         this.imageFile = {
@@ -214,10 +240,18 @@ export default {
           type: file.raw.type
         }
         this.activity.videoid = data.id
+      }else {
+        this.enclosureFile = {
+          fileName: data.fileName, 
+          filePath: data.filePath, 
+          id: data.id
+        }
+        this.activity.enclosure = data.id
       }
       
     },
     deleteImage(event) {
+      console.log(event)
       let tag = event.target || event.srcElement
       let tagName = tag.tagName.toLowerCase()
       if(tagName === 'svg' || tagName === 'use'){
@@ -233,6 +267,14 @@ export default {
         deleteFileApi(this.videoFile.id, this.videoFile.filePath).then((result) => {
           this.videoFile = null
           this.activity.videoid = ''
+        })
+      }
+    },
+    deleteEnclosure() {
+      if(this.enclosureFile) {
+        deleteFileApi(this.enclosureFile.id, this.enclosureFile.filePath).then((result) => {
+          this.enclosureFile = null
+          this.activity.enclosure = ''
         })
       }
     },
@@ -273,7 +315,11 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.upload{
+.card-wrapper{
+  padding: 10px;
+  border: 1px solid #e8e8e8;
+  border-radius: 5px;
+  box-shadow: rgb(204, 204, 204) 0px 1px 0px;
   /deep/.el-upload {
     text-align: left;
   }
@@ -287,45 +333,41 @@ export default {
   .activity-process-wrapper {
     min-height: 65px;
   }
-  .images-view {
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    .image-wrapper {
-      position: relative;
-      display: inline-block;
-      width: 120px;
-      height: 100px;
-      margin-right: 10px;
-      overflow: hidden;
-      &:hover .image-text-area{
-        bottom: 0;
+  .image-view {
+    position: relative;
+    display: inline-block;
+    width: 120px;
+    height: 100px;
+    margin-right: 10px;
+    overflow: hidden;
+    &:hover .image-text-area{
+      bottom: 0;
+    }
+    .image-text-area {
+      position: absolute;
+      width: 100%;
+      bottom: -25px;
+      cursor: pointer;
+      transition: all .3s;
+      line-height: 20px;
+      background: rgba(0, 0, 0, .3);
+      color: #fff;
+      
+      .image-text {
+        width: 80%;
+        overflow: hidden;
+        font-size: 12px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+        vertical-align: middle;
       }
-      .image-text-area {
-        position: absolute;
-        width: 100%;
-        bottom: -25px;
-        cursor: pointer;
-        transition: all .3s;
-        line-height: 20px;
-        background: rgba(0, 0, 0, .3);
-        color: #fff;
-       
-        .image-text {
-          width: 80%;
-          overflow: hidden;
-          font-size: 12px;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          display: inline-block;
-          vertical-align: middle;
-        }
-        .image-delicon {
-          width: 20%;
-        }
+      .image-delicon {
+        width: 20%;
       }
     }
   }
+
   .video-view {
     margin-top: 10px;
     width: 500px;

@@ -42,6 +42,10 @@ export default {
   },
   methods: {
     handleSuccess(response, file, fileList) {
+      if(response.code !== 0){
+        this.$message.error('上传失败，请重新上传!')
+        return
+      }
       this.$emit('on-success', response, file, fileList)
     },
     handleRemove(file, fileList) {
@@ -52,6 +56,8 @@ export default {
         return this.beforeUploadImage(file)
       }else if(this.type === 'video') {
         return this.beforeUploadVideo(file)
+      }else{
+        return this.beforeUploadFile(file)
       }
     },
     beforeUploadImage(file) {
@@ -80,6 +86,22 @@ export default {
       }
       if (!isSize) {
         this.$message.error('上传视频大小不能超过 200MB!')
+        return false
+      }
+      return true
+    },
+    beforeUploadFile(file) {
+      console.log(file.type)
+      let typeWhiteList = ['application/x-zip-compressed']
+      const isType = typeWhiteList.includes(file.type)
+      const isSize = file.size / 1024 / 1024 < 20
+
+      if (!isType) {
+        this.$message.error('上传附件只能是 ZIP 格式!')
+        return false
+      }
+      if (!isSize) {
+        this.$message.error('上传附件大小不能超过 20MB!')
         return false
       }
       return true
