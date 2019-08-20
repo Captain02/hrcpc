@@ -4,7 +4,7 @@
       <el-tab-pane label="基本信息" name="userInfo" :lazy="true">
         <user-info/>
       </el-tab-pane>
-      <el-tab-pane label="通知公告" name="notice" :lazy="true">
+      <el-tab-pane label="我的消息" name="notice" :lazy="true">
         <notice-list/>
       </el-tab-pane>
     </el-tabs>
