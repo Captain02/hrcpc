@@ -6,7 +6,7 @@
     </div>
     <ul class="notice-list">
       <div class="empty" v-if="!noticeList.length">暂无内容</div>
-      <li class="notice-item" v-for="item in noticeList" :key="item.createtime" :title="item.notictop">
+      <li class="notice-item" v-for="item in noticeList" :key="item.noticid" :title="item.notictop">
         <span class="text">{{item.notictop}}</span>
         <span class="date">{{parseTime(item.createtime, '{y}-{m}-{d}')}}</span> </li>
     </ul>

@@ -362,7 +362,7 @@ export default {
         actid: data.actid,
         actName: data.actname,
         pubDeptId: data.deptid || '',
-        actLeader: actLeader.userName,
+        actLeader: actLeader.userId,
         timer: [data.actstarttame, data.actendtime],
         imageId: data.images || '',
         videoId: data.videoid || '',

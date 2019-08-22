@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div style="padding: 0 20px;">
     <s-table :data="noticeList" :columns="columns" size="medium">
       <template v-slot:title="{scope}">
-        <details-notice v-slot:action-btn :data="scope.row">
+        <details-notice v-slot:action-btn :noticid="scope.row.noticid">
           <div class="notice-title">{{scope.row.notictop}}</div>
         </details-notice>
       </template>
@@ -42,29 +42,35 @@ export default {
             prop: 'publishUser',
             label: '发布人',
             align: "center",
-            width: 80
+            width: 120
           }
         },
-        {
-          attrs: {
-            prop: 'receiveUser',
-            label: '接收人',
-            align: "center",
-            formatter: (row, column, cellValue, index) => {
-              let notictedusers = ''
-              cellValue.forEach(user => {
-                notictedusers+=user.notictedusername + '，'
-              })
-              return notictedusers.substring(0, notictedusers.length - 1)
-            }
-          }
-        },
+        // {
+        //   attrs: {
+        //     prop: 'noticcontent',
+        //     label: '内容'
+        //   }
+        // },
+        // {
+        //   attrs: {
+        //     prop: 'receiveUser',
+        //     label: '接收人',
+        //     align: "center",
+        //     formatter: (row, column, cellValue, index) => {
+        //       let notictedusers = ''
+        //       cellValue.forEach(user => {
+        //         notictedusers+=user.notictedusername + '，'
+        //       })
+        //       return notictedusers.substring(0, notictedusers.length - 1)
+        //     }
+        //   }
+        // },
         {
           attrs: {
             prop: 'createtime',
             label: '发布时间',
             align: 'center',
-            width: 120,
+            width: 150,
             sortable: true,
             formatter: (row, column, cellValue, index) => parseTime(cellValue, '{y}-{m}-{d}')
           }
@@ -81,9 +87,24 @@ export default {
     getNoticeList() {
       getNoticesInHomeApi(this.userId, this.currPage, this.pageSize).then((result) => {
         console.log(result)
+        let { page } = result
         this.noticeList = result.data
+        this.total = page.totalCount
       }).catch((err) => { console.log(err) })
     }
+  },
+  mounted() {
+    this.getNoticeList()
   }
 }
 </script>
+<style lang="less" scoped>
+.notice-title {
+  cursor: pointer;
+  transition: color .3s;
+  color: #337ab7;
+  &:hover {
+    color: #409eff;
+  }
+}
+</style>

@@ -32,8 +32,8 @@ import { getNotice as getNoticeApi } from '@/api/notices'
 export default {
   name: 'details-notice',
   props: {
-    data: {
-      type: Object,
+    noticid: {
+      type: Number,
       required: true
     }
   },
@@ -59,7 +59,7 @@ export default {
     },
     getNotice() {
       // console.log(this.data)
-      getNoticeApi(this.data.noticid).then((result) => {
+      getNoticeApi(this.noticid).then((result) => {
         let { data } = result
         this.notice = data
       }).catch((err) => { console.log(err) })
@@ -92,7 +92,7 @@ export default {
   .content {
     line-height: 27px;
     text-indent: 2em;
-    padding: 5px 0;
+    padding: 5px 20px;
     letter-spacing: 3px;
   }
 }
