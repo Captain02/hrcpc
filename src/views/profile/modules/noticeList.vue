@@ -16,6 +16,7 @@ import { parseTime } from '@/utils'
 import detailsNotice from '../../corporation/modules/details-notice'
 import STable from '_c/STable'
 import Pagination from '_c/Pagination'
+import { mapState } from 'vuex';
 export default {
   components: {
     detailsNotice,
@@ -38,7 +39,7 @@ export default {
         },
         {
           attrs: {
-            prop: 'notictusername',
+            prop: 'publishUser',
             label: '发布人',
             align: "center",
             width: 80
@@ -46,7 +47,7 @@ export default {
         },
         {
           attrs: {
-            prop: 'noticteduser',
+            prop: 'receiveUser',
             label: '接收人',
             align: "center",
             formatter: (row, column, cellValue, index) => {
@@ -71,9 +72,17 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapState({
+      userId: (state) => state.user.userId
+    })
+  },
   methods: {
     getNoticeList() {
-      getNoticesInHomeApi()
+      getNoticesInHomeApi(this.userId, this.currPage, this.pageSize).then((result) => {
+        console.log(result)
+        this.noticeList = result.data
+      }).catch((err) => { console.log(err) })
     }
   }
 }

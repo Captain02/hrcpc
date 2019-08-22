@@ -58,16 +58,17 @@ export const getNotices = (title, publishUser, receiveUser, startTime, endTime, 
 
 /**
  * 首页中通知公告列表
- * @param {String} username 
+ * @param {Number} receiveUserId 登录人的id
  * @param {Number} currPage 
  * @param {Number} pageSize 
  */
-export const getNoticesInHome = (username, currPage, pageSize ) => {
+export const getNoticesInHome = (receiveUserId, currPage, pageSize) => {
   return request({
     url: '/notic/homelist',
     method: 'GET',
     params: {
-      username,
+      corId: getCorId(),
+      receiveUserId,
       currPage,
       pageSize
     }

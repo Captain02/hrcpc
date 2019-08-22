@@ -32,7 +32,7 @@ export default {
       getImgListApi().then((result) => {
         let { date } = result
         this.list = date
-        console.log(this.list)
+        // console.log(this.list)
       }).catch((err) => { })
     }
   },

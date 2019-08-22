@@ -6,8 +6,8 @@
     </h1>
     <div class="imgs-wrapper clearfix">
       <div class="img-item" v-for="item in imgList" :key="item.id">
-        <div class="item-wrapper">
-          <el-image :src="item.path" :preview-src-list="imgViews">
+        <div class="item-wrapper" @click="handleClick(item)">
+          <el-image :src="item.path" >
             <div slot="error" class="image-slot">
               <icon-svg icon-class="img-load-fail"></icon-svg>
             </div>
@@ -20,6 +20,16 @@
       </div>
     </div>
     <pagination v-show="total>0" :total="total" :curr.sync="currPage" :size.sync="pageSize" @on-page-change="getImgList" />
+    <el-dialog
+      title="二维码"
+      :visible.sync="imgDialogVisible"
+      width="400px"
+      :append-to-body="true"
+      :close-on-click-modal="false"
+    >
+      <s-qrcode :url="currentShowImg.path" />
+      <div class="img-name" :title="currentShowImg.filename">{{currentShowImg.filename}}</div>
+    </el-dialog>
     <el-dialog
       title="添加二维码"
       :visible.sync="dialogVisible"
@@ -35,11 +45,13 @@
 import { getQRCodeList as getQRCodeListApi, deleteQRCode as deleteQRCodeApi } from '@/api/corporation'
 import { mapState } from 'vuex'
 import SUpload from '_c/SUpload'
+import SQrcode from '_c/SQRCode'
 import Pagination from '_c/Pagination'
 export default {
   name: 'corporation-qrcode',
   components: {
     SUpload,
+    SQrcode,
     Pagination
   },
   data() {
@@ -48,9 +60,11 @@ export default {
       pageSize: 10,
       currPage: 1,
       total: 0,
+      imgDialogVisible: false,
+      currentShowImg: '',       // 当前模态框中显示的图片
       imgFile: [],
       imgList: [],
-      imgViews: []
+      // imgViews: []
     }
   },
   computed: {
@@ -72,13 +86,17 @@ export default {
           }]*/
         this.imgList = data
         this.total = page.totalCount
-        this.imgViews = this.initImgViews(data)
+        // this.imgViews = this.initImgViews(data)
       }).catch((err) => { })
     },
     initImgViews(list) {
       return list.map((item) => {
         return item.path
       })
+    },
+    handleClick(img) {
+      this.currentShowImg = img
+      this.imgDialogVisible = true
     },
     handleDelete(id, path) {
       console.log(id, path)
@@ -118,6 +136,12 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.img-name {
+  padding: 10px 10px 5px;
+  font-size: 13px;
+  color: #999;
+  line-height: 20px;
+}
 .imgs-wrapper {
   margin-top: 25px;
   margin-left: -15px;
@@ -136,12 +160,7 @@ export default {
     .item-wrapper {
       height: 140px;
     }
-    .img-name {
-      padding: 10px 10px 5px;
-      font-size: 13px;
-      color: #999;
-      line-height: 20px;
-    }
+
     .delete-btn-wrapper {
       position: absolute;
       top: 3px;

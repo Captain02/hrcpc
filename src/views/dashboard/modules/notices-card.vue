@@ -25,13 +25,13 @@ export default {
   },
   computed: {
     ...mapState({
-      username: (state) => state.user.userName
+      userId: (state) => state.user.userId
     })
   },
   methods: {
     parseTime,
     getNotices() {
-      getNoticesInHomeApi(this.username, 1, 5).then((result) => {
+      getNoticesInHomeApi(this.userId, 1, 5).then((result) => {
         console.log(result)
         this.noticeList = result.data
       }).catch((err) => { console.log(err) })

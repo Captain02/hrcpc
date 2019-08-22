@@ -27,7 +27,7 @@
                   <el-button size="small" type="primary">二维码</el-button>
                 </template>
               </qr-code>
-              <el-button size="small" type="primary" @click="handleEdit(scope)">修改</el-button>
+              <el-button size="small" type="primary" @click="handleEdit(scope.actid)">修改</el-button>
               <el-button size="small" @click="handleInActivity(scope.actid)">报名统计</el-button>
             </template>
           </template>
@@ -118,8 +118,11 @@ export default {
     handleSearch() {
       this.getActivityList()
     },
-    handleEdit(data) {
-      console.log(data)
+    handleEdit(id) {
+      this.$router.push({
+        name: 'edit-activity',
+        params: { id }
+      })
     },
     handleInActivity(actid) {
       this.$router.push({

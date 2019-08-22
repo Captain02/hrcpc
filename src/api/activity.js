@@ -77,6 +77,21 @@ export const changeCommentLike = (userid, repliesid, type) => {
   })
 }
 
+/**
+ * 添加社团活动
+ * @param {String} actName 活动名称
+ * @param {Number || ''} deptid 发布部门 若选择deptid为部门id若没选择则为''
+ * @param {String} actLeader 负责人学号
+ * @param {String} actStartTime 活动开始时间
+ * @param {*} actEndTime  活动结束时间
+ * @param {Number} images 上传图片后的id
+ * @param {*} videoid 上传视频后的id
+ * @param {Array || ''} croWdPeople 面向人群数组，若没选择则为''
+ * @param {String} profile 简介
+ * @param {Number} enclosure 上传附件的id
+ * @param {String} actdetails 活动详情
+ * @param {Array} processNodes 活动流程
+ */
 export const addActivity = (actName, deptid, actLeader, actStartTime, actEndTime, images, videoid, croWdPeople, profile, enclosure, actdetails, processNodes) => {
   return request({
     url: '/activity/add',
@@ -103,6 +118,47 @@ export const addActivity = (actName, deptid, actLeader, actStartTime, actEndTime
     }
   })
 }
+
+
+/**
+ * 更新社团活动信息
+ * @param {Number} actId 活动id
+ * @param {String} actName 活动名称
+ * @param {Number || ''} deptid 发布部门 若选择deptid为部门id若没选择则为''
+ * @param {String} actLeader 负责人学号
+ * @param {String} actStartTime 活动开始时间
+ * @param {*} actEndTime  活动结束时间
+ * @param {Number} images 上传图片后的id
+ * @param {*} videoid 上传视频后的id
+ * @param {Array || ''} croWdPeople 面向人群数组，若没选择则为''
+ * @param {String} profile 简介
+ * @param {Number} enclosure 上传附件的id
+ * @param {String} actdetails 活动详情
+ * @param {Array} processNodes 活动流程 
+ */
+export const updateActivity = (actId, actName, deptid, actLeader, actStartTime, actEndTime, images, videoid, croWdPeople, profile, enclosure, actdetails, processNodes) => {
+  return request({
+    url: '/activity/updateAct',
+    method: 'POST',
+    data: {
+      actCorId: getCorId(),
+      actId,
+      actName,
+      deptid,
+      actLeader,
+      actStartTime,
+      actEndTime,
+      images,
+      videoid,
+      croWdPeople,
+      profile,
+      enclosure,
+      actdetails,
+      processNodes
+    }
+  })
+}
+
 
 /**
  * 获取活动列表
