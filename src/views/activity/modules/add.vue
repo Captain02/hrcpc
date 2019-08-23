@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <h1 class="page-title">添加社团活动</h1>
-    <activity-form/>
+    <activity-form @on-add-success="handleSuccess" />
   </div>
 </template>
 <script>
@@ -10,6 +10,14 @@ export default {
   name: 'add-activity',
   components: {
     activityForm
+  },
+  methods: {
+    handleSuccess() {
+      this.$message.success('添加成功')
+      this.$router.push({
+        name: 'activity-list'
+      })
+    }
   }
 }
 </script>

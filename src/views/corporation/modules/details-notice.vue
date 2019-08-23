@@ -14,10 +14,10 @@
       <div class="notice" v-if="notice">
         <h1 class="title">{{notice.notictop}}</h1>
         <div class="meta">
-          <span class="label">发布人：<span class="text">{{notice.notictusername}}</span></span>
+          <span class="label">发布人：<span class="text">{{notice.publishUser}}</span></span>
           <span class="label">发布时间：<span class="text">{{notice.createtime}}</span></span>
           <div style="text-align: left;">
-            <span class="label">接收人：<span class="text">{{receiveUser}}</span></span>
+            <span class="label">接收人：<span class="text">{{notice.receiveUser}}</span></span>
           </div>
         </div>
         <div class="content">
@@ -44,13 +44,13 @@ export default {
     }
   },
   computed: {
-    receiveUser() {
-      let receiveUsers = ''
-      this.notice.noticteduser.forEach(user => {
-        receiveUsers+=user.notictedusername + '，'
-      })
-      return receiveUsers.substring(0, receiveUsers.length - 1)
-    }
+    // receiveUser() {
+    //   let receiveUsers = ''
+    //   this.notice.noticteduser.forEach(user => {
+    //     receiveUsers+=user.notictedusername + '，'
+    //   })
+    //   return receiveUsers.substring(0, receiveUsers.length - 1)
+    // }
   },
   methods: {
     handleClick() {

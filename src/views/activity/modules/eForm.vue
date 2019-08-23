@@ -385,10 +385,12 @@ export default {
         if(this.isAdd) {
           addActivityApi(this.activity.actName, this.activity.pubDeptId, this.activity.actLeader, startTime, endTime, this.activity.imageId, this.activity.videoId, this.activity.croWdPeople, this.activity.profile, this.activity.enclosure, this.activity.actdetails, this.activity.processNodes).then((result) => {
             console.log(result)
+            this.$emit('on-add-success')
           }).catch((err) => console.log(err))
         }else{
           updateActivityApi(this.activity.actid, this.activity.actName, this.activity.pubDeptId, this.activity.actLeader, startTime, endTime, this.activity.imageId, this.activity.videoId, this.activity.croWdPeople, this.activity.profile, this.activity.enclosure, this.activity.actdetails, this.activity.processNodes).then((result) => {
             console.log(result)
+            this.$emit('on-edit-success')
           }).catch((err) => console.log(err))
         }
         

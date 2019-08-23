@@ -140,6 +140,11 @@ export const updateActivity = (actId, actName, deptid, actLeader, actStartTime, 
   return request({
     url: '/activity/updateAct',
     method: 'POST',
+    transformRequest: [function (data) {
+      data.croWdPeople = data.croWdPeople.join(',')
+      data.processNodes = data.processNodes.join(',')
+      return qs.stringify(data)
+    }],
     data: {
       actCorId: getCorId(),
       actId,
