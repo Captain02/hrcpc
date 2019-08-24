@@ -58,9 +58,7 @@
         社团简介
       </div>
       <div class="card-content">
-        <div class="card-content-inner">
-          {{corporation.descs || '暂无简介'}}
-        </div>
+        <div class="card-content-inner" v-html="corporation.descs || '暂无简介'"></div>
       </div>
     </div>
     <el-button type="primary" class="full-width fixed-btn" @click="handleClick">立即加入</el-button>
