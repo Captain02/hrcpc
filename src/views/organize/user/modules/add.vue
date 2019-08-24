@@ -54,7 +54,11 @@ export default {
           return
         }
         addUserApi(this.user.username).then((result) => {
-          console.log(result)
+          // console.log(result)
+          this.$message.success('添加成功')
+          this.$emit('on-success')
+          
+          this.dialogVisible = false
         }).catch((err) => { console.log(err) })
       })
     }

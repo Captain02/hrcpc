@@ -102,7 +102,7 @@
 <script>
 import {  updateUser as updateUserApi } from '@/api/user'
 import mixins from '@/views/organize/user/mixins'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import Upload from '_c/Upload'
 import Tinymce from '_c/Tinymce'
 import SAvatar from '_c/SAvatar'
@@ -148,11 +148,13 @@ export default {
     })
   },
   methods: {
+    ...mapMutations(['SET_AVATAR']),
     uploadSuccess(response) {
       // console.log(response)
       let { data } = response
       this.user.filepath = data.url
       this.user.fileid = data.id
+      this.SET_AVATAR(data.url)
     },
     handleSave() {
       this.$refs['userForm'].validate((valid) => {

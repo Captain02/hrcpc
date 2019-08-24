@@ -5,7 +5,7 @@
       <el-input class="filter-item" v-model="listQuery.name" placeholder="请输入姓名" style="width: 200px;" size="small"></el-input>
       <el-input class="filter-item" v-model="listQuery.username" placeholder="请输入学号" style="width: 200px;" size="small"></el-input>
       <el-button class="filter-item" type="primary" size="small" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-      <add-user v-slot:action-btn class="filter-item">
+      <add-user v-slot:action-btn class="filter-item" @on-success="hanldeAddSuccess">
         <el-button type="primary" size="small" icon="el-icon-circle-plus-outline">添加新成员</el-button>
       </add-user>
       <publish-notice class="filter-item" :users="userList" v-slot:action-btn>
@@ -129,6 +129,9 @@ export default {
     },
     deleteSelectedItems() {
       this.handleDelete(this.selectedItems)
+    },
+    hanldeAddSuccess() {
+      this.getUserList()
     },
     handleDelete(items) {
       let ids = []
