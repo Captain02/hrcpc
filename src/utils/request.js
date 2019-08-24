@@ -23,7 +23,7 @@ const toLogin = () => {
  */
 const failHandle = (code, msg) => {
   switch(code) {
-    case 401: 
+    case 401:             // token过期
       Message({
         message: msg,
         type: 'error',
@@ -36,12 +36,12 @@ const failHandle = (code, msg) => {
         location.reload()
       }, 1500)
       break
-    case 403: 
+    case 403:           // 无权限
       router.replace({
         path: '/403'
       })
       break
-    case 404:
+    case 404:         // 404
       router.replace({
         path: '/404'
       })

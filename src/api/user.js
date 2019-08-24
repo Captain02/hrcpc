@@ -61,44 +61,19 @@ export const hasUserInCor = (username) => {
 }
 
 /**
- * 添加社团用户
- * @param {Number} corid   cookie获取
- * @param {String} name 姓名
- * @param {String} username 学号
- * @param {String} gender 性别
- * @param {String} persionnum 学号
- * @param {String} password 密码
- * @param {String} email 
- * @param {String} mobile 
- * @param {String} wechart 
- * @param {String} QQ 
- * @param {String} descs 自我描述
- * @param {String} college 院系
- * @param {String} collegetie 系别
- * 
+ * 添加社团成员
+ * @param {String} username 
  */
-export const addUser = (name, username, gender, persionnum, password, email, mobile, wechart, qq, descs, college, collegetie) => {
+export const addUser = (username) => {
   return request({
     url: '/user/save',
     method: 'POST',
     transformRequest: [function (data) {
-      // 对 data 进行任意转换处理
       return qs.stringify(data)
     }],
     data: {
-      corid: getCorId(),
-      name,
       username,
-      gender,
-      persionnum,
-      password,
-      email,
-      mobile,
-      wechart,
-      qq,
-      descs,
-      college,
-      collegetie
+      corid: getCorId()
     }
   })
 }

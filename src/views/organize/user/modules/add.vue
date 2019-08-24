@@ -16,13 +16,14 @@
           <el-input v-model="user.username" placeholder="请输入学号"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">添加</el-button>
+          <el-button type="primary" @click="handleSubmit">添加</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
   </div>
 </template>
 <script>
+import { addUser as addUserApi } from '@/api/user'
 export default {
   name: 'add-user',
   data() {
@@ -45,6 +46,17 @@ export default {
     },
     handleClick() {
       this.dialogVisible = true
+    },
+    handleSubmit() {
+      this.$refs['userForm'].validate((valid) => {
+        if(!valid){
+          this.$message.error('请填写相关项目')
+          return
+        }
+        addUserApi(this.user.username).then((result) => {
+          console.log(result)
+        }).catch((err) => { console.log(err) })
+      })
     }
   }
 }
