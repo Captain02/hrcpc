@@ -1,64 +1,64 @@
 <template>
-  <div class="container" v-if="corporation">
-    <div class="card-panel">
-      <div class="card-header">
+  <div class="info-card-wrap" v-if="corporation">
+    <div class="info-card-panel">
+      <div class="info-card-header">
         社团基本信息
       </div>
-      <div class="card-content">
-        <div class="card-content-inner">
-          <div class="card-content-item clearfix">
+      <div class="info-card-content">
+        <div class="info-card-content-inner">
+          <div class="info-card-content-item clearfix">
             <div class="label">社团名称：</div>
             <div class="text">{{corporation.corname}}</div>
           </div>
-          <div class="card-content-item clearfix">
+          <div class="info-card-content-item clearfix">
             <div class="label">社团负责人：</div>
             <div class="text">{{corporation.leadingname}}</div>
           </div>
-          <div class="card-content-item clearfix">
+          <div class="info-card-content-item clearfix">
             <div class="label">领导老师：</div>
             <div class="text">{{corporation.cortercher}}</div>
           </div>
-          <div class="card-content-item clearfix">
+          <div class="info-card-content-item clearfix">
             <div class="label">工作地点：</div>
             <div class="text">{{corporation.corworkspace}}</div>
           </div>
-          <div class="card-content-item clearfix">
+          <div class="info-card-content-item clearfix">
             <div class="label">所属学院：</div>
             <div class="text">{{corporation.corcollegename}}</div>
           </div>
-          <div class="card-content-item clearfix">
+          <div class="info-card-content-item clearfix">
             <div class="label">面向人群：</div>
             <div class="text">{{crowd}}</div>
           </div>
-          <div class="card-content-item clearfix">
+          <div class="info-card-content-item clearfix">
             <div class="label">社团规模：</div>
             <div class="text">{{corporation.corscale}}人</div>
           </div>
         </div>
       </div>
     </div>
-    <div class="card-panel">
-      <div class="card-header">
+    <div class="info-card-panel">
+      <div class="info-card-header">
         海报图片
       </div>
-      <div class="card-media">
+      <div class="info-card-media">
         <el-image :src="corporation.bannerfile"></el-image>
       </div>
     </div>
-    <div class="card-panel">
-      <div class="card-header">
+    <div class="info-card-panel">
+      <div class="info-card-header">
         宣传视频
       </div>
-      <div class="card-media">
+      <div class="info-card-media">
         <video :src="corporation.videofile" controls="controls"></video>
       </div>
     </div>
-    <div class="card-panel">
-      <div class="card-header">
+    <div class="info-card-panel">
+      <div class="info-card-header">
         社团简介
       </div>
-      <div class="card-content">
-        <div class="card-content-inner" v-html="corporation.descs || '暂无简介'"></div>
+      <div class="info-card-content">
+        <div class="info-card-content-inner" v-html="corporation.descs || '暂无简介'"></div>
       </div>
     </div>
     <el-button type="primary" class="full-width fixed-btn" @click="handleClick">立即加入</el-button>
@@ -120,79 +120,3 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-.fixed-btn {
-  position: fixed;
-  // top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 5;
-}
-.container {
-  background-color: #efeff4;
-  overflow: auto;
-  padding-bottom: 40px;
-}
-.card-panel {
-  font-size: 14px;
-  position: relative;
-  overflow: hidden;
-  margin: 10px;
-  border-radius: 2px;
-  background-color: #fff;
-  background-clip: padding-box;
-  box-shadow: 0 1px 2px rgba(0,0,0,.3);
-  line-height: 21px;
-  color: #000;
-  .card-header {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    min-height: 39px;
-    padding: 10px 15px;
-    &::after {
-      content: '';
-      position: absolute;
-      top: auto;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background-color: #c8c7cc;
-    }
-  }
-  .card-content {
-    font-size: 14px;
-    position: relative;
-    .card-content-inner {
-      position: relative;
-      padding: 15px;
-      .card-content-item {
-        margin-top: 10px;
-        .label {
-          width: 35%;
-          float: left;
-          color: #848484;
-        }
-        .text {
-          width: 65%;
-          float: left;
-        }
-      }
-     
-    }
-  }
-  .card-media {
-    height: 150px;
-    width: 340px;
-    video {
-      width: 100%;
-      height: 100%;
-    }
-  }
-}
-
-
-</style>
