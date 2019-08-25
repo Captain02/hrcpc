@@ -59,11 +59,17 @@
     </div>
     <el-collapse-transition>
       <div class="list-item-body" v-show="isShow">
-        <div class="video-wrapper">
-          <video-player :video-source="item.video ? item.video.filepath : ''"></video-player>
+        <div v-if="item.video && item.video.filepath" class="video-wrapper">
+          <video-player :video-source="item.video.filepath"></video-player>
         </div>
-        <div class="image-wrapper">
-          <el-image :src="item.image ? item.image.filepath : ''"></el-image>
+        <div class="video-wrapper" v-else>
+          <span class="empty-text">暂无上传视频</span>
+        </div>
+        <div class="image-wrapper" v-if="item.image && item.image.filepath">
+          <el-image :src="item.image.filepath"></el-image>
+        </div>
+        <div class="image-wrapper" v-else>
+          <span class="empty-text">暂无上传图片</span>
         </div>
       </div>
     </el-collapse-transition>
@@ -262,14 +268,21 @@ export default {
     // height: 300px;
     .video-wrapper {
       // flex: 1 1 0;
+      text-align: center;
       width: 400px;
       // display: inline-block;
     }
     .image-wrapper {
       // display: inline-block;
+      text-align: center;
       margin-left: 25px;
       width: 300px;
       // flex: 1 1 0;
+    }
+    .empty-text {
+      text-align: center;
+      color: #848484;
+      line-height: 25px;
     }
   }
   // .list-item-header {

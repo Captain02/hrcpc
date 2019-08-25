@@ -344,9 +344,9 @@ export default {
       }) : []
       let enclosure = data.enclosureFile && data.enclosureFile.length ? data.enclosureFile.map((item) => {
         return {
-          id: data.id,
-          url: data.filepath,
-          name: data.filename
+          id: item.id,
+          url: item.filepath,
+          name: item.filename
         }
       }) : []
       let processNodes  = data.processnodes && data.processnodes.length ? data.processnodes.map((item) => {

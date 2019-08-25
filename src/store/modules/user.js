@@ -40,7 +40,6 @@ const user = {
       state.permits = permits
     },
     SET_AVATAR(state, avatar) {
-      console.log('mutiation', avatar)
       state.avatar = avatar
     },
     SET_GENDER(state, gender) {

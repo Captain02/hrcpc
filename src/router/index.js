@@ -62,19 +62,25 @@ export const routes = [
     ]
   },
   {
-    path: '/join',
+    path: '/join',                // 扫码加入社团
     name: 'join',
     hidden: true,
     component: () => import('@/views/page/join')
   },
   {
-    path: '/result',
+    path: '/join-activity',       // 扫码加入活动
+    name: 'join-activity',
+    hidden: true,
+    component: () => import('@/views/page/join-activity')
+  },
+  {
+    path: '/result',              // 扫码加入后的结果
     name: 'result',
     hidden: true,
     component: () => import('@/views/page/result')
   },
   {
-    path: '/register',
+    path: '/register',            // 扫码之后若用户还没有注册则进行注册
     name: 'register',
     hidden: true,
     component: () => import('@/views/page/register')

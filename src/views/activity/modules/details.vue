@@ -3,18 +3,18 @@
     <div class="article" v-if="activity">
       <h1 class="article-title">{{activity.actname}}</h1>
       <div class="article-meta">
-        <span class="label">{{activity.corname}}  ·  {{activity.deptInfo ? activity.deptInfo.name : ''}}</span>
+        <span class="label">{{activity.corname}}  ·  {{activity.deptName}}</span>
         <span class="label">活动负责人：<span class="text">{{activity.actleading ? activity.actleading.name : ''}}</span></span>
         <span class="label">创建时间：<span class="text">{{activity.createtime}}</span></span>
       </div>
       <div class="article-content">
         <div class="image-wrapper">
-          <el-image :src="activity.image ? activity.image.filepath : ''"></el-image>
+          <el-image v-if="activity.image && activity.image.filepath" :src="activity.image.filepath"></el-image>
         </div>
         
         <div class="textarea-wrapper" v-html="activity.actdetails"></div>
         <div class="video-wrapper">
-          <video-player :video-source="activity.video ? activity.video.filepath : ''"></video-player>
+          <video-player v-if="activity.video && activity.video.filepath" :video-source="activity.video.filepath"></video-player>
         </div>
       </div>
       <div class="article-action">
@@ -30,7 +30,7 @@
         </div>
         <div class="message">
           <div class="text">面向人群：
-            <span v-for="item in activity.crowdpeople" :key="item.id">{{item.value}}、</span>
+            <span>{{crowd}}</span>
           </div>
           <div class="date">活动时间：{{parseTime(activity.actstarttame, '{y}-{m}-{d}')}}
             -
@@ -80,6 +80,12 @@ export default {
         return item === this.userId
       })
       return flag ? { icon: 'full-collect', status: true } : { icon: 'collect', status: false }
+    },
+    crowd() {
+      let { crowdpeople } = this.activity
+      return crowdpeople.map((item) => {
+        return item.value
+      }).join('，')
     }
   },
   methods: {

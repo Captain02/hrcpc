@@ -79,7 +79,7 @@
               </div>
             </div>
             <el-form-item prop="filepath" label-width="0">
-              <s-avatar :url="user.filepath" size="large" class="avatar" />
+              <s-avatar :url="user.filepath || avatar" size="large" class="avatar" />
             </el-form-item>
           </el-card>
         </el-col>
@@ -144,7 +144,8 @@ export default {
   computed: {
     ...mapState({
       corid: (state) => state.user.corid,
-      userId: (state) => state.user.userId
+      userId: (state) => state.user.userId,
+      avatar: (state) => state.user.avatar
     })
   },
   methods: {

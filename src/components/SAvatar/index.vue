@@ -1,6 +1,6 @@
 <template>
   <div :class="avatarClass">
-    <el-image :src="avatarUrl" v-bind="$attrs">
+    <el-image :src="url" v-bind="$attrs">
       <div slot="error" class="image-slot">
         <icon-svg icon-class="img-load-fail"></icon-svg>
       </div>
@@ -34,12 +34,6 @@ export default {
         'size-medium': this.size === 'medium',
         'size-large': this.size === 'large'
       }
-    }
-  },
-  watch: {
-    url(newVal) {
-      console.log('watch:', newVal)
-      this.avatarUrl = newVal
     }
   }
 }

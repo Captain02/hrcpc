@@ -106,6 +106,7 @@ export default {
       this.handleDelete(this.selectedItems)
     },
     handleDelete(items) {
+      console.log(items)
       // 删除
       if(this.hasChildren(items)){
         this.$message.error('您要删除的部门中包含下属部门，请先删除其下属部门')
@@ -130,7 +131,7 @@ export default {
     },
     hasChildren(depts) {
       return depts.some((item) => {
-        return item.children.length
+        return item.children && item.children.length
       })
     }
   },
