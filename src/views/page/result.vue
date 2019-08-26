@@ -12,9 +12,12 @@
         {{description}}
       </div>
       <div class="result-action" v-if="isSuccess">
-        <template v-for="item in qrcodes">
-          <s-qrcode :key="item.id" :url="item.path" style="width: 100%; height: 100%; margin-bottom: 15px;" />
+        <template v-if="qrcodes.length">
+          <s-qrcode v-for="item in qrcodes" :key="item.id" :url="item.path" style="width: 100%; height: 100%; margin-bottom: 15px;" />
         </template>
+        <div v-else>
+          暂无上传二维码
+        </div>
       </div>
     </div>
   </div>
@@ -43,11 +46,17 @@ export default {
     isSuccess() {
       return +this.code === 0
     },
+    joinCorporation() {
+      return +this.type === 1
+    },
+    joinActivity() {
+      return +this.type === 3
+    },
     message() {
-      return +this.code === 0 ? '加入成功' : '加入失败'
+      return this.isSuccess && this.joinCorporation ? '加入成功' : this.isSuccess && this.joinActivity ? '参与成功' : this.isJoined && this.joinCorporation ? '加入失败' : '参与失败'
     },
     description() {
-      return +this.code === 0 ? '您已加入成功，长按下方二维码可加入相关QQ群进行交流。' : '加入失败，您已加入无需再次加入。'
+      return this.isSuccess ? '您已加入成功，长按下方二维码可加入相关QQ群进行交流。' : '加入失败，您已加入无需再次加入。'
     }
   },
   methods: {
@@ -60,17 +69,17 @@ export default {
   },
   mounted() {
     // 如果没有加入成功并且没有重复加入
-    if(!this.isSuccess && !this.isJoined){
-      this.$router.replace({
-        path: '/register',
-        query: {
-          code: this.code,
-          corid: this.corid,
-          openid: this.openid,
-          type: this.type
-        }
-      })
-    }
+    // if(!this.isSuccess && !this.isJoined){
+    //   this.$router.replace({
+    //     path: '/register',
+    //     query: {
+    //       code: this.code,
+    //       corid: this.corid,
+    //       openid: this.openid,
+    //       type: this.type
+    //     }
+    //   })
+    // }
     if(this.isSuccess) {
       this.getCorQRCode()
     }

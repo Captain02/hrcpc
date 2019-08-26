@@ -17,10 +17,10 @@ export default {
           { required: true, message: '请填写手机号', trigger: 'blur' },
           { pattern: /^[1][3,4,5,6,7,8][0-9]{9}$/, message: '请填写正确的手机号', trigger: ['blur', 'change'] }
         ],
-        wechart: [
-          { required: true, message: '请填写微信号', trigger: 'blur' },
-          { pattern: /^[a-zA-Z]([-_a-zA-Z0-9]{5,19})+$/,  message: '请填写正确的微信号', trigger: ['blur', 'change'] }
-        ],
+        // wechart: [
+        //   { required: true, message: '请填写微信号', trigger: 'blur' },
+        //   { pattern: /^[a-zA-Z]([-_a-zA-Z0-9]{5,19})+$/,  message: '请填写正确的微信号', trigger: ['blur', 'change'] }
+        // ],
         // qq: [
         //   { required: true, message: '请填写QQ号', trigger: 'blur' },
         //   { pattern: /^[1-9][0-9]{4,10}$/, message: '请填写正确的QQ号', trigger: ['blur', 'change'] }

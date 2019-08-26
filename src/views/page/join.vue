@@ -92,9 +92,8 @@ export default {
       let type = this.$route.query.type
       /**
        * type1 = 申请加入社团
-       * type2 = 申请加入活动
+       * type3 = 申请加入活动
        */
-      // window.open(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2a89e726a1bf0142&redirect_uri=https%3A%2F%2Fwww.btzmpro.com%2FHBO%2Fwechart%2FOAuth&response_type=code&scope=snsapi_base&state=${id},${type},${deptid},${corid}#wechat_redirect`)
       window.open(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2a89e726a1bf0142&redirect_uri=${this.$constants.WECHAT_API}&response_type=code&scope=snsapi_base&state=${id},${type},null,null#wechat_redirect`)
     },
     getCorporationInfo() {

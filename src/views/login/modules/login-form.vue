@@ -1,5 +1,5 @@
 <template>
-  <el-form size="small" :model="loginForm" :rules="dataRule" ref="loginForm" @keyup.enter.native="handleSubmit()" status-icon>
+  <el-form size="small" :model="loginForm" :rules="rules" ref="loginForm" @keyup.enter.native="handleSubmit()" status-icon>
     <el-form-item prop="userName">
       <el-input :value="loginForm.userName" @input="handleInput" placeholder="学号"></el-input>
     </el-form-item>
@@ -30,9 +30,10 @@ export default {
         team: ''
       },
       teamOptions: [],
-      dataRule: {
+      rules: {
         userName: [
-          { required: true, message: '学号不能为空', trigger: 'blur' }
+          { required: true, message: '学号不能为空', trigger: 'blur' },
+          { pattern: /^\d{12}$/,  message: '请填写正确的学号', trigger: ['blur', 'change'] }
         ],
         password: [
           { required: true, message: '密码不能为空', trigger: 'blur' }
@@ -72,7 +73,13 @@ export default {
     }, 1000),
     handleInput(val) {
       this.loginForm.userName = val
-      this.handleSearch(val)
+      this.$refs['loginForm'].validateField('userName', (errorMessage) => {
+        if(!errorMessage){
+          this.loginForm.team = ''
+          this.handleSearch(val)
+        }
+      })
+      
     }
   }
 }

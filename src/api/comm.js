@@ -60,7 +60,7 @@ export const getCorporationInfo = (corid) => {
  * @param {String} QQ 
  * @param {String} descs 
  */
-export const register = (corid, openid, username, name, gender, password, college, collegetie, email, mobile, wechart, QQ, descs) => {
+export const register = (corid, type, openid, username, name, gender, password, college, collegetie, email, mobile, wechart, QQ, descs) => {
   return request({
     url: '/user/QRSave',
     method: 'POST',
@@ -69,6 +69,7 @@ export const register = (corid, openid, username, name, gender, password, colleg
     }],
     data: {
       corid,
+      type,
       openid,
       username,
       name,
