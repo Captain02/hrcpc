@@ -166,7 +166,7 @@ export default {
         let collegeName = this.findCollegeName(this.collegeOptions, this.user.college)
         let collegetieName = this.findCollegeName(this.collegetieOptions, this.user.collegetie)
 
-        updateUserApi(this.user.user_id, this.user.name, this.user.gender, collegeName, collegetieName, this.user.mobile, this.user.wechart, this.user.QQ, this.user.email, this.user.descs, this.user.fileid).then((res) => {
+        updateUserApi(this.user.user_id, this.user.name, this.user.gender, collegeName, collegetieName, this.user.mobile, this.user.wechart, this.user.QQ, this.user.email, this.user.descs).then((res) => {
           // console.log(res)
           this.$store.dispatch('GetUserInfo').then(() => {
             this.$message.success('修改成功!')

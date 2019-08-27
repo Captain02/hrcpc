@@ -5,18 +5,23 @@
       <el-button type="primary" size="mini" style="float: right;" @click="handleAdd">添加</el-button>
     </h1>
     <div class="imgs-wrapper clearfix">
-      <div class="img-item" v-for="item in imgList" :key="item.id">
-        <div class="item-wrapper" @click="handleClick(item)">
-          <el-image :src="item.path" >
-            <div slot="error" class="image-slot">
-              <icon-svg icon-class="img-load-fail"></icon-svg>
-            </div>
-          </el-image>
+      <template v-if="imgList.length">
+        <div class="img-item" v-for="item in imgList" :key="item.id">
+          <div class="item-wrapper" @click="handleClick(item)">
+            <el-image :src="item.path" >
+              <div slot="error" class="image-slot">
+                <icon-svg icon-class="img-load-fail"></icon-svg>
+              </div>
+            </el-image>
+          </div>
+          <div class="img-name" :title="item.filename">{{item.filename}}</div>
+          <div class="delete-btn-wrapper" @click="handleDelete(item.id, item.path)">
+            <icon-svg icon-class="close"></icon-svg>
+          </div>
         </div>
-        <div class="img-name" :title="item.filename">{{item.filename}}</div>
-        <div class="delete-btn-wrapper" @click="handleDelete(item.id, item.path)">
-          <icon-svg icon-class="close"></icon-svg>
-        </div>
+      </template>
+      <div v-else class="empty">
+        暂无数据
       </div>
     </div>
     <pagination v-show="total>0" :total="total" :curr.sync="currPage" :size.sync="pageSize" @on-page-change="getImgList" />
@@ -145,6 +150,12 @@ export default {
 .imgs-wrapper {
   margin-top: 25px;
   margin-left: -15px;
+  .empty {
+    line-height: 22px;
+    text-align: center;
+    color: #909399;
+    font-size: 13px;
+  }
   .img-item {
     position: relative;
     float: left;

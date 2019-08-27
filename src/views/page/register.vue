@@ -50,7 +50,7 @@
         <el-button class="full-width" type="primary" @click="handleClick" >提交</el-button>
       </el-form-item>
     </el-form> 
-    {{user}}
+    <!-- {{user}} -->
   </div>
 </template>
 <script>

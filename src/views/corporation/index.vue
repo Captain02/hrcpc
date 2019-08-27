@@ -81,7 +81,9 @@
                   name="file"
                   @on-success="handleSuccessBanner"
                 >
+                <el-tooltip class="item" effect="dark" content="建议分辨率750像素*400像素" placement="top-end">
                   <el-button size="small" type="primary">点击上传</el-button>
+                </el-tooltip>
                 </upload>
               </div>
             </div>

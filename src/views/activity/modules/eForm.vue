@@ -81,7 +81,7 @@
             :action="`${$constants.BASE_API}activity/uploudActivitiBananer`"
             @on-success="(res, file) => {this.handleUpdateSuccess(res, file, 'image')}"
           >
-            <div class="el-upload__tip">只能上传一个jpg/png文件，且不超过2M</div>
+            <div class="el-upload__tip">只能上传一个jpg/png文件，且不超过2M。建议分辨率750像素*400像素</div>
           </upload>
           <div class="image-view" v-if="imageFile&&imageFile.length">
               <el-image
@@ -144,7 +144,7 @@
         </el-col>
       </el-form-item>
     </el-form>
-    {{activity}}
+    <!-- {{activity}} -->
   </el-card>
 </template>
 <script>
