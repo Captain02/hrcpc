@@ -63,13 +63,21 @@ export default {
     corporationId: {
       type: Number,
       required: true
+    },
+    joinActivQRCode: {
+      type: String,
+      default: ''
+    },
+    qqActivQRCode: {
+      type: String,
+      default: ''
     }
   },
   data() {
     return {
       dialogVisible: false,
-      QRCode: '',
-      QQQRCode: ''
+      QRCode: this.joinActivQRCode,
+      QQQRCode: this.qqActivQRCode
     }
   },
   computed: {
@@ -80,14 +88,11 @@ export default {
   methods: {
     handleClick() {
       this.dialogVisible = true
-      this.getQRCode()
     },
     uploadSuccess(res) {
       console.log(res)
       this.QQQRCode = res.path
     },
-    getQRCode() {
-    }
   }
 }
 </script>

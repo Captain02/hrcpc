@@ -21,7 +21,7 @@
      <div class="activity-list">
         <s-list :data="listData" :user-id="userId" @on-details="handleDetails" @on-add-like="handleAddLike" @on-cancel-like="handleCancelLike" @on-add-collect="handleAddCollect" @on-cancel-collect="handleCancelCollect">
           <template v-slot:actions="{scope}">
-            <qr-code style="display: inline-block; margin-right: 10px;" :activityId="scope.actid" :corporationId="scope.actcorid">
+            <qr-code style="display: inline-block; margin-right: 10px;" :activityId="scope.actid" :corporationId="scope.actcorid" :joinActivQRCode="scope.joinActivQRCode" :qqActivQRCode="scope.qqActivQRCode">
               <template v-slot:action-btn>
                 <el-button size="small" type="primary">二维码</el-button>
               </template>
@@ -100,7 +100,9 @@ export default {
           deptInfo: item.deptInfo && item.deptInfo.length ? item.deptInfo[0] : null,
           processnodes: item.processnodes && item.processnodes.length ? item.processnodes : [],
           video: item.video && item.video.length ? item.video[0] : null,
-          image: item.image && item.image.length ? item.image[0] : null
+          image: item.image && item.image.length ? item.image[0] : null,
+          joinActivQRCode: item.joinfile && item.joinfile.length ? item.joinfile[0].filepath : '',
+          qqActivQRCode: item.qqfile && item.qqfile.length ? item.qqfile[0].filepath : ''
         }
         // console.log(data)
         return data
