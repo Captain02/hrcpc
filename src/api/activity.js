@@ -88,11 +88,11 @@ export const changeCommentLike = (userid, repliesid, type) => {
  * @param {*} videoid 上传视频后的id
  * @param {Array || ''} croWdPeople 面向人群数组，若没选择则为''
  * @param {String} profile 简介
- * @param {Number} enclosure 上传附件的id
+ * @param {Number} enclosureid 上传附件的id
  * @param {String} actdetails 活动详情
  * @param {Array} processNodes 活动流程
  */
-export const addActivity = (actName, deptid, actLeader, actStartTime, actEndTime, images, videoid, croWdPeople, profile, enclosure, actdetails, processNodes) => {
+export const addActivity = (actName, deptid, actLeader, actStartTime, actEndTime, images, videoid, croWdPeople, profile, enclosureid, actdetails, processNodes) => {
   return request({
     url: '/activity/add',
     method: 'POST',
@@ -112,7 +112,7 @@ export const addActivity = (actName, deptid, actLeader, actStartTime, actEndTime
       videoid,
       croWdPeople,
       profile,
-      enclosure,
+      enclosureid,
       actdetails,
       processNodes
     }
@@ -132,11 +132,11 @@ export const addActivity = (actName, deptid, actLeader, actStartTime, actEndTime
  * @param {*} videoid 上传视频后的id
  * @param {Array || ''} croWdPeople 面向人群数组，若没选择则为''
  * @param {String} profile 简介
- * @param {Number} enclosure 上传附件的id
+ * @param {Number} enclosureid 上传附件的id
  * @param {String} actdetails 活动详情
  * @param {Array} processNodes 活动流程 
  */
-export const updateActivity = (actId, actName, deptid, actLeader, actStartTime, actEndTime, images, videoid, croWdPeople, profile, enclosure, actdetails, processNodes) => {
+export const updateActivity = (actId, actName, deptid, actLeader, actStartTime, actEndTime, images, videoid, croWdPeople, profile, enclosureid, actdetails, processNodes) => {
   return request({
     url: '/activity/updateAct',
     method: 'POST',
@@ -157,7 +157,7 @@ export const updateActivity = (actId, actName, deptid, actLeader, actStartTime, 
       videoid,
       croWdPeople,
       profile,
-      enclosure,
+      enclosureid,
       actdetails,
       processNodes
     }
