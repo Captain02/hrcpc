@@ -84,6 +84,7 @@ export default {
     },
     uploadSuccess(res) {
       console.log(res)
+      this.QQQRCode = res.path
     },
     getQRCode() {
     }
