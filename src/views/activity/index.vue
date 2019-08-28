@@ -21,12 +21,12 @@
      <div class="activity-list">
         <s-list :data="listData" :user-id="userId" @on-details="handleDetails" @on-add-like="handleAddLike" @on-cancel-like="handleCancelLike" @on-add-collect="handleAddCollect" @on-cancel-collect="handleCancelCollect">
           <template v-slot:actions="{scope}">
+            <qr-code style="display: inline-block; margin-right: 10px;" :activityId="scope.actid" :corporationId="scope.actcorid">
+              <template v-slot:action-btn>
+                <el-button size="small" type="primary">二维码</el-button>
+              </template>
+            </qr-code>
             <template v-if="scope.actcorid === corid">
-              <qr-code style="display: inline-block; margin-right: 10px;">
-                <template v-slot:action-btn>
-                  <el-button size="small" type="primary">二维码</el-button>
-                </template>
-              </qr-code>
               <el-button size="small" type="primary" @click="handleEdit(scope.actid)">修改</el-button>
               <el-button size="small" @click="handleInActivity(scope.actid)">报名统计</el-button>
             </template>

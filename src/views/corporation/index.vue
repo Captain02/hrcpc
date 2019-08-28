@@ -212,6 +212,7 @@ export default {
         console.log(result)
         let data = result.data[0]
         this.form = data
+        this.form.corcrowd.includes(127) && (this.form.corcrowd = [])
         this.userOptions = this.initOptions([{
           name: data.leadingname, username: data.leadusername
         }])
@@ -256,6 +257,7 @@ export default {
       this.collegeOptions = list.map((item) => {
         return { id: item.id, value: item.id, label: item.value }
       })
+      // this.collegeOptions.unshift({ id: 127, value: 127, label: '全校' })
     })
   }
 }
