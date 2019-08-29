@@ -328,6 +328,7 @@ export default {
       let croWdPeople = data.crowdpeople && data.crowdpeople.length ? data.crowdpeople.map((item) => {
         return item.id
       }) : []
+      croWdPeople.includes(127) && (croWdPeople = [])
       let image = data.image && data.image.length ? data.image.map((item) => {
         return {
           id: item.id,
