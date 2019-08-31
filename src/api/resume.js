@@ -61,9 +61,9 @@ export const editResume = (resumeId, status) => {
 
 /**
  * 删除简历信息
- * @param {Number} resumeId 
+ * @param {Number} userid 
  */
-export const deleteResume = (resumeId) => {
+export const deleteResume = (userid) => {
   return request({
     url: '/resume/delete',
     method: 'POST',
@@ -71,7 +71,8 @@ export const deleteResume = (resumeId) => {
       return qs.stringify(data)
     }],
     data: {
-      resumeId
+      corid: getCorId(),
+      userid
     }
   })
 }
