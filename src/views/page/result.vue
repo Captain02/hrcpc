@@ -24,6 +24,7 @@
 </template>
 <script>
 import { getCorporationQRCode as getCorporationQRCodeApi } from '@/api/corporation'
+import { getQQFileCode as getQQFileCodeApi } from '@/api/activity'
 import SQrcode from '_c/SQRCode'
 export default {
   name: 'result',
@@ -32,9 +33,9 @@ export default {
   },
   data() {
     return {
-      qrcodes: '',
+      qrcodes: [],
       code: this.$route.query.code,
-      corid: this.$route.query.corid,
+      corid: this.$route.query.corid,       // 加入活动的时候是活动id加入社团的时候是社团id
       openid: this.$route.query.openid,
       type: this.$route.query.type
     }
@@ -61,10 +62,23 @@ export default {
   },
   methods: {
     getCorQRCode() {
-      getCorporationQRCodeApi(this.corid).then((result) => {
-        // console.log(result)
-        this.qrcodes = result.data
-      }).catch((err) => { console.log(err) })
+      if(this.joinCorporation){
+        getCorporationQRCodeApi(this.corid).then((result) => {
+          // console.log(result)
+          this.qrcodes = result.data
+        }).catch((err) => { console.log(err) })
+      } else if(this.joinActivity){
+        getQQFileCodeApi(this.corid).then((result) => {
+          let { data } = result
+          data && (this.qrcodes = [
+            {
+              id: data.qqfile,
+              path: data.qqfilepath
+            }
+          ])
+        })
+      }
+      
     }
   },
   mounted() {

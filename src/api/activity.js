@@ -213,6 +213,20 @@ export const getUsersByActId = (actid, name, username, currPage, pageSize) => {
 }
 
 /**
+ * 根据活动id获取该活动的qq群二维码
+ * @param {*} actid 
+ */
+export const getQQFileCode = (actid) => {
+  return request({
+    url: '/activity/getActQQfile',
+    params: {
+      actid
+    }
+  })
+}
+
+
+/**
  * 活动图表统计
  * @param {Number} actid 
  */

@@ -20,11 +20,9 @@
       </el-date-picker>
       <el-button class="filter-item" type="primary" size="small" icon="el-icon-search" @click="handleSearch">搜索</el-button>
     </div>
-    <!-- {{listQuery}} -->
     <s-table :data="noticeList" :columns="columns" size="medium">
       <template v-slot:title="{scope}">
-        <details-notice v-slot:action-btn :data="scope.row">
-          <!-- <el-button type="text" size="small">查看</el-button> -->
+        <details-notice v-slot:action-btn :noticid="scope.row.noticid">
           <div class="notice-title">{{scope.row.notictop}}</div>
         </details-notice>
       </template>
@@ -94,24 +92,10 @@ export default {
         },
         {
           attrs: {
-            prop: 'notictusername',
+            prop: 'publishUser',
             label: '发布人',
             align: "center",
             width: 80
-          }
-        },
-        {
-          attrs: {
-            prop: 'noticteduser',
-            label: '接收人',
-            align: "center",
-            formatter: (row, column, cellValue, index) => {
-              let notictedusers = ''
-              cellValue.forEach(user => {
-                notictedusers+=user.notictedusername + '，'
-              })
-              return notictedusers.substring(0, notictedusers.length - 1)
-            }
           }
         },
         {
@@ -123,16 +107,7 @@ export default {
             sortable: true,
             formatter: (row, column, cellValue, index) => parseTime(cellValue, '{y}-{m}-{d}')
           }
-        },
-        // {
-        //   slot: 'action',
-        //   attrs: {
-        //     prop: 'action',
-        //     label: '操作',
-        //     align: "center",
-        //     width: 120
-        //   }
-        // }
+        }
       ]
     }
   },
@@ -144,16 +119,13 @@ export default {
         [startTime, endTime] = this.listQuery.dateTime
       }
       getNoticesApi(this.listQuery.title, this.listQuery.publishUser, this.listQuery.receiveUser, startTime, endTime, this.listQuery.currPage, this.listQuery.pageSize).then((result) => {
-        console.log(result)
-        // let { data } = result
-        // this.noticeList = data
+        // console.log(result)
+        let { data } = result
+        this.noticeList = data
       }).catch((err) => { console.log(err) })
     },
     handleSearch() {
       this.getNoticeList()
-    },
-    handleAdd() {
-
     }
   },
   mounted() {
@@ -164,6 +136,7 @@ export default {
 <style lang="less" scoped>
   .notice-title {
     cursor: pointer;
+    color: #337ab7;
     transition: color .3s;
     &:hover {
       color: #409eff;

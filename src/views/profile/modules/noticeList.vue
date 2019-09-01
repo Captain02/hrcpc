@@ -45,26 +45,6 @@ export default {
             width: 120
           }
         },
-        // {
-        //   attrs: {
-        //     prop: 'noticcontent',
-        //     label: '内容'
-        //   }
-        // },
-        // {
-        //   attrs: {
-        //     prop: 'receiveUser',
-        //     label: '接收人',
-        //     align: "center",
-        //     formatter: (row, column, cellValue, index) => {
-        //       let notictedusers = ''
-        //       cellValue.forEach(user => {
-        //         notictedusers+=user.notictedusername + '，'
-        //       })
-        //       return notictedusers.substring(0, notictedusers.length - 1)
-        //     }
-        //   }
-        // },
         {
           attrs: {
             prop: 'createtime',

@@ -98,7 +98,7 @@ export default {
     }, 1000),
     handleClick() {
       this.$refs['userForm'].validate((valid) => {
-         if (valid) {
+         if (valid) { 
           let collegeName = this.findCollegeName(this.collegeOptions, this.user.college)
           let collegetieName = this.findCollegeName(this.collegetieOptions, this.user.collegetie)
           registerApi(this.corid, this.type, this.openid, this.user.username, this.user.name, this.user.gender, this.user.password, collegeName, collegetieName, this.user.email, this.user.mobile, this.user.wechart, this.user.qq, this.user.descs).then((result) => {
