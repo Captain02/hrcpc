@@ -42,10 +42,10 @@ export const getResume = (resumeId) => {
 
 /**
  * 修改简历状态
- * @param {Number} resumeId 
+ * @param {Number} userid 
  * @param {Number} status 
  */
-export const editResume = (resumeId, status) => {
+export const editResume = (userid, status) => {
   return request({
     url: '/resume/edit',
     method: 'POST',
@@ -53,7 +53,8 @@ export const editResume = (resumeId, status) => {
       return qs.stringify(data)
     }],
     data: {
-      resumeId,
+      corid: getCorId(),
+      userid,
       status
     }
   })
